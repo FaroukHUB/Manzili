@@ -397,7 +397,11 @@ function manzili_pack_selector_assets() {
             if (!btn) return;
             var item = btn.closest('.mzl-item');
             var cur  = parseInt(item.querySelector('.manzili-parfum-qty').value, 10) || 0;
-            if (btn.classList.contains('mzl-plus'))  setItemQty(item, cur + 1);
+            if (btn.classList.contains('mzl-plus')) {
+                var packQty = getPackQty();
+                if (packQty > 0 && getTotal() >= packQty) return;
+                setItemQty(item, cur + 1);
+            }
             if (btn.classList.contains('mzl-minus')) setItemQty(item, cur - 1);
         });
 

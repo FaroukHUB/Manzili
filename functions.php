@@ -47,35 +47,23 @@ add_action( 'wp_head', 'manzili_badge_styles' );
 function manzili_badge_styles() {
     ?>
     <style>
-        /* Badge sur la liste de produits */
-        .woocommerce ul.products li.product {
-            position: relative;
-        }
         .manzili-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #1a1a1a;
-            color: #fff;
-            padding: 4px 12px;
+            display: block;
+            width: 100%;
+            background: #f5f0e8;
+            color: #1a1a1a;
+            padding: 8px 0;
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            border-radius: 3px;
-            z-index: 10;
+            text-align: center;
+            box-sizing: border-box;
             pointer-events: none;
         }
-
-        /* Badge sur la page produit individuelle */
-        .woocommerce div.product {
-            position: relative;
-        }
         .manzili-badge--single {
-            top: 15px;
-            left: 15px;
             font-size: 13px;
-            padding: 6px 14px;
+            padding: 10px 0;
         }
     </style>
     <?php

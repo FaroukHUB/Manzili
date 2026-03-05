@@ -124,7 +124,7 @@ function manzili_save_pack_parfums( $post_id ) {
     update_post_meta( $post_id, '_pack_parfums', $val );
 }
 
-// ── FRONTEND : affichage des cases à cocher ───────────────────────────────────
+// ── FRONTEND : sélecteur parfums ─────────────────────────────────────────────
 
 add_action( 'woocommerce_before_add_to_cart_button', 'manzili_display_parfum_selector' );
 function manzili_display_parfum_selector() {
@@ -133,48 +133,44 @@ function manzili_display_parfum_selector() {
     $raw = get_post_meta( $product->get_id(), '_pack_parfums', true );
     if ( ! $raw ) return;
 
-    $parfums   = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
+    $parfums     = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
     if ( empty( $parfums ) ) return;
 
-    // Quantité fixe (produit simple) ou dynamique (produit variable via JS)
-    $pack_qty  = (int) get_post_meta( $product->get_id(), '_pack_quantity', true );
+    $pack_qty    = (int) get_post_meta( $product->get_id(), '_pack_quantity', true );
     $is_variable = $product->is_type( 'variable' );
     $max_display = ( ! $is_variable && $pack_qty > 0 ) ? $pack_qty : '—';
-
     ?>
-    <div class="manzili-pack-selector" data-pack-qty="<?php echo esc_attr( $pack_qty ); ?>" data-is-variable="<?php echo $is_variable ? '1' : '0'; ?>">
-        <div class="manzili-pack-header">
-            <strong>Choisissez vos références</strong>
-            <span class="manzili-counter">
-                <span class="manzili-count">0</span> / <span class="manzili-pack-max"><?php echo esc_html( $max_display ); ?></span> pcs sélectionnés
-            </span>
+    <div class="mzl-selector" data-pack-qty="<?php echo esc_attr( $pack_qty ); ?>" data-is-variable="<?php echo $is_variable ? '1' : '0'; ?>">
+
+        <div class="mzl-header">
+            <span class="mzl-title">CHOISISSEZ VOS PARFUMS <em>*</em></span>
+            <span class="mzl-pill"><strong class="mzl-count">0</strong> / <span class="mzl-pack-max"><?php echo esc_html( $max_display ); ?></span> pcs</span>
         </div>
 
-        <div class="manzili-parfums-grid">
+        <div class="mzl-grid">
             <?php foreach ( $parfums as $parfum ) :
-                $uid = 'parfum_' . sanitize_title( $parfum );
+                $uid = 'mzl_' . sanitize_title( $parfum );
             ?>
-            <div class="manzili-parfum-item" data-parfum="<?php echo esc_attr( $parfum ); ?>">
-                <label class="manzili-parfum-label">
+            <div class="mzl-item" data-parfum="<?php echo esc_attr( $parfum ); ?>">
+                <div class="mzl-left">
                     <input type="checkbox"
-                           class="manzili-parfum-check"
+                           class="mzl-check"
                            name="manzili_parfums[]"
                            value="<?php echo esc_attr( $parfum ); ?>"
                            id="<?php echo esc_attr( $uid ); ?>">
-                    <span class="manzili-parfum-name"><?php echo esc_html( $parfum ); ?></span>
-                </label>
-                <input type="number"
-                       class="manzili-parfum-qty"
-                       name="manzili_qty[<?php echo esc_attr( $parfum ); ?>]"
-                       value="1"
-                       min="1"
-                       max="999"
-                       style="display:none;">
+                    <label for="<?php echo esc_attr( $uid ); ?>" class="mzl-name"><?php echo esc_html( $parfum ); ?></label>
+                </div>
+                <div class="mzl-stepper">
+                    <button type="button" class="mzl-btn mzl-minus" aria-label="Moins">−</button>
+                    <span class="mzl-qty-display">0</span>
+                    <button type="button" class="mzl-btn mzl-plus" aria-label="Plus">+</button>
+                    <input type="hidden" class="manzili-parfum-qty" name="manzili_qty[<?php echo esc_attr( $parfum ); ?>]" value="0">
+                </div>
             </div>
             <?php endforeach; ?>
         </div>
 
-        <p class="manzili-error" style="display:none;"></p>
+        <p class="mzl-error" style="display:none;"></p>
     </div>
     <?php
 }
@@ -189,89 +185,152 @@ function manzili_pack_selector_assets() {
     if ( ! get_post_meta( $product->get_id(), '_pack_parfums', true ) ) return;
     ?>
     <style>
-        .manzili-pack-selector {
-            margin: 24px 0 16px;
-            padding: 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            background: #fafafa;
+        /* ── Conteneur ── */
+        .mzl-selector {
+            margin: 28px 0 20px;
+            font-family: inherit;
         }
-        .manzili-pack-header {
+
+        /* ── En-tête ── */
+        .mzl-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 6px;
         }
-        .manzili-counter {
-            font-size: 13px;
-            color: #555;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            padding: 3px 12px;
-        }
-        .manzili-counter .manzili-count {
+        .mzl-title {
+            font-size: 12px;
             font-weight: 700;
-            color: #1a1a1a;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #111;
         }
-        .manzili-parfums-grid {
+        .mzl-title em {
+            color: #c0392b;
+            font-style: normal;
+        }
+        .mzl-pill {
+            font-size: 12px;
+            color: #555;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 4px 14px;
+            white-space: nowrap;
+        }
+        .mzl-pill strong {
+            color: #111;
+            font-weight: 700;
+        }
+
+        /* ── Grille 2 colonnes ── */
+        .mzl-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 8px;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid #e5e5e5;
+            border-left: 1px solid #e5e5e5;
         }
-        .manzili-parfum-item {
+        @media (max-width: 520px) {
+            .mzl-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Ligne parfum ── */
+        .mzl-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            padding: 8px 12px;
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            transition: border-color 0.15s, background 0.15s;
+            padding: 11px 14px;
+            border-right: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+            gap: 10px;
+            transition: background 0.12s;
+            min-height: 52px;
         }
-        .manzili-parfum-item.is-checked {
-            border-color: #1a1a1a;
-            background: #f0f0f0;
+        .mzl-item.is-active {
+            background: #f7f7f7;
         }
-        .manzili-parfum-label {
+
+        /* ── Partie gauche : checkbox + nom ── */
+        .mzl-left {
             display: flex;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
+            gap: 10px;
             flex: 1;
+            min-width: 0;
+        }
+        .mzl-check {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: #111;
+        }
+        .mzl-name {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #222;
+            cursor: pointer;
+            line-height: 1.3;
             margin: 0;
         }
-        .manzili-parfum-name {
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .manzili-parfum-qty {
-            width: 56px;
-            padding: 4px 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 13px;
+
+        /* ── Stepper ── */
+        .mzl-stepper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             flex-shrink: 0;
         }
-        .manzili-error {
-            margin-top: 12px;
-            padding: 10px 14px;
-            background: #fff3f3;
-            border: 1px solid #e88;
-            border-radius: 4px;
-            color: #c00;
-            font-size: 13px;
+        .mzl-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid #bbb;
+            background: transparent;
+            color: #888;
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: border-color 0.12s, color 0.12s, background 0.12s;
+            flex-shrink: 0;
         }
-        @media (max-width: 480px) {
-            .manzili-parfums-grid {
-                grid-template-columns: 1fr;
-            }
+        .mzl-btn:hover {
+            border-color: #111;
+            color: #111;
+        }
+        .mzl-btn.mzl-plus {
+            border-color: #111;
+            color: #111;
+            font-weight: 700;
+        }
+        .mzl-btn.mzl-minus:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+        .mzl-qty-display {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* ── Erreur ── */
+        .mzl-error {
+            margin-top: 14px;
+            padding: 11px 16px;
+            background: #fff5f5;
+            border-left: 3px solid #c0392b;
+            color: #c0392b;
+            font-size: 13px;
+            border-radius: 0 4px 4px 0;
         }
     </style>
 
@@ -279,107 +338,115 @@ function manzili_pack_selector_assets() {
     (function () {
         'use strict';
 
-        var selector = document.querySelector('.manzili-pack-selector');
-        var isVariable = selector && selector.getAttribute('data-is-variable') === '1';
-        var fixedQty   = selector ? parseInt(selector.getAttribute('data-pack-qty'), 10) : 0;
+        var selector   = document.querySelector('.mzl-selector');
+        if (!selector) return;
 
-        // Pour produit simple : quantité fixe (data-pack-qty)
-        // Pour produit variable : lit la variation sélectionnée ex "20 pcs" → 20
+        var isVariable = selector.getAttribute('data-is-variable') === '1';
+        var fixedQty   = parseInt(selector.getAttribute('data-pack-qty'), 10) || 0;
+
         function getPackQty() {
-            if (!isVariable) return fixedQty > 0 ? fixedQty : 0;
+            if (!isVariable) return fixedQty;
             var selects = document.querySelectorAll('.variations select');
             for (var i = 0; i < selects.length; i++) {
                 var opt = selects[i].options[selects[i].selectedIndex];
                 if (!opt || !opt.value) continue;
-                var match = opt.text.match(/(\d+)/);
-                if (match) return parseInt(match[1], 10);
+                var m = opt.text.match(/(\d+)/);
+                if (m) return parseInt(m[1], 10);
             }
             return 0;
         }
 
-        function updateCounter() {
+        function getTotal() {
             var total = 0;
-            document.querySelectorAll('.manzili-parfum-qty').forEach(function (inp) {
-                if (inp.style.display !== 'none') {
-                    total += parseInt(inp.value, 10) || 0;
-                }
+            selector.querySelectorAll('.manzili-parfum-qty').forEach(function (inp) {
+                total += parseInt(inp.value, 10) || 0;
             });
-            var countEl = document.querySelector('.manzili-count');
-            if (countEl) countEl.textContent = total;
             return total;
         }
 
+        function refreshCounter() {
+            var total  = getTotal();
+            var countEl = selector.querySelector('.mzl-count');
+            if (countEl) countEl.textContent = total;
+        }
+
         function updatePackMax() {
-            var qty = getPackQty();
-            var maxEl = document.querySelector('.manzili-pack-max');
+            var qty   = getPackQty();
+            var maxEl = selector.querySelector('.mzl-pack-max');
             if (maxEl) maxEl.textContent = qty > 0 ? qty : '—';
         }
 
-        // Cases à cocher
-        document.querySelectorAll('.manzili-parfum-check').forEach(function (cb) {
-            cb.addEventListener('change', function () {
-                var item = this.closest('.manzili-parfum-item');
-                var qtyInput = item.querySelector('.manzili-parfum-qty');
-                if (this.checked) {
-                    item.classList.add('is-checked');
-                    qtyInput.style.display = 'inline-block';
-                    qtyInput.value = 1;
-                } else {
-                    item.classList.remove('is-checked');
-                    qtyInput.style.display = 'none';
-                    qtyInput.value = 1;
-                }
-                updateCounter();
-            });
+        function setItemQty(item, newQty) {
+            var hidden  = item.querySelector('.manzili-parfum-qty');
+            var display = item.querySelector('.mzl-qty-display');
+            var check   = item.querySelector('.mzl-check');
+            var minus   = item.querySelector('.mzl-minus');
+
+            newQty = Math.max(0, newQty);
+            hidden.value        = newQty;
+            display.textContent = newQty;
+            check.checked       = newQty > 0;
+            minus.disabled      = newQty === 0;
+            item.classList.toggle('is-active', newQty > 0);
+            refreshCounter();
+        }
+
+        /* ── Boutons + et − ── */
+        selector.addEventListener('click', function (e) {
+            var btn  = e.target.closest('.mzl-btn');
+            if (!btn) return;
+            var item = btn.closest('.mzl-item');
+            var cur  = parseInt(item.querySelector('.manzili-parfum-qty').value, 10) || 0;
+            if (btn.classList.contains('mzl-plus'))  setItemQty(item, cur + 1);
+            if (btn.classList.contains('mzl-minus')) setItemQty(item, cur - 1);
         });
 
-        // Saisie quantité
-        document.querySelectorAll('.manzili-parfum-qty').forEach(function (inp) {
-            inp.addEventListener('input', function () { updateCounter(); });
+        /* ── Checkbox ── */
+        selector.addEventListener('change', function (e) {
+            var cb = e.target.closest('.mzl-check');
+            if (!cb) return;
+            var item = cb.closest('.mzl-item');
+            var cur  = parseInt(item.querySelector('.manzili-parfum-qty').value, 10) || 0;
+            if (!cb.checked) {
+                setItemQty(item, 0);
+            } else if (cur === 0) {
+                setItemQty(item, 1);
+            }
         });
 
-        // Changement de variation → mettre à jour l'affichage max
-        var form = document.querySelector('form.variations_form');
-        if (form) {
-            form.addEventListener('found_variation', function () {
-                updatePackMax();
-                updateCounter();
-            });
-            form.addEventListener('reset_data', function () {
-                var maxEl = document.querySelector('.manzili-pack-max');
+        /* ── Variation change ── */
+        var varForm = document.querySelector('form.variations_form');
+        if (varForm) {
+            varForm.addEventListener('found_variation', function () { updatePackMax(); refreshCounter(); });
+            varForm.addEventListener('reset_data', function () {
+                var maxEl = selector.querySelector('.mzl-pack-max');
                 if (maxEl) maxEl.textContent = '—';
             });
         }
 
-        // Validation avant ajout au panier
+        /* ── Validation soumission ── */
         var cartForm = document.querySelector('form.cart');
         if (cartForm) {
             cartForm.addEventListener('submit', function (e) {
-                var packQty  = getPackQty();
-                var selected = document.querySelectorAll('.manzili-parfum-check:checked').length;
-                var total    = updateCounter();
-                var errorEl  = document.querySelector('.manzili-error');
+                var packQty = getPackQty();
+                if (packQty <= 0) return;
 
-                // Pas de parfums cochés → OK (produit sans liste de parfums)
-                if (selected === 0) {
-                    if (errorEl) errorEl.style.display = 'none';
-                    return;
-                }
+                var total   = getTotal();
+                var errorEl = selector.querySelector('.mzl-error');
 
-                // Vérification du total
-                if (packQty > 0 && total !== packQty) {
+                if (total !== packQty) {
                     e.preventDefault();
-                    if (errorEl) {
-                        errorEl.textContent = 'Le total doit être exactement ' + packQty
-                            + ' pcs. Vous en avez sélectionné ' + total + '.';
-                        errorEl.style.display = 'block';
-                        errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
+                    errorEl.textContent = 'Vous devez sélectionner exactement ' + packQty + ' pcs. Total actuel\u00a0: ' + total + '.';
+                    errorEl.style.display = 'block';
+                    errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
-                    if (errorEl) errorEl.style.display = 'none';
+                    errorEl.style.display = 'none';
                 }
             });
         }
+
+        /* Init : désactiver tous les boutons − */
+        selector.querySelectorAll('.mzl-minus').forEach(function (btn) { btn.disabled = true; });
 
     })();
     </script>

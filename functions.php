@@ -94,10 +94,18 @@ function manzili_badge_styles() {
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ── ADMIN : champ liste des parfums ──────────────────────────────────────────
+// ── ADMIN : champs liste des parfums + quantité du pack ──────────────────────
 
 add_action( 'woocommerce_product_options_general_product_data', 'manzili_pack_parfums_field' );
 function manzili_pack_parfums_field() {
+    woocommerce_wp_text_input( [
+        'id'          => '_pack_quantity',
+        'label'       => 'Nombre de parfums à choisir',
+        'placeholder' => 'Ex: 10',
+        'description' => 'Nombre exact de parfums que le client doit sélectionner (ex: 10 pour un Pack 10).',
+        'desc_tip'    => true,
+        'type'        => 'number',
+    ] );
     woocommerce_wp_textarea_input( [
         'id'          => '_pack_parfums',
         'label'       => 'Parfums disponibles dans ce pack',
@@ -110,6 +118,8 @@ function manzili_pack_parfums_field() {
 
 add_action( 'woocommerce_process_product_meta', 'manzili_save_pack_parfums' );
 function manzili_save_pack_parfums( $post_id ) {
+    $qty = isset( $_POST['_pack_quantity'] ) ? absint( $_POST['_pack_quantity'] ) : 0;
+    update_post_meta( $post_id, '_pack_quantity', $qty );
     $val = isset( $_POST['_pack_parfums'] ) ? sanitize_textarea_field( $_POST['_pack_parfums'] ) : '';
     update_post_meta( $post_id, '_pack_parfums', $val );
 }
@@ -119,20 +129,24 @@ function manzili_save_pack_parfums( $post_id ) {
 add_action( 'woocommerce_before_add_to_cart_button', 'manzili_display_parfum_selector' );
 function manzili_display_parfum_selector() {
     global $product;
-    if ( ! $product->is_type( 'variable' ) ) return;
 
     $raw = get_post_meta( $product->get_id(), '_pack_parfums', true );
     if ( ! $raw ) return;
 
-    $parfums = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
+    $parfums   = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
     if ( empty( $parfums ) ) return;
 
+    // Quantité fixe (produit simple) ou dynamique (produit variable via JS)
+    $pack_qty  = (int) get_post_meta( $product->get_id(), '_pack_quantity', true );
+    $is_variable = $product->is_type( 'variable' );
+    $max_display = ( ! $is_variable && $pack_qty > 0 ) ? $pack_qty : '—';
+
     ?>
-    <div class="manzili-pack-selector">
+    <div class="manzili-pack-selector" data-pack-qty="<?php echo esc_attr( $pack_qty ); ?>" data-is-variable="<?php echo $is_variable ? '1' : '0'; ?>">
         <div class="manzili-pack-header">
             <strong>Choisissez vos références</strong>
             <span class="manzili-counter">
-                <span class="manzili-count">0</span> / <span class="manzili-pack-max">—</span> pcs sélectionnés
+                <span class="manzili-count">0</span> / <span class="manzili-pack-max"><?php echo esc_html( $max_display ); ?></span> pcs sélectionnés
             </span>
         </div>
 
@@ -171,7 +185,7 @@ add_action( 'wp_footer', 'manzili_pack_selector_assets' );
 function manzili_pack_selector_assets() {
     if ( ! is_product() ) return;
     global $product;
-    if ( ! $product || ! $product->is_type( 'variable' ) ) return;
+    if ( ! $product ) return;
     if ( ! get_post_meta( $product->get_id(), '_pack_parfums', true ) ) return;
     ?>
     <style>
@@ -265,11 +279,14 @@ function manzili_pack_selector_assets() {
     (function () {
         'use strict';
 
-        // Récupère la quantité numérique de la variation sélectionnée
-        // ex: "20 pcs" → 20
+        var selector = document.querySelector('.manzili-pack-selector');
+        var isVariable = selector && selector.getAttribute('data-is-variable') === '1';
+        var fixedQty   = selector ? parseInt(selector.getAttribute('data-pack-qty'), 10) : 0;
+
+        // Pour produit simple : quantité fixe (data-pack-qty)
+        // Pour produit variable : lit la variation sélectionnée ex "20 pcs" → 20
         function getPackQty() {
-            // WooCommerce nomme le select selon le slug de l'attribut global
-            // On cherche tous les selects de variation pour être robuste
+            if (!isVariable) return fixedQty > 0 ? fixedQty : 0;
             var selects = document.querySelectorAll('.variations select');
             for (var i = 0; i < selects.length; i++) {
                 var opt = selects[i].options[selects[i].selectedIndex];

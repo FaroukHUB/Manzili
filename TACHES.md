@@ -133,23 +133,23 @@ COCO VANILLE · COTON FRAIS · DOUCEUR · EMIRATS · FIGUE · FLORAL · FRIANDIS
 - [x] Creation categories et sous-categories WooCommerce
 - [x] Definition logique packs revendeurs (attribut Quantite + variations)
 - [x] Creation fichier TACHES.md
+- [x] Confirmation : Collection Privee L'Original existe en Parfum 50ml — OUI
+- [x] Attributs et termes WooCommerce ajoutes (Quantite + valeurs)
+- [x] Plugin Code Snippets installe et actif
+- [x] Selecteur de references parfums code dans functions.php (cases a cocher + validation + sauvegarde commande)
 
-### A faire — WooCommerce
-- [ ] Creer l'attribut global "Quantite" dans WooCommerce (Produits > Attributs)
-- [ ] Installer plugin "Code Snippets" (gratuit)
-- [ ] Coder le snippet cases a cocher parfums pour les packs revendeurs
-- [ ] Creer les produits variables packs revendeurs (9 produits au total)
-- [ ] Saisir les parfums par collection (les clients ajoutent les images)
+### A faire — WooCommerce (toi)
+- [ ] Sur chaque produit pack variable : remplir le champ "Parfums disponibles dans ce pack" (admin > produit > onglet General)
+- [ ] Creer les 9 produits variables packs revendeurs avec leurs variations de prix
+- [ ] Saisir les parfums par collection avec leurs images
 
-### A faire — Developpement
+### A faire — Developpement (Claude)
 - [ ] Personnalisation CSS Collection L'Original (couleurs, typographie)
 - [ ] Template page d'accueil
 - [ ] Integration Stripe (paiement CB)
 - [ ] Integration PayPal
 - [ ] Integration livraison (Colissimo / Mondial Relay)
-- [ ] Snippet cases a cocher references parfums sur les packs
 
 ### A faire — A definir
-- [ ] Confirmation : la 4eme collection sans nom correspond a quelle collection exactement ?
-- [ ] Confirmation : Collection Privee L'Original Parfum 50ml format — existe-t-il en 50ml ?
-- [ ] Liste complete des parfums L'Original (noms/references)
+- [ ] Liste complete des parfums L'Original (noms/references) pour le champ "Parfums disponibles"
+- [ ] La 4eme collection sans nom — quelle collection exactement ?

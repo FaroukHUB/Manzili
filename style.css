@@ -8,6 +8,14 @@ Version: 3.0
 
 /*************** ADD CUSTOM CSS HERE.   ***************/
 
+/* Description courte en noir foncé */
+.woocommerce-product-details__short-description,
+.woocommerce-product-details__short-description p,
+.woocommerce-product-details__short-description span,
+.woocommerce-product-details__short-description div {
+    color: #1a1a1a !important;
+}
+
 
 @media only screen and (max-width: 48em) {
 /*************** ADD MOBILE ONLY CSS HERE  ***************/

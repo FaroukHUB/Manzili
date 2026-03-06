@@ -72,11 +72,11 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 /* Background */
 .slide__bg {
   position: absolute;
-  inset: -5%;
+  inset: 0;
   background-size: cover;
   background-position: center;
   will-change: transform;
-  transition: transform 9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 10s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .slide.is-active .slide__bg {
   transform: scale(1) !important;
@@ -157,7 +157,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 
 /* Title — character split */
 .slide__title {
-  font-size: clamp(52px, 8.5vw, 128px);
+  font-size: clamp(44px, 6.5vw, 100px);
   font-weight: 100;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -165,6 +165,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   line-height: 0.92;
   margin-bottom: 28px;
   overflow: visible;
+  white-space: nowrap;
 }
 .char-wrap {
   display: inline-block;
@@ -486,7 +487,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__bg" style="
       background-image: url('coloriginal.png');
       background-color: #2a3828;
-      transform: scale(1.08);
+      transform: scale(1.03);
     "></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
@@ -516,7 +517,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__bg" style="
       background-image: url('colparis.png');
       background-color: #0c1f0c;
-      transform: scale(1.08);
+      transform: scale(1.03);
     "></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
@@ -546,7 +547,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__bg" style="
       background-image: url('colintense.png');
       background-color: #d4839a;
-      transform: scale(1.08);
+      transform: scale(1.03);
     "></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
@@ -576,7 +577,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__bg" style="
       background-image: url('cotonfraisv.png');
       background-color: #b0cfe8;
-      transform: scale(1.08);
+      transform: scale(1.03);
     "></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
@@ -606,7 +607,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__bg" style="
       background-image: url('pistachiobrume.png');
       background-color: #7ab890;
-      transform: scale(1.08);
+      transform: scale(1.03);
     "></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
@@ -727,7 +728,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     slides[next].style.zIndex = '1';
     slides[prev].style.zIndex = '2';
     slides[next].classList.add('is-active');
-    slides[next].querySelector('.slide__bg').style.transform = 'scale(1.08)';
+    slides[next].querySelector('.slide__bg').style.transform = 'scale(1.03)';
 
     const fromX = direction === 'next' ? '105% 0, 105% 0, 105% 100%, 105% 100%'
                                        : '-5% 0, -5% 0, -5% 100%, -5% 100%';
@@ -767,7 +768,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     slides[0].style.zIndex = '2';
     slides.forEach((s, i) => {
       if (i !== 0) s.style.zIndex = '1';
-      s.querySelector('.slide__bg').style.transform = i === 0 ? 'scale(1)' : 'scale(1.08)';
+      s.querySelector('.slide__bg').style.transform = i === 0 ? 'scale(1)' : 'scale(1.03)';
     });
     startProgress();
     timer = setTimeout(() => transitionTo(1, 'next'), AUTO_DELAY);

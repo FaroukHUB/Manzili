@@ -41,12 +41,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   transform: translate(-50%, -50%);
   transition: all 0.35s var(--ease);
 }
-.cursor-ring.expanded {
-  width: 70px; height: 70px;
-  border-color: rgba(201,169,110,0.3);
-}
+.cursor-ring.expanded { width: 70px; height: 70px; border-color: rgba(201,169,110,0.3); }
 
-/* ─── SLIDER WRAPPER ─── */
+/* ─── SLIDER ─── */
 #luxury-slider {
   position: relative;
   width: 100%;
@@ -59,15 +56,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 .slide {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-end;
   visibility: hidden;
   z-index: 1;
 }
-.slide.is-active {
-  visibility: visible;
-  z-index: 2;
-}
+.slide.is-active { visibility: visible; z-index: 2; }
 
 /* Background */
 .slide__bg {
@@ -78,9 +70,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   will-change: transform;
   transition: transform 10s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.slide.is-active .slide__bg {
-  transform: scale(1) !important;
-}
+.slide.is-active .slide__bg { transform: scale(1) !important; }
 
 /* Overlays */
 .slide__overlay-dark {
@@ -88,17 +78,26 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   inset: 0;
   background: linear-gradient(
     110deg,
-    rgba(0,0,0,0.75) 0%,
-    rgba(0,0,0,0.40) 42%,
-    rgba(0,0,0,0.08) 72%,
-    rgba(0,0,0,0.02) 100%
+    rgba(0,0,0,0.82) 0%,
+    rgba(0,0,0,0.50) 38%,
+    rgba(0,0,0,0.15) 65%,
+    rgba(0,0,0,0.05) 100%
+  );
+}
+.slide__overlay-dark--strong {
+  background: linear-gradient(
+    110deg,
+    rgba(0,0,0,0.90) 0%,
+    rgba(0,0,0,0.65) 40%,
+    rgba(0,0,0,0.30) 68%,
+    rgba(0,0,0,0.12) 100%
   );
 }
 .slide__overlay-bottom {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 55%;
-  background: linear-gradient(to top, rgba(0,0,0,0.60) 0%, transparent 100%);
+  height: 45%;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
 }
 
 /* Grain */
@@ -114,32 +113,38 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 /* Watermark */
 .slide__watermark {
   position: absolute;
-  top: 6%;
+  top: 5%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: clamp(38px, 7.5vw, 115px);
+  font-size: clamp(30px, 6vw, 90px);
   font-weight: 900;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.07);
+  -webkit-text-stroke: 1px rgba(255,255,255,0.06);
   white-space: nowrap;
   pointer-events: none;
   z-index: 3;
   opacity: 0;
   transition: opacity 1.2s 0.2s;
 }
-.slide.is-active .slide__watermark {
-  opacity: 1;
+.slide.is-active .slide__watermark { opacity: 1; }
+
+/* ─── MAIN LAYOUT (2 columns) ─── */
+.slide__layout {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 48% 52%;
 }
 
-/* ─── CONTENT ─── */
+/* ─── LEFT: CONTENT ─── */
 .slide__content {
-  position: relative;
-  z-index: 5;
-  padding: 0 7% 6%;
-  width: 55%;
-  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 5% 6% 7%;
 }
 
 /* Collection label */
@@ -148,22 +153,22 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   letter-spacing: 7px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.7s 0.35s var(--ease-out), transform 0.7s 0.35s var(--ease-out);
 }
 .slide.is-active .slide__label { opacity: 1; transform: translateY(0); }
 
-/* Title — character split */
+/* Title */
 .slide__title {
-  font-size: clamp(44px, 6.5vw, 100px);
+  font-size: clamp(40px, 6vw, 96px);
   font-weight: 100;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--white);
   line-height: 0.92;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
   overflow: visible;
   white-space: nowrap;
 }
@@ -185,10 +190,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   width: 0;
   height: 1px;
   background: linear-gradient(to right, var(--gold), transparent);
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   transition: width 1.1s 0.65s var(--ease-out);
 }
-.slide.is-active .slide__divider { width: 90px; }
+.slide.is-active .slide__divider { width: 80px; }
 
 /* Notes */
 .slide__notes {
@@ -196,48 +201,40 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   letter-spacing: 4px;
   text-transform: uppercase;
   color: rgba(232,213,163,0.75);
-  margin-bottom: 30px;
+  margin-bottom: 26px;
   opacity: 0;
   transition: opacity 0.7s 0.9s;
 }
 .slide.is-active .slide__notes { opacity: 1; }
 
-/* Price */
-.slide__price {
-  font-size: 28px;
-  font-weight: 200;
-  letter-spacing: 3px;
-  color: var(--white);
-  margin-bottom: 38px;
+/* CTAs container */
+.slide__ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s 1s var(--ease-out), transform 0.6s 1s var(--ease-out);
+  transform: translateY(14px);
+  transition: opacity 0.7s 1.15s var(--ease-out), transform 0.7s 1.15s var(--ease-out);
 }
-.slide.is-active .slide__price { opacity: 1; transform: translateY(0); }
+.slide.is-active .slide__ctas { opacity: 1; transform: translateY(0); }
 
-/* CTA */
+/* CTA — primary (voir collection) */
 .slide__cta {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 18px;
-  padding: 15px 38px;
-  border: 1px solid rgba(201,169,110,0.8);
+  gap: 16px;
+  padding: 13px 30px;
+  border: 1px solid rgba(201,169,110,0.85);
   color: var(--white);
   text-decoration: none;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 5px;
   text-transform: uppercase;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 0.7s 1.15s var(--ease-out),
-    transform 0.7s 1.15s var(--ease-out),
-    color 0.45s var(--ease);
   cursor: none;
+  transition: color 0.45s var(--ease);
 }
-.slide.is-active .slide__cta { opacity: 1; transform: translateY(0); }
 .slide__cta::before {
   content: '';
   position: absolute;
@@ -250,32 +247,64 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 .slide__cta:hover { color: #000; }
 .slide__cta:hover::before { transform: scaleX(1); }
 .slide__cta span { position: relative; z-index: 1; }
-.cta-line {
+.cta-arrow {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
 }
-.cta-line::before {
+.cta-arrow::before {
   content: '';
   display: block;
-  width: 22px;
-  height: 1px;
+  width: 20px; height: 1px;
   background: currentColor;
   transition: width 0.35s var(--ease);
 }
-.cta-line::after {
+.cta-arrow::after {
   content: '';
   display: block;
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-right: 1px solid currentColor;
   border-top: 1px solid currentColor;
   transform: rotate(45deg);
   margin-left: -1px;
 }
-.slide__cta:hover .cta-line::before { width: 34px; }
+.slide__cta:hover .cta-arrow::before { width: 30px; }
 
-/* ─── TRANSITION CURTAIN (clip-path) ─── */
+/* CTA — secondary (acheter) */
+.slide__cta--ghost {
+  border-color: rgba(255,255,255,0.30);
+  color: rgba(255,255,255,0.80);
+}
+.slide__cta--ghost::before { background: rgba(255,255,255,0.12); }
+.slide__cta--ghost:hover { color: var(--white); }
+.slide__cta--ghost:hover::before { transform: scaleX(1); }
+
+/* ─── RIGHT: BOTTLE ─── */
+.slide__bottle-col {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 3%;
+  padding-right: 4%;
+}
+.slide__bottle {
+  height: clamp(280px, 58vh, 540px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 25px 55px rgba(0,0,0,0.55));
+  opacity: 0;
+  transform: translateY(35px) scale(0.95);
+  transition: opacity 1.3s 0.5s var(--ease-out), transform 1.3s 0.5s var(--ease-out);
+}
+.slide.is-active .slide__bottle { opacity: 1; transform: translateY(0) scale(1); }
+
+/* Bottle with light background (white) → use multiply */
+.slide__bottle--light { mix-blend-mode: multiply; }
+
+/* ─── TRANSITION CURTAIN ─── */
 .curtain {
   position: absolute;
   inset: 0;
@@ -286,10 +315,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   will-change: clip-path;
 }
 
-/* ─── NAVIGATION DOTS ─── */
+/* ─── NAV DOTS ─── */
 .nav-dots {
   position: absolute;
-  right: 4%;
+  right: 3.5%;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -309,13 +338,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   content: '';
   width: 4px; height: 4px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.30);
   transition: background 0.4s, transform 0.4s;
 }
-.nav-dot.is-active::before {
-  background: var(--gold);
-  transform: scale(1.8);
-}
+.nav-dot.is-active::before { background: var(--gold); transform: scale(1.8); }
 .nav-dot.is-active::after {
   content: '';
   position: absolute;
@@ -332,14 +358,14 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 /* ─── ARROWS ─── */
 .nav-arrows {
   position: absolute;
-  bottom: 38px;
+  bottom: 36px;
   right: 5%;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   z-index: 100;
 }
 .nav-arrow {
-  width: 50px; height: 50px;
+  width: 48px; height: 48px;
   border: 1px solid rgba(255,255,255,0.18);
   display: flex;
   align-items: center;
@@ -349,23 +375,13 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   background: rgba(0,0,0,0.2);
   backdrop-filter: blur(6px);
 }
-.nav-arrow:hover {
-  border-color: var(--gold);
-  background: rgba(201,169,110,0.12);
-}
-.nav-arrow svg {
-  width: 15px; height: 15px;
-  stroke: #fff;
-  fill: none;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.nav-arrow:hover { border-color: var(--gold); background: rgba(201,169,110,0.12); }
+.nav-arrow svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ─── COUNTER ─── */
 .slide-counter {
   position: absolute;
-  bottom: 48px;
+  bottom: 46px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
@@ -376,12 +392,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   align-items: baseline;
   gap: 4px;
 }
-.counter-current {
-  font-size: 20px;
-  font-weight: 200;
-  color: var(--gold);
-  line-height: 1;
-}
+.counter-current { font-size: 20px; font-weight: 200; color: var(--gold); line-height: 1; }
 
 /* ─── PROGRESS BAR ─── */
 .progress-bar {
@@ -395,237 +406,271 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   box-shadow: 0 0 8px rgba(201,169,110,0.5);
 }
 
-/* ─── VERTICAL LINES DECO ─── */
+/* ─── DECO ─── */
 .vline {
   position: absolute;
   top: 0; bottom: 0;
   width: 1px;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent 0%, rgba(201,169,110,0.08) 30%, rgba(201,169,110,0.12) 60%, transparent 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(201,169,110,0.07) 30%, rgba(201,169,110,0.10) 60%, transparent 100%);
 }
-
-/* ─── CORNER MARKS ─── */
 .corner {
   position: absolute;
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   z-index: 6;
   pointer-events: none;
 }
-.corner::before, .corner::after {
-  content: '';
-  position: absolute;
-  background: var(--gold);
-  opacity: 0.5;
-}
+.corner::before, .corner::after { content: ''; position: absolute; background: var(--gold); opacity: 0.45; }
 .corner::before { width: 1px; height: 100%; }
 .corner::after  { width: 100%; height: 1px; }
-.corner-tl { top: 28px; left: 28px; }
+.corner-tl { top: 26px; left: 26px; }
 .corner-tl::before { top: 0; left: 0; }
 .corner-tl::after  { top: 0; left: 0; }
-.corner-tr { top: 28px; right: 28px; }
+.corner-tr { top: 26px; right: 26px; }
 .corner-tr::before { top: 0; right: 0; }
 .corner-tr::after  { top: 0; right: 0; }
-.corner-br { bottom: 50px; right: 28px; }
+.corner-br { bottom: 48px; right: 26px; }
 .corner-br::before { bottom: 0; right: 0; }
 .corner-br::after  { bottom: 0; right: 0; }
-.corner-bl { bottom: 50px; left: 28px; }
+.corner-bl { bottom: 48px; left: 26px; }
 .corner-bl::before { bottom: 0; left: 0; }
 .corner-bl::after  { bottom: 0; left: 0; }
 
-/* ─── MASQUE ÉTOILE GEMINI (watermark IA bas droite) ─── */
-.slide::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 90px;
-  height: 90px;
-  z-index: 4;
-  pointer-events: none;
-  background: radial-gradient(ellipse at bottom right,
-    rgba(0,0,0,0.7) 0%,
-    rgba(0,0,0,0.4) 40%,
-    transparent 70%
-  );
-}
-
 /* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
-  .slide__content { width: 90%; padding: 0 5% 5%; }
+  .slide__layout { grid-template-columns: 1fr; }
+  .slide__bottle-col { display: none; }
+  .slide__content { padding: 0 5% 5%; }
   .nav-dots { display: none; }
-  .slide__watermark { font-size: 11vw; }
+  .slide__ctas { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-<!-- CURSEUR CUSTOM -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <div id="luxury-slider">
 
-  <!-- CURTAIN DE TRANSITION -->
   <div class="curtain" id="curtain"></div>
 
-  <!-- LIGNES VERTICALES DECO -->
-  <div class="vline" style="left:14%"></div>
-  <div class="vline" style="right:14%"></div>
+  <div class="vline" style="left:12%"></div>
+  <div class="vline" style="right:12%"></div>
 
-  <!-- COINS -->
   <div class="corner corner-tl"></div>
   <div class="corner corner-tr"></div>
   <div class="corner corner-br"></div>
   <div class="corner corner-bl"></div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 1 — PISTACHIO (Collection Privée L'Original)
-       Image : coloriginal.png
+       SLIDE 1 — BOIS INTENSE · Collection Privée L'Original
+       BG  → images/bg-bois-intense.jpg
+       Bottle → images/bottle-bois-intense.png (fond noir → screen)
        ════════════════════════════════════════════ -->
   <div class="slide is-active" data-index="0">
-    <div class="slide__bg" style="
-      background-image: url('coloriginal.png');
-      background-color: #2a3828;
-      transform: scale(1.03);
-    "></div>
+    <div class="slide__bg" style="background-image:url('images/bg-bois-intense.jpg'); background-color:#1a2010; transform:scale(1.03);"></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
     <div class="slide__grain"></div>
-    <div class="slide__watermark">Bois d'Argent</div>
+    <div class="slide__watermark">Bois Intense</div>
 
-    <div class="slide__content">
-      <div class="slide__label">Collection Privée · L'Original</div>
-      <h2 class="slide__title" style="font-size: clamp(30px, 5vw, 72px);" aria-label="Bois d'Argent">
-        <div class="char-wrap"><span class="char" style="transition-delay:0.45s">B</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.50s">o</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.55s">i</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.60s">s</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.65s">&thinsp;</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.70s">d</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.75s">'</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.80s">A</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.85s">r</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.90s">g</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.95s">e</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.00s">n</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.05s">t</span></div>
-      </h2>
-      <div class="slide__divider"></div>
-      <div class="slide__notes">Iris · Vétiver · Musc · Bois de Santal</div>
-      <div class="slide__price">9,99 €</div>
-      <a href="#bois-argent" class="slide__cta">
-        <span>Acheter maintenant</span>
-        <span class="cta-line"></span>
-      </a>
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · L'Original</div>
+        <h2 class="slide__title" data-title="Bois Intense"></h2>
+        <div class="slide__divider"></div>
+        <div class="slide__notes">Iris · Vétiver · Musc · Bois de Santal</div>
+        <div class="slide__ctas">
+          <a href="#collection-privee-original" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="#bois-intense" class="slide__cta slide__cta--ghost">
+            <span>Acheter — 9,99 €</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle" src="images/bottle-bois-intense.png" alt="Bois Intense — Collection Privée L'Original">
+      </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 2 — KRYPTON (Collection Privée Paris)
-       Image : colparis.png
+       SLIDE 2 — KRYPTON · Collection Privée Paris
+       BG  → images/bg-krypton.jpg
+       Bottle → images/bottle-krypton.png (fond blanc → multiply)
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="1">
-    <div class="slide__bg" style="
-      background-image: url('colparis.png');
-      background-color: #0c1f0c;
-      transform: scale(1.03);
-    "></div>
+    <div class="slide__bg" style="background-image:url('images/bg-krypton.jpg'); background-color:#0a1505; transform:scale(1.03);"></div>
     <div class="slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
     <div class="slide__grain"></div>
     <div class="slide__watermark">Krypton</div>
 
-    <div class="slide__content">
-      <div class="slide__label">Collection Privée · Paris</div>
-      <h2 class="slide__title" aria-label="Krypton">
-        <div class="char-wrap"><span class="char" style="transition-delay:0.45s">K</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.50s">r</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.55s">y</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.60s">p</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.65s">t</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.70s">o</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.75s">n</span></div>
-      </h2>
-      <div class="slide__divider"></div>
-      <div class="slide__notes">Bergamote · Cèdre · Vétiver · Ambre Vert</div>
-      <div class="slide__price">9,99 €</div>
-      <a href="#krypton" class="slide__cta">
-        <span>Acheter maintenant</span>
-        <span class="cta-line"></span>
-      </a>
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · Paris</div>
+        <h2 class="slide__title" data-title="Krypton"></h2>
+        <div class="slide__divider"></div>
+        <div class="slide__notes">Bergamote · Cèdre · Vétiver · Ambre Vert</div>
+        <div class="slide__ctas">
+          <a href="#collection-privee-paris" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="#krypton" class="slide__cta slide__cta--ghost">
+            <span>Acheter — 9,99 €</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle slide__bottle--light" src="images/bottle-krypton.png" alt="Krypton — Collection Privée Paris">
+      </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 3 — ROSE VANILLE (Collection Intense)
-       Image : colintense.png
+       SLIDE 3 — ROSE VANILLE · Collection Privée Intense
+       BG  → images/bg-rose-vanille.jpg
+       Bottle → images/bottle-rose-vanille.png (fond noir → screen)
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="2">
-    <div class="slide__bg" style="
-      background-image: url('colintense.png');
-      background-color: #d4839a;
-      transform: scale(1.03);
-    "></div>
-    <div class="slide__overlay-dark"></div>
+    <div class="slide__bg" style="background-image:url('images/bg-rose-vanille.jpg'); background-color:#6b3040; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark--strong slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
     <div class="slide__grain"></div>
     <div class="slide__watermark">Rose Vanille</div>
 
-    <div class="slide__content">
-      <div class="slide__label">Collection Intense · Paris</div>
-      <h2 class="slide__title" style="font-size: clamp(38px, 6vw, 88px);" aria-label="Rose Vanille">
-        <div class="char-wrap"><span class="char" style="transition-delay:0.45s">R</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.50s">o</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.55s">s</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.60s">e</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.65s">&thinsp;</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.70s">V</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.75s">a</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.80s">n</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.85s">i</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.90s">l</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.95s">l</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.00s">e</span></div>
-      </h2>
-      <div class="slide__divider"></div>
-      <div class="slide__notes">Rose · Vanille · Jasmin · Musc Blanc</div>
-      <div class="slide__price">9,99 €</div>
-      <a href="#rose-vanille" class="slide__cta">
-        <span>Acheter maintenant</span>
-        <span class="cta-line"></span>
-      </a>
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · Intense</div>
+        <h2 class="slide__title" data-title="Rose Vanille" style="font-size:clamp(34px,5vw,80px);"></h2>
+        <div class="slide__divider"></div>
+        <div class="slide__notes">Rose · Vanille · Jasmin · Musc Blanc</div>
+        <div class="slide__ctas">
+          <a href="#collection-privee-intense" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="#rose-vanille" class="slide__cta slide__cta--ghost">
+            <span>Acheter — 9,99 €</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle" src="images/bottle-rose-vanille.png" alt="Rose Vanille — Collection Privée Intense">
+      </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 4 — COTON FRAIS (Collection Privée L'Original)
-       Image : colextra1.png  ← remplace par le vrai nom
+       SLIDE 4 — COTON FRAIS · Collection Privée L'Original
+       BG  → images/bg-coton-frais.jpg
+       Bottle → images/bottle-coton-frais.png (fond noir → screen)
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="3">
-    <div class="slide__bg" style="
-      background-image: url('cotonfraisv.png');
-      background-color: #b0cfe8;
-      transform: scale(1.03);
-    "></div>
-    <div class="slide__overlay-dark"></div>
+    <div class="slide__bg" style="background-image:url('images/bg-coton-frais.jpg'); background-color:#d0dce8; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark slide__overlay-dark--strong"></div>
     <div class="slide__overlay-bottom"></div>
     <div class="slide__grain"></div>
     <div class="slide__watermark">Coton Frais</div>
 
-    <div class="slide__content">
-      <div class="slide__label">Collection Privée · L'Original</div>
-      <h2 class="slide__title" style="font-size: clamp(38px, 6vw, 88px);" aria-label="Coton Frais">
-        <div class="char-wrap"><span class="char" style="transition-delay:0.45s">C</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.50s">o</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.55s">t</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.60s">o</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.65s">n</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.70s">&thinsp;</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.75s">F</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.80s">r</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.85s">a</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.90s">i</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.95s">s</span></div>
-      </h2>
-      <div class="slide__divider"></div>
-      <div class="slide__notes">Coton · Musc Blanc · Iris · Bois de Santal</div>
-      <div class="slide__price">9,99 €</div>
-      <a href="#coton-frais" class="slide__cta">
-        <span>Acheter maintenant</span>
-        <span class="cta-line"></span>
-      </a>
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · L'Original</div>
+        <h2 class="slide__title" data-title="Coton Frais" style="font-size:clamp(34px,5vw,80px);"></h2>
+        <div class="slide__divider"></div>
+        <div class="slide__notes">Coton · Musc Blanc · Iris · Bois de Santal</div>
+        <div class="slide__ctas">
+          <a href="#collection-privee-original" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="#coton-frais" class="slide__cta slide__cta--ghost">
+            <span>Acheter — 9,99 €</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle" src="images/bottle-coton-frais.png" alt="Coton Frais — Collection Privée L'Original">
+      </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 5 — BOIS D'ARGENT (Collection Privée L'Original)
-       Image : pistachiobrume.png
+       SLIDE 5 — PISTACHIO · Collection Privée L'Original
+       BG  → images/bg-pistachio.jpg
+       Bottle → images/bottle-pistachio.png (fond noir → screen)
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="4">
-    <div class="slide__bg" style="
-      background-image: url('pistachiobrume.png');
-      background-color: #7ab890;
-      transform: scale(1.03);
-    "></div>
-    <div class="slide__overlay-dark"></div>
+    <div class="slide__bg" style="background-image:url('images/bg-pistachio.jpg'); background-color:#7aad6a; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark slide__overlay-dark--strong"></div>
     <div class="slide__overlay-bottom"></div>
     <div class="slide__grain"></div>
-    <div class="slide__watermark">Pistachio Brume</div>
+    <div class="slide__watermark">Pistachio</div>
 
-    <div class="slide__content">
-      <div class="slide__label">Collection Privée · L'Original</div>
-      <h2 class="slide__title" style="font-size: clamp(30px, 5vw, 72px);" aria-label="Pistachio Brume">
-        <div class="char-wrap"><span class="char" style="transition-delay:0.45s">P</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.50s">i</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.55s">s</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.60s">t</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.65s">a</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.70s">c</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.75s">h</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.80s">i</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.85s">o</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.90s">&thinsp;</span></div><div class="char-wrap"><span class="char" style="transition-delay:0.95s">B</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.00s">r</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.05s">u</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.10s">m</span></div><div class="char-wrap"><span class="char" style="transition-delay:1.15s">e</span></div>
-      </h2>
-      <div class="slide__divider"></div>
-      <div class="slide__notes">Pistache · Amande · Musc Blanc · Vanille</div>
-      <div class="slide__price">9,99 €</div>
-      <a href="#pistachio-brume" class="slide__cta">
-        <span>Acheter maintenant</span>
-        <span class="cta-line"></span>
-      </a>
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · L'Original</div>
+        <h2 class="slide__title" data-title="Pistachio"></h2>
+        <div class="slide__divider"></div>
+        <div class="slide__notes">Pistache · Amande · Musc Blanc · Vanille</div>
+        <div class="slide__ctas">
+          <a href="#collection-privee-original" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="#pistachio" class="slide__cta slide__cta--ghost">
+            <span>Acheter — 9,99 €</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle" src="images/bottle-pistachio.png" alt="Pistachio — Collection Privée L'Original">
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SLIDE 6 — DIMA MOROCCO · Collection Privée Intense
+       BG  → images/bg-dima-morocco.jpg
+       Bottle → images/bottle-dima-morocco.png (fond noir → screen)
+       ════════════════════════════════════════════ -->
+  <div class="slide" data-index="5">
+    <div class="slide__bg" style="background-image:url('images/bg-dima-morocco.jpg'); background-color:#7a4020; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark slide__overlay-dark--strong"></div>
+    <div class="slide__overlay-bottom"></div>
+    <div class="slide__grain"></div>
+    <div class="slide__watermark">Dima Morocco</div>
+
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · Intense</div>
+        <h2 class="slide__title" data-title="Dima Morocco" style="font-size:clamp(28px,4.5vw,72px);"></h2>
+        <div class="slide__divider"></div>
+        <div class="slide__notes">Rose · Oud · Ambre · Épices Orientales</div>
+        <div class="slide__ctas">
+          <a href="#collection-privee-intense" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="#dima-morocco" class="slide__cta slide__cta--ghost">
+            <span>Acheter — 9,99 €</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle" src="images/bottle-dima-morocco.png" alt="Dima Morocco — Collection Privée Intense">
+      </div>
     </div>
   </div>
 
@@ -636,6 +681,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <button class="nav-dot" data-slide="2" aria-label="Slide 3"></button>
     <button class="nav-dot" data-slide="3" aria-label="Slide 4"></button>
     <button class="nav-dot" data-slide="4" aria-label="Slide 5"></button>
+    <button class="nav-dot" data-slide="5" aria-label="Slide 6"></button>
   </nav>
 
   <div class="nav-arrows">
@@ -650,22 +696,20 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   <div class="slide-counter" aria-live="polite">
     <span class="counter-current" id="counterCurrent">01</span>
     <span>/</span>
-    <span id="counterTotal">05</span>
+    <span id="counterTotal">06</span>
   </div>
 
   <div class="progress-bar" id="progressBar"></div>
 
-</div><!-- /#luxury-slider -->
+</div>
 
 <script>
 (function () {
   'use strict';
 
-  /* ── CONFIG ── */
-  const AUTO_DELAY  = 6000;
-  const TRANS_DUR   = 1100;
+  const AUTO_DELAY = 6000;
+  const TRANS_DUR  = 1100;
 
-  /* ── ÉLÉMENTS ── */
   const slider     = document.getElementById('luxury-slider');
   const slides     = Array.from(slider.querySelectorAll('.slide'));
   const dots       = Array.from(slider.querySelectorAll('.nav-dot'));
@@ -675,20 +719,35 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   const cursor     = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursorRing');
 
-  let current   = 0;
+  let current = 0;
   let isAnimating = false;
   let timer;
   let mouseX = 0, mouseY = 0;
   let ringX = 0, ringY = 0;
 
-  /* ── CURSEUR ── */
+  /* ── Char split ── */
+  slider.querySelectorAll('.slide__title[data-title]').forEach(el => {
+    const text = el.dataset.title;
+    el.innerHTML = '';
+    [...text].forEach((char, i) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'char-wrap';
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.style.transitionDelay = (0.45 + i * 0.05) + 's';
+      span.textContent = char === ' ' ? '\u2009' : char;
+      wrap.appendChild(span);
+      el.appendChild(wrap);
+    });
+  });
+
+  /* ── Cursor ── */
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     cursor.style.left = mouseX + 'px';
     cursor.style.top  = mouseY + 'px';
   });
-
   (function animateCursor() {
     ringX += (mouseX - ringX) * 0.1;
     ringY += (mouseY - ringY) * 0.1;
@@ -696,13 +755,12 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     cursorRing.style.top  = ringY + 'px';
     requestAnimationFrame(animateCursor);
   })();
-
   slider.querySelectorAll('.slide__cta, .nav-arrow, .nav-dot').forEach(el => {
     el.addEventListener('mouseenter', () => cursorRing.classList.add('expanded'));
     el.addEventListener('mouseleave', () => cursorRing.classList.remove('expanded'));
   });
 
-  /* ── PROGRESS BAR ── */
+  /* ── Progress ── */
   function startProgress() {
     progressEl.style.transition = 'none';
     progressEl.style.width = '0%';
@@ -715,7 +773,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     progressEl.style.width = '0%';
   }
 
-  /* ── CLIP-PATH TRANSITION ── */
+  /* ── Transition ── */
   function transitionTo(next, direction) {
     if (isAnimating || next === current) return;
     isAnimating = true;
@@ -759,11 +817,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
         startProgress();
         timer = setTimeout(() => transitionTo((current + 1) % slides.length, 'next'), AUTO_DELAY);
       }, TRANS_DUR * 0.5 + 100);
-
     }, TRANS_DUR * 0.5 + 50);
   }
 
-  /* ── INIT ── */
+  /* ── Init ── */
   function init() {
     slides[0].style.zIndex = '2';
     slides.forEach((s, i) => {
@@ -774,30 +831,23 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     timer = setTimeout(() => transitionTo(1, 'next'), AUTO_DELAY);
   }
 
-  /* ── EVENTS ── */
+  /* ── Events ── */
   document.getElementById('btnNext').addEventListener('click', () => {
     clearTimeout(timer);
     transitionTo((current + 1) % slides.length, 'next');
   });
-
   document.getElementById('btnPrev').addEventListener('click', () => {
     clearTimeout(timer);
     transitionTo((current - 1 + slides.length) % slides.length, 'prev');
   });
-
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
       const target = parseInt(dot.dataset.slide, 10);
-      const dir = target > current ? 'next' : 'prev';
       clearTimeout(timer);
-      transitionTo(target, dir);
+      transitionTo(target, target > current ? 'next' : 'prev');
     });
   });
-
-  slider.addEventListener('mouseenter', () => {
-    clearTimeout(timer);
-    resetProgress();
-  });
+  slider.addEventListener('mouseenter', () => { clearTimeout(timer); resetProgress(); });
   slider.addEventListener('mouseleave', () => {
     startProgress();
     timer = setTimeout(() => transitionTo((current + 1) % slides.length, 'next'), AUTO_DELAY);
@@ -809,10 +859,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     const diff = touchStart - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
       clearTimeout(timer);
-      transitionTo(diff > 0
-        ? (current + 1) % slides.length
-        : (current - 1 + slides.length) % slides.length,
-        diff > 0 ? 'next' : 'prev');
+      transitionTo(
+        diff > 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length,
+        diff > 0 ? 'next' : 'prev'
+      );
     }
   });
 

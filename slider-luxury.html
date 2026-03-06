@@ -77,27 +77,27 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    110deg,
-    rgba(0,0,0,0.82) 0%,
-    rgba(0,0,0,0.50) 38%,
-    rgba(0,0,0,0.15) 65%,
-    rgba(0,0,0,0.05) 100%
+    to right,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.60) 30%,
+    rgba(0,0,0,0.20) 55%,
+    rgba(0,0,0,0.00) 72%
   );
 }
 .slide__overlay-dark--strong {
   background: linear-gradient(
-    110deg,
-    rgba(0,0,0,0.90) 0%,
-    rgba(0,0,0,0.65) 40%,
-    rgba(0,0,0,0.30) 68%,
-    rgba(0,0,0,0.12) 100%
+    to right,
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.70) 32%,
+    rgba(0,0,0,0.25) 58%,
+    rgba(0,0,0,0.00) 75%
   );
 }
 .slide__overlay-bottom {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 45%;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+  height: 30%;
+  background: linear-gradient(to top, rgba(0,0,0,0.40) 0%, transparent 100%);
 }
 
 /* Grain */
@@ -136,15 +136,16 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   inset: 0;
   z-index: 5;
   display: grid;
-  grid-template-columns: 48% 52%;
+  grid-template-columns: 46% 54%;
 }
 
 /* ─── LEFT: CONTENT ─── */
 .slide__content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 5% 6% 7%;
+  justify-content: center;
+  padding: 0 5% 0 7%;
+  padding-top: 10%;
 }
 
 /* Collection label */
@@ -282,26 +283,43 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 
 /* ─── RIGHT: BOTTLE ─── */
 .slide__bottle-col {
+  position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding-bottom: 3%;
-  padding-right: 4%;
+  padding-bottom: 4%;
+  padding-right: 3%;
+}
+/* Ground shadow — ellipse below the bottle */
+.slide__bottle-col::after {
+  content: '';
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38%;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(6px);
 }
 .slide__bottle {
-  height: clamp(280px, 58vh, 540px);
+  height: clamp(320px, 68vh, 620px);
   width: auto;
-  max-width: 100%;
+  max-width: 90%;
   object-fit: contain;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 25px 55px rgba(0,0,0,0.55));
+  filter:
+    drop-shadow(0 30px 40px rgba(0,0,0,0.60))
+    drop-shadow(0  8px 16px rgba(0,0,0,0.45))
+    brightness(1.04) contrast(1.02);
   opacity: 0;
-  transform: translateY(35px) scale(0.95);
+  transform: translateY(40px) scale(0.94);
   transition: opacity 1.3s 0.5s var(--ease-out), transform 1.3s 0.5s var(--ease-out);
 }
 .slide.is-active .slide__bottle { opacity: 1; transform: translateY(0) scale(1); }
 
-/* Bottle with light background (white) → use multiply */
+/* Bottle with light/white background → use multiply to remove white bg */
 .slide__bottle--light { mix-blend-mode: multiply; }
 
 /* ─── TRANSITION CURTAIN ─── */

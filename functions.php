@@ -754,16 +754,31 @@ function manzili_fragrance_slider() {
             background:linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
         }
         .mz-content {
-            flex-direction:column-reverse;
-            justify-content:flex-end;
-            padding:100px 6% 90px;
+            flex-direction:column;
+            justify-content:flex-start;
+            align-items:center;
+            padding:80px 6% 0;
             text-align:center;
-            gap:16px;
+            gap:0;
         }
-        .mz-text { max-width:100%; }
-        .mz-bottle { height:auto; padding:0; flex:none; }
-        .mz-bottle::after { display:none; }
-        .mz-bottle img { max-height:38vh; }
+        .mz-text { max-width:100%; flex:none; }
+        /* Bouteille posée en bas sur mobile — positionnement absolu */
+        .mz-bottle {
+            position:absolute;
+            bottom:0; left:0; right:0;
+            height:52vh;
+            display:flex;
+            align-items:flex-end;
+            justify-content:center;
+            padding-bottom:6vh;
+            flex:none;
+            align-self:auto;
+        }
+        .mz-bottle::after {
+            display:block;
+            bottom:6vh;
+        }
+        .mz-bottle img { max-height:40vh; }
         .mz-prev { left:4%; }
         .mz-next { right:4%; }
     }

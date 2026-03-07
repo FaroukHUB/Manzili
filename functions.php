@@ -688,8 +688,13 @@ function manzili_fragrance_slider() {
         filter:blur(10px);
         pointer-events:none;
     }
+    @keyframes mz-float {
+        0%   { transform:translateY(0px); }
+        50%  { transform:translateY(-14px); }
+        100% { transform:translateY(0px); }
+    }
     .mz-bottle img {
-        max-height:55vh;
+        max-height:64vh;
         max-width:100%;
         object-fit:contain;
         filter:
@@ -703,6 +708,8 @@ function manzili_fragrance_slider() {
     .mz-slide.active .mz-bottle img {
         opacity:1;
         transform:translateY(0);
+        animation:mz-float 4s ease-in-out infinite;
+        animation-delay:1.2s;
     }
     /* Arrows */
     .mz-arrow {
@@ -778,7 +785,7 @@ function manzili_fragrance_slider() {
             display:block;
             bottom:6vh;
         }
-        .mz-bottle img { max-height:40vh; }
+        .mz-bottle img { max-height:46vh; }
         .mz-prev { left:4%; }
         .mz-next { right:4%; }
     }

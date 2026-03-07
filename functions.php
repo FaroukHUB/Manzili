@@ -23,7 +23,7 @@ function manzili_save_badge_field( $post_id ) {
 }
 
 // 3. Afficher le badge sur la boutique (liste de produits)
-add_action( 'woocommerce_before_shop_loop_item_title', 'manzili_display_badge', 5 );
+add_action( 'woocommerce_shop_loop_item_title', 'manzili_display_badge', 1 );
 function manzili_display_badge() {
     global $product;
     $badge = get_post_meta( $product->get_id(), '_custom_badge', true );

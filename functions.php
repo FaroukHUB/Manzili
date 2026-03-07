@@ -711,6 +711,13 @@ function manzili_fragrance_slider() {
         animation:mz-float 4s ease-in-out infinite;
         animation-delay:1.2s;
     }
+    /* Bouteille qui s'envole au départ du slide */
+    .mz-slide.leaving .mz-bottle img {
+        opacity:0 !important;
+        transform:translateY(-60px) scale(0.88) !important;
+        transition:opacity 0.55s ease, transform 0.55s ease !important;
+        animation:none !important;
+    }
     /* Arrows */
     .mz-arrow {
         position:absolute;
@@ -802,11 +809,16 @@ function manzili_fragrance_slider() {
         var timer;
         var total  = slides.length;
         function goTo(n) {
-            slides[cur].classList.remove('active');
-            dots[cur].classList.remove('active');
+            var leaving = cur;
+            slides[leaving].classList.add('leaving');
+            dots[leaving].classList.remove('active');
             cur = (n + total) % total;
             slides[cur].classList.add('active');
             dots[cur].classList.add('active');
+            setTimeout(function(){
+                slides[leaving].classList.remove('active');
+                slides[leaving].classList.remove('leaving');
+            }, 620);
         }
         function autoStart() { timer = setInterval(function(){ goTo(cur+1); }, 5500); }
         function autoStop()  { clearInterval(timer); }

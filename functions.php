@@ -670,15 +670,15 @@ function manzili_fragrance_slider() {
         display:flex;
         justify-content:center;
         align-items:flex-end;    /* bouteille ancrée en bas */
-        height:100%;
-        padding-bottom:20%;      /* remonte jusqu'au niveau du "sol" visible */
+        align-self:stretch;      /* force la colonne à occuper toute la hauteur malgré align-items:center du parent */
+        padding-bottom:8vh;      /* niveau du sol visible (~8% depuis le bas en vh) */
         position:relative;
     }
     /* Ombre au sol — ellipse floue juste sous la bouteille */
     .mz-bottle::after {
         content:'';
         position:absolute;
-        bottom:19.5%;            /* calé sous la base de la bouteille */
+        bottom:8vh;              /* aligné avec la base de la bouteille */
         left:50%;
         transform:translateX(-50%);
         width:48%;
@@ -689,7 +689,7 @@ function manzili_fragrance_slider() {
         pointer-events:none;
     }
     .mz-bottle img {
-        max-height:75vh;
+        max-height:55vh;
         max-width:100%;
         object-fit:contain;
         filter:

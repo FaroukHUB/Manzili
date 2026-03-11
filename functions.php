@@ -504,338 +504,671 @@ function manzili_save_parfums_to_order( $item, $cart_item_key, $values, $order )
 
 
 /* =============================================
-   MANZILI - SLIDER FRAGRANCES
+   MANZILI - SLIDER FRAGRANCES LUXURY
    Shortcode: [manzili_slider]
    ============================================= */
 function manzili_fragrance_slider() {
     $slides = [
+        /* 1 — Collection L'Original · Bois Intense */
         [
-            'bg'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-bois.png',
-            'bottle'  => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coloriginal-scaled.png',
-            'name'    => "Collection L'Original",
-            'desc'    => "Un sillage boisé, chaleureux et profond. L'authenticité à l'état pur.",
-            'link'    => '#',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-bois.png',
+            'bg_color'    => '#1a2010',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coloriginal-scaled.png',
+            'bottle_blend'=> false,
+            'label'       => "Collection Privée · L'Original",
+            'title'       => "L'Original",
+            'title_size'  => '',
+            'watermark'   => 'Bois Intense',
+            'desc'        => "Des fragrances d'exception inspirées des plus grands parfums du monde. Boisées, poudrées et sensuelles, chaque création allie noblesse olfactive et élégance intemporelle.",
+            'notes'       => 'Boisé · Poudré · Sensuel · Intemporel',
+            'link'        => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
+            'link_label'  => 'Voir la collection',
+            'link2'       => '',
+            'link2_label' => '',
+            'has_bg_title'=> false,
         ],
+        /* 2 — Coton Frais (produit) */
         [
-            'bg'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-coton.png',
-            'bottle'  => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coton.png',
-            'name'    => 'Coton',
-            'desc'    => "Une douceur enveloppante, légère comme un souffle. La pureté incarnée.",
-            'link'    => '#',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-coton.png',
+            'bg_color'    => '#d0dce8',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coton.png',
+            'bottle_blend'=> false,
+            'label'       => "Collection Privée · L'Original",
+            'title'       => 'Coton Frais',
+            'title_size'  => 'font-size:clamp(30px,4.5vw,74px);',
+            'watermark'   => 'Coton Frais',
+            'desc'        => '',
+            'notes'       => 'Coton · Musc Blanc · Iris · Bois de Santal',
+            'link'        => 'https://www.collectionloriginal.com/product/coton-frais-coton-frais-collection-privee-loriginal/',
+            'link_label'  => 'Découvrir',
+            'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
+            'link2_label' => 'Voir la collection',
+            'has_bg_title'=> false,
         ],
+        /* 3 — Collection Privée Paris · Krypton */
         [
-            'bg'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-krypton.png',
-            'bottle'  => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-colprivee.png',
-            'name'    => 'Collection Privée',
-            'desc'    => "Réservée aux esprits d'exception. Une exclusivité rare et magnétique.",
-            'link'    => '#',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-krypton.png',
+            'bg_color'    => '#0a1505',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-colprivee.png',
+            'bottle_blend'=> true,
+            'label'       => 'Collection Privée · Paris',
+            'title'       => 'Paris',
+            'title_size'  => '',
+            'watermark'   => 'Krypton',
+            'desc'        => "L'élégance parisienne sublimée en fragrance. Des compositions florales, fraîches et raffinées, pour incarner l'art de vivre à la française avec une sophistication absolue.",
+            'notes'       => 'Floral · Frais · Élégant · Parisien',
+            'link'        => 'https://www.collectionloriginal.com/product-category/collection-privee-paris/',
+            'link_label'  => 'Voir la collection',
+            'link2'       => '',
+            'link2_label' => '',
+            'has_bg_title'=> false,
         ],
+        /* 4 — Collection Privée Intense · Dima Morocco */
         [
-            'bg'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-dima.png',
-            'bottle'  => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-dima.png',
-            'name'    => 'Dima',
-            'desc'    => "Une signature intemporelle. Intense, mystérieuse, inoubliable.",
-            'link'    => '#',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-dima.png',
+            'bg_color'    => '#7a4020',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-dima.png',
+            'bottle_blend'=> false,
+            'label'       => 'Collection Privée · Intense',
+            'title'       => 'Intense',
+            'title_size'  => 'font-size:clamp(36px,5.5vw,88px);',
+            'watermark'   => 'Dima Morocco',
+            'desc'        => "Des sillages d'une intensité captivante, pour ceux qui osent s'affirmer. Une collection orientale et puissante, dont chaque fragrance révèle un caractère inoubliable.",
+            'notes'       => 'Oriental · Intense · Captivant · Envoûtant',
+            'link'        => 'https://www.collectionloriginal.com/product-category/collection-privee-intense/',
+            'link_label'  => 'Voir la collection',
+            'link2'       => 'https://www.collectionloriginal.com/product/dima-maghreb-althair-collection-privee-lintense/',
+            'link2_label' => 'Dima Morocco',
+            'has_bg_title'=> false,
         ],
+        /* 5 — Pistachio (produit · titre flottant derrière la brume) */
         [
-            'bg'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-pistachio.png',
-            'bottle'  => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-pistachio.png',
-            'name'    => 'Pistachio',
-            'desc'    => "La fraîcheur d'un jardin d'Orient. Gourmande, vivante, envoûtante.",
-            'link'    => '#',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-pistachio.png',
+            'bg_color'    => '#7aad6a',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-pistachio.png',
+            'bottle_blend'=> false,
+            'label'       => "Collection Privée · L'Original",
+            'title'       => 'Pistachio',
+            'title_size'  => '',
+            'watermark'   => 'Pistachio',
+            'desc'        => '',
+            'notes'       => 'Pistache · Caramel · Vanille · Musc Blanc',
+            'link'        => 'https://www.collectionloriginal.com/product/pistachio-pistachio-collection-privee-loriginal/',
+            'link_label'  => 'Découvrir',
+            'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
+            'link2_label' => 'Voir la collection',
+            'has_bg_title'=> true,
         ],
+        /* 6 — Rose Vanille (produit) */
         [
-            'bg'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-rose.png',
-            'bottle'  => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-rose.png',
-            'name'    => 'Rose',
-            'desc'    => "L'élégance en fleur. Délicate et lumineuse, elle laisse une trace éternelle.",
-            'link'    => '#',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-rose.png',
+            'bg_color'    => '#6b3040',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-rose.png',
+            'bottle_blend'=> false,
+            'label'       => 'Collection Privée · Intense',
+            'title'       => 'Rose Vanille',
+            'title_size'  => 'font-size:clamp(30px,4.5vw,74px);',
+            'watermark'   => 'Rose Vanille',
+            'desc'        => '',
+            'notes'       => 'Rose de Grasse · Jasmin · Vanille · Musc Blanc',
+            'link'        => 'https://www.collectionloriginal.com/product/rose-vanille-roses-vanille-collection-privee-lintense/',
+            'link_label'  => 'Découvrir',
+            'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-intense/',
+            'link2_label' => 'Voir la collection',
+            'has_bg_title'=> false,
         ],
     ];
     ob_start(); ?>
-    <div class="mz-slider-wrap">
-        <div class="mz-slider" id="mzSlider">
-            <?php foreach ( $slides as $i => $s ) : ?>
-            <div class="mz-slide <?php echo $i === 0 ? 'active' : ''; ?>">
-                <div class="mz-bg" style="background-image:url('<?php echo esc_url($s['bg']); ?>')"></div>
-                <div class="mz-overlay"></div>
-                <div class="mz-content">
-                    <div class="mz-text">
-                        <span class="mz-num"><?php echo str_pad($i+1,2,'0',STR_PAD_LEFT); ?></span>
-                        <h2 class="mz-name"><?php echo esc_html($s['name']); ?></h2>
-                        <p class="mz-desc"><?php echo esc_html($s['desc']); ?></p>
-                        <a href="<?php echo esc_url($s['link']); ?>" class="mz-btn">Découvrir</a>
-                    </div>
-                    <div class="mz-bottle">
-                        <img src="<?php echo esc_url($s['bottle']); ?>" alt="<?php echo esc_attr($s['name']); ?>">
-                    </div>
-                </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <div class="lx-wrap">
+      <div class="lx-slider" id="lxSlider">
+
+        <?php foreach ( $slides as $i => $s ) : ?>
+        <div class="lx-slide<?php echo $i === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $i; ?>">
+          <div class="lx-bg" style="background-image:url('<?php echo esc_url($s['bg']); ?>'); background-color:<?php echo esc_attr($s['bg_color']); ?>; transform:scale(1.03);"></div>
+          <div class="lx-overlay"></div>
+          <div class="lx-overlay-bottom"></div>
+          <div class="lx-grain"></div>
+          <div class="lx-watermark"><?php echo esc_html($s['watermark']); ?></div>
+
+          <div class="lx-layout">
+            <div class="lx-content">
+              <div class="lx-label"><?php echo esc_html($s['label']); ?></div>
+              <h2 class="lx-title" data-title="<?php echo esc_attr($s['title']); ?>"<?php if($s['title_size']) echo ' style="'.esc_attr($s['title_size']).'"'; ?>></h2>
+              <div class="lx-divider"></div>
+              <?php if ( ! empty($s['desc']) ) : ?>
+              <p class="lx-desc"><?php echo esc_html($s['desc']); ?></p>
+              <?php endif; ?>
+              <div class="lx-notes"><?php echo esc_html($s['notes']); ?></div>
+              <div class="lx-ctas">
+                <a href="<?php echo esc_url($s['link']); ?>" class="lx-cta">
+                  <span><?php echo esc_html($s['link_label']); ?></span>
+                  <span class="lx-arrow"></span>
+                </a>
+                <?php if ( ! empty($s['link2']) ) : ?>
+                <a href="<?php echo esc_url($s['link2']); ?>" class="lx-cta lx-cta--ghost">
+                  <span><?php echo esc_html($s['link2_label']); ?></span>
+                  <span class="lx-arrow"></span>
+                </a>
+                <?php endif; ?>
+              </div>
             </div>
-            <?php endforeach; ?>
-            <button class="mz-arrow mz-prev" aria-label="Précédent">&#8249;</button>
-            <button class="mz-arrow mz-next" aria-label="Suivant">&#8250;</button>
-            <div class="mz-dots">
-                <?php foreach ( $slides as $i => $s ) : ?>
-                <button class="mz-dot <?php echo $i === 0 ? 'active' : ''; ?>" data-slide="<?php echo $i; ?>"></button>
-                <?php endforeach; ?>
+            <div class="lx-bottle-col">
+              <?php if ( $s['has_bg_title'] ) : ?>
+              <div class="lx-bg-title"><?php echo esc_html($s['title']); ?></div>
+              <?php endif; ?>
+              <img class="lx-bottle<?php echo $s['bottle_blend'] ? ' lx-bottle--light' : ''; ?>"
+                   src="<?php echo esc_url($s['bottle']); ?>"
+                   alt="<?php echo esc_attr($s['title'].' — '.$s['label']); ?>">
             </div>
+          </div>
         </div>
+        <?php endforeach; ?>
+
+        <nav class="lx-dots" id="lxDots">
+          <?php foreach ( $slides as $i => $s ) : ?>
+          <button class="lx-dot<?php echo $i === 0 ? ' is-active' : ''; ?>" data-slide="<?php echo $i; ?>" aria-label="Slide <?php echo $i+1; ?>"></button>
+          <?php endforeach; ?>
+        </nav>
+
+        <div class="lx-arrows">
+          <button class="lx-arrow-btn" id="lxPrev" aria-label="Précédent">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="lx-arrow-btn" id="lxNext" aria-label="Suivant">
+            <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+          </button>
+        </div>
+
+        <div class="lx-progress" id="lxProgress"></div>
+      </div>
     </div>
     <style>
-    .mz-slider-wrap { width:100%; overflow:hidden; }
-    .mz-slider {
-        position:relative;
-        width:100%;
-        height:90vh;
-        min-height:520px;
+    /* ── LUXURY SLIDER ── */
+    :root {
+      --lx-gold:      #c9a96e;
+      --lx-gold-lt:   #e8d5a3;
+      --lx-white:     #ffffff;
+      --lx-ease:      cubic-bezier(0.76, 0, 0.24, 1);
+      --lx-ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .mz-slide {
-        position:absolute; inset:0;
-        opacity:0;
-        pointer-events:none;
-        transition:opacity 0.9s ease;
+    .lx-wrap { width:100%; overflow:hidden; }
+    .lx-slider {
+      position:relative;
+      width:100%;
+      height:90vh;
+      min-height:520px;
+      background:#000;
     }
-    .mz-slide.active {
-        opacity:1;
-        pointer-events:all;
-    }
-    .mz-bg {
-        position:absolute; inset:0;
-        background-size:cover;
-        background-position:center;
-        transform:scale(1.04);
-        transition:transform 6s ease;
-    }
-    .mz-slide.active .mz-bg { transform:scale(1); }
-    .mz-overlay {
-        position:absolute; inset:0;
-        background:linear-gradient(to right, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.05) 60%, transparent 100%);
-    }
-    .mz-content {
-        position:relative; z-index:2;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        height:100%;
-        padding:0 7%;
-        max-width:1400px;
-        margin:0 auto;
-    }
-    .mz-text {
-        flex:1;
-        max-width:420px;
-        color:#fff;
-    }
-    .mz-num {
-        display:block;
-        font-size:0.75rem;
-        letter-spacing:0.3em;
-        opacity:0.6;
-        margin-bottom:1rem;
-        font-weight:400;
-    }
-    .mz-name {
-        font-size:clamp(1.8rem, 3.5vw, 3.2rem);
-        font-weight:300;
-        letter-spacing:0.08em;
-        text-transform:uppercase;
-        line-height:1.15;
-        margin:0 0 1rem 0;
-    }
-    .mz-desc {
-        font-size:clamp(0.9rem, 1.3vw, 1.05rem);
-        font-weight:300;
-        line-height:1.7;
-        opacity:0.88;
-        margin:0 0 2rem 0;
-        letter-spacing:0.02em;
-    }
-    .mz-btn {
-        display:inline-block;
-        padding:0.75rem 2.2rem;
-        border:1px solid rgba(255,255,255,0.8);
-        color:#fff;
-        text-decoration:none;
-        letter-spacing:0.18em;
-        text-transform:uppercase;
-        font-size:0.78rem;
-        font-weight:400;
-        transition:background 0.3s, color 0.3s;
-    }
-    .mz-btn:hover { background:#fff; color:#222; }
 
-    /* ─── BOUTEILLE — posée sur le sol de la scène ─── */
-    .mz-bottle {
-        flex:1;
-        display:flex;
-        justify-content:center;
-        align-items:flex-end;    /* bouteille ancrée en bas */
-        align-self:stretch;      /* force la colonne à occuper toute la hauteur malgré align-items:center du parent */
-        padding-bottom:8vh;      /* niveau du sol visible (~8% depuis le bas en vh) */
-        position:relative;
+    /* ── SLIDE ── */
+    .lx-slide {
+      position:absolute; inset:0;
+      visibility:hidden;
+      z-index:1;
     }
-    /* Ombre au sol — ellipse floue juste sous la bouteille */
-    .mz-bottle::after {
-        content:'';
-        position:absolute;
-        bottom:8vh;              /* aligné avec la base de la bouteille */
-        left:50%;
-        transform:translateX(-50%);
-        width:48%;
-        height:22px;
-        background:radial-gradient(ellipse at center, rgba(0,0,0,0.60) 0%, transparent 70%);
-        border-radius:50%;
-        filter:blur(10px);
-        pointer-events:none;
+    .lx-slide.is-active { visibility:visible; z-index:2; }
+
+    /* Background */
+    .lx-bg {
+      position:absolute; inset:0;
+      background-size:cover;
+      background-position:center;
+      will-change:transform;
+      transition:transform 10s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    @keyframes mz-float {
-        0%   { transform:translateY(0px); }
-        50%  { transform:translateY(-14px); }
-        100% { transform:translateY(0px); }
+    .lx-slide.is-active .lx-bg { transform:scale(1) !important; }
+
+    /* Overlays */
+    .lx-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to right,
+        rgba(0,0,0,0.88) 0%,
+        rgba(0,0,0,0.60) 30%,
+        rgba(0,0,0,0.22) 55%,
+        rgba(0,0,0,0.00) 72%
+      );
     }
-    .mz-bottle img {
-        max-height:64vh;
-        max-width:100%;
-        object-fit:contain;
-        filter:
-            drop-shadow(0 35px 45px rgba(0,0,0,0.55))
-            drop-shadow(0 8px 18px rgba(0,0,0,0.35))
-            brightness(1.05) contrast(1.02);
-        opacity:0;
-        transform:translateY(30px);
-        transition:opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+    .lx-overlay-bottom {
+      position:absolute;
+      bottom:0; left:0; right:0;
+      height:30%;
+      background:linear-gradient(to top, rgba(0,0,0,0.40) 0%, transparent 100%);
     }
-    .mz-slide.active .mz-bottle img {
-        opacity:1;
-        transform:translateY(0);
-        animation:mz-float 4s ease-in-out infinite;
-        animation-delay:1.2s;
+
+    /* Grain */
+    .lx-grain {
+      position:absolute; inset:0;
+      opacity:0.03;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size:300px;
+      pointer-events:none;
     }
-    /* Bouteille qui s'envole au départ du slide */
-    .mz-slide.leaving .mz-bottle img {
-        opacity:0 !important;
-        transform:translateY(-60px) scale(0.88) !important;
-        transition:opacity 0.55s ease, transform 0.55s ease !important;
-        animation:none !important;
+
+    /* ── WATERMARK ── */
+    .lx-watermark {
+      position:absolute;
+      top:5%; left:50%;
+      font-family:'Montserrat', sans-serif;
+      font-size:clamp(28px,6vw,90px);
+      font-weight:900;
+      letter-spacing:0.28em;
+      text-transform:uppercase;
+      color:transparent;
+      -webkit-text-stroke:1px rgba(255,255,255,0.06);
+      white-space:nowrap;
+      pointer-events:none;
+      z-index:3;
+      opacity:0;
+      transform:translateX(-50%);
+      transition:opacity 1.2s 0.2s;
     }
-    /* Arrows */
-    .mz-arrow {
-        position:absolute;
-        top:50%; transform:translateY(-50%);
-        z-index:10;
-        width:48px; height:48px;
-        border-radius:50%;
-        border:1px solid rgba(255,255,255,0.5);
-        background:rgba(255,255,255,0.12);
-        color:#fff;
-        font-size:1.6rem;
-        cursor:pointer;
-        display:flex; align-items:center; justify-content:center;
-        backdrop-filter:blur(6px);
-        transition:background 0.3s, border 0.3s;
-        padding:0;
-        line-height:1;
+    .lx-slide.is-active .lx-watermark {
+      opacity:1;
+      animation:lxWmFloat 14s ease-in-out infinite alternate;
     }
-    .mz-arrow:hover { background:rgba(255,255,255,0.28); border-color:#fff; }
-    .mz-prev { left:2%; }
-    .mz-next { right:2%; }
-    /* Dots */
-    .mz-dots {
-        position:absolute;
-        bottom:28px; left:50%;
-        transform:translateX(-50%);
-        z-index:10;
-        display:flex; gap:10px;
+    @keyframes lxWmFloat {
+      0%   { transform:translateX(calc(-50% - 45px)); }
+      100% { transform:translateX(calc(-50% + 45px)); }
     }
-    .mz-dot {
-        width:8px; height:8px;
-        border-radius:50%;
-        border:1px solid rgba(255,255,255,0.7);
-        background:transparent;
-        cursor:pointer;
-        padding:0;
-        transition:all 0.35s ease;
+
+    /* ── BG TITLE (Pistachio — titre flottant derrière la brume) ── */
+    .lx-bg-title {
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      font-family:'Montserrat', sans-serif;
+      font-size:clamp(55px,10vw,155px);
+      font-weight:900;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+      color:transparent;
+      -webkit-text-stroke:1.5px rgba(255,255,255,0.09);
+      white-space:nowrap;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity 1.5s 1s;
+      z-index:4;
     }
-    .mz-dot.active {
-        background:#fff;
-        width:26px;
-        border-radius:4px;
+    .lx-slide.is-active .lx-bg-title {
+      opacity:1;
+      animation:lxBgFloat 10s ease-in-out infinite alternate;
     }
-    /* Mobile */
+    @keyframes lxBgFloat {
+      0%   { transform:translate(calc(-50% - 30px),-50%); }
+      100% { transform:translate(calc(-50% + 30px),-50%); }
+    }
+
+    /* ── LAYOUT ── */
+    .lx-layout {
+      position:absolute; inset:0;
+      z-index:5;
+      display:grid;
+      grid-template-columns:46% 54%;
+    }
+
+    /* ── CONTENT (left) ── */
+    .lx-content {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding:0 5% 0 7%;
+      padding-top:8%;
+    }
+
+    /* Label */
+    .lx-label {
+      font-family:'Montserrat', sans-serif;
+      font-size:10px;
+      letter-spacing:7px;
+      text-transform:uppercase;
+      color:#ffffff;
+      margin-bottom:20px;
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity 0.7s 0.35s var(--lx-ease-out), transform 0.7s 0.35s var(--lx-ease-out);
+    }
+    .lx-slide.is-active .lx-label { opacity:1; transform:translateY(0); }
+
+    /* Title */
+    .lx-title {
+      font-family:'Montserrat', sans-serif;
+      font-size:clamp(38px,6vw,96px);
+      font-weight:100;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:#ffffff;
+      line-height:0.92;
+      margin-bottom:26px;
+      overflow:visible;
+      white-space:nowrap;
+    }
+    .lx-char-wrap {
+      display:inline-block;
+      overflow:hidden;
+      line-height:1.05;
+      vertical-align:top;
+    }
+    .lx-char {
+      display:inline-block;
+      transform:translateY(105%);
+      transition:transform 0.75s var(--lx-ease-out);
+    }
+    .lx-slide.is-active .lx-char { transform:translateY(0); }
+
+    /* Divider */
+    .lx-divider {
+      width:0; height:1px;
+      background:linear-gradient(to right, var(--lx-gold), transparent);
+      margin-bottom:20px;
+      transition:width 1.1s 0.65s var(--lx-ease-out);
+    }
+    .lx-slide.is-active .lx-divider { width:80px; }
+
+    /* Collection desc paragraph */
+    .lx-desc {
+      font-family:'Lato', sans-serif;
+      font-size:13px;
+      line-height:1.75;
+      color:rgba(255,255,255,0.62);
+      margin-bottom:22px;
+      max-width:340px;
+      opacity:0;
+      transform:translateY(10px);
+      transition:opacity 0.7s 0.78s var(--lx-ease-out), transform 0.7s 0.78s var(--lx-ease-out);
+    }
+    .lx-slide.is-active .lx-desc { opacity:1; transform:translateY(0); }
+
+    /* Fragrance notes */
+    .lx-notes {
+      font-family:'Lato', sans-serif;
+      font-size:10px;
+      letter-spacing:4px;
+      text-transform:uppercase;
+      color:rgba(232,213,163,0.75);
+      margin-bottom:26px;
+      opacity:0;
+      transition:opacity 0.7s 0.9s;
+    }
+    .lx-slide.is-active .lx-notes { opacity:1; }
+
+    /* CTAs */
+    .lx-ctas {
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      opacity:0;
+      transform:translateY(14px);
+      transition:opacity 0.7s 1.15s var(--lx-ease-out), transform 0.7s 1.15s var(--lx-ease-out);
+    }
+    .lx-slide.is-active .lx-ctas { opacity:1; transform:translateY(0); }
+
+    .lx-cta {
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:16px;
+      padding:13px 30px;
+      border:1px solid rgba(201,169,110,0.85);
+      color:#ffffff;
+      text-decoration:none;
+      font-family:'Lato', sans-serif;
+      font-size:9px;
+      letter-spacing:5px;
+      text-transform:uppercase;
+      overflow:hidden;
+      transition:color 0.45s var(--lx-ease);
+    }
+    .lx-cta::before {
+      content:'';
+      position:absolute; inset:0;
+      background:var(--lx-gold);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform 0.5s var(--lx-ease);
+    }
+    .lx-cta:hover { color:#000; }
+    .lx-cta:hover::before { transform:scaleX(1); }
+    .lx-cta span { position:relative; z-index:1; }
+
+    .lx-arrow {
+      position:relative; z-index:1;
+      display:flex; align-items:center;
+    }
+    .lx-arrow::before {
+      content:'';
+      display:block;
+      width:20px; height:1px;
+      background:currentColor;
+      transition:width 0.35s var(--lx-ease);
+    }
+    .lx-arrow::after {
+      content:'';
+      display:block;
+      width:5px; height:5px;
+      border-right:1px solid currentColor;
+      border-top:1px solid currentColor;
+      transform:rotate(45deg);
+      margin-left:-1px;
+    }
+    .lx-cta:hover .lx-arrow::before { width:30px; }
+
+    .lx-cta--ghost {
+      border-color:rgba(255,255,255,0.30);
+      color:rgba(255,255,255,0.80);
+    }
+    .lx-cta--ghost::before { background:rgba(255,255,255,0.12); }
+    .lx-cta--ghost:hover { color:#ffffff; }
+
+    /* ── BOTTLE (right) ── */
+    .lx-bottle-col {
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding-bottom:4%;
+      padding-right:3%;
+    }
+    .lx-bottle-col::after {
+      content:'';
+      position:absolute;
+      bottom:5%; left:50%;
+      transform:translateX(-50%);
+      width:38%; height:14px;
+      background:radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%);
+      border-radius:50%;
+      pointer-events:none;
+      filter:blur(6px);
+    }
+    .lx-bottle {
+      height:clamp(280px,62vh,580px);
+      width:auto; max-width:90%;
+      object-fit:contain;
+      filter:
+        drop-shadow(0 30px 40px rgba(0,0,0,0.60))
+        drop-shadow(0  8px 16px rgba(0,0,0,0.45))
+        brightness(1.04) contrast(1.02);
+      opacity:0;
+      transform:translateY(40px) scale(0.94);
+      transition:opacity 1.3s 0.5s var(--lx-ease-out), transform 1.3s 0.5s var(--lx-ease-out);
+      position:relative; z-index:5;
+    }
+    .lx-slide.is-active .lx-bottle { opacity:1; transform:translateY(0) scale(1); }
+    .lx-bottle--light { mix-blend-mode:multiply; }
+
+    /* ── DOTS ── */
+    .lx-dots {
+      position:absolute;
+      right:3.5%; top:50%;
+      transform:translateY(-50%);
+      display:flex; flex-direction:column;
+      gap:14px; z-index:100;
+    }
+    .lx-dot {
+      position:relative;
+      width:28px; height:28px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; background:transparent; border:none; padding:0;
+    }
+    .lx-dot::before {
+      content:'';
+      width:4px; height:4px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.30);
+      transition:background 0.4s, transform 0.4s;
+    }
+    .lx-dot.is-active::before { background:var(--lx-gold); transform:scale(1.8); }
+    .lx-dot.is-active::after {
+      content:'';
+      position:absolute; inset:4px;
+      border-radius:50%;
+      border:1px solid rgba(201,169,110,0.4);
+      animation:lxRingPulse 2s ease-in-out infinite;
+    }
+    @keyframes lxRingPulse {
+      0%,100% { transform:scale(1); opacity:1; }
+      50%     { transform:scale(1.3); opacity:0.4; }
+    }
+
+    /* ── ARROWS ── */
+    .lx-arrows {
+      position:absolute;
+      bottom:36px; right:5%;
+      display:flex; gap:10px; z-index:100;
+    }
+    .lx-arrow-btn {
+      width:48px; height:48px;
+      border:1px solid rgba(255,255,255,0.18);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      transition:border-color 0.3s, background 0.3s;
+      background:rgba(0,0,0,0.2);
+      backdrop-filter:blur(6px);
+    }
+    .lx-arrow-btn:hover { border-color:var(--lx-gold); background:rgba(201,169,110,0.12); }
+    .lx-arrow-btn svg { width:14px; height:14px; stroke:#fff; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+
+    /* ── PROGRESS ── */
+    .lx-progress {
+      position:absolute;
+      bottom:0; left:0;
+      height:2px;
+      background:linear-gradient(to right, var(--lx-gold), var(--lx-gold-lt));
+      z-index:100; width:0%;
+      transition:width linear;
+      box-shadow:0 0 8px rgba(201,169,110,0.5);
+    }
+
+    /* ── RESPONSIVE ── */
     @media (max-width:768px) {
-        .mz-slider { height:100svh; min-height:600px; }
-        .mz-overlay {
-            background:linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
-        }
-        .mz-content {
-            flex-direction:column;
-            justify-content:flex-start;
-            align-items:center;
-            padding:80px 6% 0;
-            text-align:center;
-            gap:0;
-        }
-        .mz-text { max-width:100%; flex:none; }
-        /* Bouteille posée en bas sur mobile — positionnement absolu */
-        .mz-bottle {
-            position:absolute;
-            bottom:0; left:0; right:0;
-            height:52vh;
-            display:flex;
-            align-items:flex-end;
-            justify-content:center;
-            padding-bottom:6vh;
-            flex:none;
-            align-self:auto;
-        }
-        .mz-bottle::after {
-            display:block;
-            bottom:6vh;
-        }
-        .mz-bottle img { max-height:46vh; }
-        .mz-prev { left:4%; }
-        .mz-next { right:4%; }
+      .lx-slider { height:100svh; min-height:600px; }
+      .lx-layout { grid-template-columns:1fr; }
+      .lx-bottle-col { display:none; }
+      .lx-content { padding:0 6% 6%; }
+      .lx-dots { display:none; }
+      .lx-ctas { flex-direction:column; }
+      .lx-overlay {
+        background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%);
+      }
     }
     </style>
     <script>
     (function(){
-        var slider = document.getElementById('mzSlider');
-        if(!slider) return;
-        var slides = slider.querySelectorAll('.mz-slide');
-        var dots   = slider.querySelectorAll('.mz-dot');
-        var prev   = slider.querySelector('.mz-prev');
-        var next   = slider.querySelector('.mz-next');
-        var cur    = 0;
-        var timer;
-        var total  = slides.length;
-        function goTo(n) {
-            var leaving = cur;
-            slides[leaving].classList.add('leaving');
-            dots[leaving].classList.remove('active');
-            cur = (n + total) % total;
-            slides[cur].classList.add('active');
-            dots[cur].classList.add('active');
-            setTimeout(function(){
-                slides[leaving].classList.remove('active');
-                slides[leaving].classList.remove('leaving');
-            }, 620);
-        }
-        function autoStart() { timer = setInterval(function(){ goTo(cur+1); }, 5500); }
-        function autoStop()  { clearInterval(timer); }
-        function resetAuto() { autoStop(); autoStart(); }
-        prev.addEventListener('click', function(){ goTo(cur-1); resetAuto(); });
-        next.addEventListener('click', function(){ goTo(cur+1); resetAuto(); });
-        dots.forEach(function(d, i){
-            d.addEventListener('click', function(){ goTo(i); resetAuto(); });
+      'use strict';
+      var AUTO = 6000, DUR = 900;
+      var wrap     = document.getElementById('lxSlider');
+      if(!wrap) return;
+      var slides   = Array.from(wrap.querySelectorAll('.lx-slide'));
+      var dots     = Array.from(wrap.querySelectorAll('.lx-dot'));
+      var bar      = document.getElementById('lxProgress');
+      var cur      = 0, animating = false, timer;
+
+      /* ── Char split ── */
+      wrap.querySelectorAll('.lx-title[data-title]').forEach(function(el){
+        var text = el.dataset.title;
+        el.innerHTML = '';
+        Array.from(text).forEach(function(ch, i){
+          var w = document.createElement('div');
+          w.className = 'lx-char-wrap';
+          var s = document.createElement('span');
+          s.className = 'lx-char';
+          s.style.transitionDelay = (0.45 + i * 0.055) + 's';
+          s.textContent = ch === ' ' ? '\u2009' : ch;
+          w.appendChild(s);
+          el.appendChild(w);
         });
-        /* Swipe mobile */
-        var sx = 0;
-        slider.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, {passive:true});
-        slider.addEventListener('touchend', function(e){
-            var diff = sx - e.changedTouches[0].clientX;
-            if(Math.abs(diff) > 50){ goTo(diff > 0 ? cur+1 : cur-1); resetAuto(); }
+      });
+
+      /* ── Progress ── */
+      function startBar(){
+        bar.style.transition = 'none';
+        bar.style.width = '0%';
+        void bar.offsetWidth;
+        bar.style.transition = 'width ' + AUTO + 'ms linear';
+        bar.style.width = '100%';
+      }
+      function resetBar(){
+        bar.style.transition = 'none';
+        bar.style.width = '0%';
+      }
+
+      /* ── Go to slide ── */
+      function goTo(next, dir){
+        if(animating || next === cur) return;
+        animating = true;
+        clearTimeout(timer);
+        resetBar();
+        var prev = cur; cur = next;
+        slides[next].style.zIndex = '1';
+        slides[prev].style.zIndex = '2';
+        slides[next].classList.add('is-active');
+        slides[next].querySelector('.lx-bg').style.transform = 'scale(1.03)';
+        setTimeout(function(){
+          slides[prev].classList.remove('is-active');
+          slides[next].style.zIndex = '2';
+          slides[prev].style.zIndex = '1';
+          dots.forEach(function(d, i){ d.classList.toggle('is-active', i === next); });
+          animating = false;
+          startBar();
+          timer = setTimeout(function(){ goTo((cur+1)%slides.length,'next'); }, AUTO);
+        }, DUR);
+      }
+
+      /* ── Init ── */
+      slides.forEach(function(s, i){
+        s.style.zIndex = i === 0 ? '2' : '1';
+        s.querySelector('.lx-bg').style.transform = i === 0 ? 'scale(1)' : 'scale(1.03)';
+      });
+      startBar();
+      timer = setTimeout(function(){ goTo(1,'next'); }, AUTO);
+
+      /* ── Controls ── */
+      document.getElementById('lxNext').addEventListener('click', function(){
+        clearTimeout(timer); goTo((cur+1)%slides.length,'next');
+      });
+      document.getElementById('lxPrev').addEventListener('click', function(){
+        clearTimeout(timer); goTo((cur-1+slides.length)%slides.length,'prev');
+      });
+      dots.forEach(function(d, i){
+        d.addEventListener('click', function(){
+          clearTimeout(timer); goTo(i, i > cur ? 'next' : 'prev');
         });
-        autoStart();
+      });
+      /* Swipe */
+      var sx = 0;
+      wrap.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; },{passive:true});
+      wrap.addEventListener('touchend', function(e){
+        var diff = sx - e.changedTouches[0].clientX;
+        if(Math.abs(diff) > 50){ clearTimeout(timer); goTo(diff>0?(cur+1)%slides.length:(cur-1+slides.length)%slides.length, diff>0?'next':'prev'); }
+      });
+      /* Keyboard */
+      document.addEventListener('keydown', function(e){
+        if(e.key==='ArrowRight'){ clearTimeout(timer); goTo((cur+1)%slides.length,'next'); }
+        if(e.key==='ArrowLeft') { clearTimeout(timer); goTo((cur-1+slides.length)%slides.length,'prev'); }
+      });
     })();
     </script>
     <?php

@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Slider Luxury — Manzili Paris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 /* ─── RESET ─── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -110,12 +113,12 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   pointer-events: none;
 }
 
-/* Watermark */
+/* ─── WATERMARK ─── */
 .slide__watermark {
   position: absolute;
   top: 5%;
   left: 50%;
-  transform: translateX(-50%);
+  font-family: 'Montserrat', sans-serif;
   font-size: clamp(30px, 6vw, 90px);
   font-weight: 900;
   letter-spacing: 0.28em;
@@ -126,9 +129,46 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   pointer-events: none;
   z-index: 3;
   opacity: 0;
+  transform: translateX(-50%);
   transition: opacity 1.2s 0.2s;
 }
-.slide.is-active .slide__watermark { opacity: 1; }
+.slide.is-active .slide__watermark {
+  opacity: 1;
+  animation: wmFloat 14s ease-in-out infinite alternate;
+}
+
+@keyframes wmFloat {
+  0%   { transform: translateX(calc(-50% - 45px)); }
+  100% { transform: translateX(calc(-50% + 45px)); }
+}
+
+/* ─── BG TITLE (floating behind bottle) — slide Pistachio ─── */
+.slide__bg-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(60px, 10vw, 155px);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.09);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s 1s;
+  z-index: 4;
+}
+.slide.is-active .slide__bg-title {
+  opacity: 1;
+  animation: bgTitleFloat 10s ease-in-out infinite alternate;
+}
+@keyframes bgTitleFloat {
+  0%   { transform: translate(calc(-50% - 30px), -50%); }
+  100% { transform: translate(calc(-50% + 30px), -50%); }
+}
 
 /* ─── MAIN LAYOUT (2 columns) ─── */
 .slide__layout {
@@ -150,10 +190,11 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 
 /* Collection label */
 .slide__label {
+  font-family: 'Montserrat', sans-serif;
   font-size: 10px;
   letter-spacing: 7px;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--white);
   margin-bottom: 20px;
   opacity: 0;
   transform: translateY(18px);
@@ -163,6 +204,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 
 /* Title */
 .slide__title {
+  font-family: 'Montserrat', sans-serif;
   font-size: clamp(40px, 6vw, 96px);
   font-weight: 100;
   letter-spacing: 0.08em;
@@ -196,8 +238,23 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 }
 .slide.is-active .slide__divider { width: 80px; }
 
+/* Collection description paragraph */
+.slide__desc {
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.62);
+  margin-bottom: 22px;
+  max-width: 340px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.7s 0.78s var(--ease-out), transform 0.7s 0.78s var(--ease-out);
+}
+.slide.is-active .slide__desc { opacity: 1; transform: translateY(0); }
+
 /* Notes */
 .slide__notes {
+  font-family: 'Lato', sans-serif;
   font-size: 10px;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -219,7 +276,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 }
 .slide.is-active .slide__ctas { opacity: 1; transform: translateY(0); }
 
-/* CTA — primary (voir collection) */
+/* CTA — primary */
 .slide__cta {
   position: relative;
   display: inline-flex;
@@ -229,6 +286,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   border: 1px solid rgba(201,169,110,0.85);
   color: var(--white);
   text-decoration: none;
+  font-family: 'Lato', sans-serif;
   font-size: 9px;
   letter-spacing: 5px;
   text-transform: uppercase;
@@ -272,7 +330,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
 }
 .slide__cta:hover .cta-arrow::before { width: 30px; }
 
-/* CTA — secondary (acheter) */
+/* CTA — secondary */
 .slide__cta--ghost {
   border-color: rgba(255,255,255,0.30);
   color: rgba(255,255,255,0.80);
@@ -290,7 +348,6 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   padding-bottom: 4%;
   padding-right: 3%;
 }
-/* Ground shadow — ellipse below the bottle */
 .slide__bottle-col::after {
   content: '';
   position: absolute;
@@ -316,10 +373,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   opacity: 0;
   transform: translateY(40px) scale(0.94);
   transition: opacity 1.3s 0.5s var(--ease-out), transform 1.3s 0.5s var(--ease-out);
+  position: relative;
+  z-index: 5;
 }
 .slide.is-active .slide__bottle { opacity: 1; transform: translateY(0) scale(1); }
-
-/* Bottle with light/white background → use multiply to remove white bg */
 .slide__bottle--light { mix-blend-mode: multiply; }
 
 /* ─── TRANSITION CURTAIN ─── */
@@ -403,6 +460,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
+  font-family: 'Lato', sans-serif;
   font-size: 10px;
   letter-spacing: 5px;
   color: rgba(255,255,255,0.35);
@@ -483,9 +541,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   <div class="corner corner-bl"></div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 1 — BOIS INTENSE · Collection Privée L'Original
+       SLIDE 1 — Collection Privée L'Original · Bois Intense
        BG  → images/bg-bois-intense.jpg
-       Bottle → images/bottle-bois-intense.png (fond noir → screen)
+       Bottle → images/bottle-bois-intense.png
        ════════════════════════════════════════════ -->
   <div class="slide is-active" data-index="0">
     <div class="slide__bg" style="background-image:url('images/bg-bois-intense.jpg'); background-color:#1a2010; transform:scale(1.03);"></div>
@@ -497,16 +555,13 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__layout">
       <div class="slide__content">
         <div class="slide__label">Collection Privée · L'Original</div>
-        <h2 class="slide__title" data-title="Bois Intense"></h2>
+        <h2 class="slide__title" data-title="L'Original"></h2>
         <div class="slide__divider"></div>
-        <div class="slide__notes">Iris · Vétiver · Musc · Bois de Santal</div>
+        <p class="slide__desc">Des fragrances d'exception inspirées des plus grands parfums du monde. Boisées, poudrées et sensuelles, chaque création allie noblesse olfactive et élégance intemporelle.</p>
+        <div class="slide__notes">Boisé · Poudré · Sensuel · Intemporel</div>
         <div class="slide__ctas">
-          <a href="#collection-privee-original" class="slide__cta">
+          <a href="https://www.collectionloriginal.com/product-category/collection-privee-loriginal/" class="slide__cta">
             <span>Voir la collection</span>
-            <span class="cta-arrow"></span>
-          </a>
-          <a href="#bois-intense" class="slide__cta slide__cta--ghost">
-            <span>Acheter — 9,99 €</span>
             <span class="cta-arrow"></span>
           </a>
         </div>
@@ -518,81 +573,11 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   </div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 2 — KRYPTON · Collection Privée Paris
-       BG  → images/bg-krypton.jpg
-       Bottle → images/bottle-krypton.png (fond blanc → multiply)
+       SLIDE 2 — COTON FRAIS · Collection Privée L'Original
+       BG  → images/bg-coton-frais.jpg
+       Bottle → images/bottle-coton-frais.png
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="1">
-    <div class="slide__bg" style="background-image:url('images/bg-krypton.jpg'); background-color:#0a1505; transform:scale(1.03);"></div>
-    <div class="slide__overlay-dark"></div>
-    <div class="slide__overlay-bottom"></div>
-    <div class="slide__grain"></div>
-    <div class="slide__watermark">Krypton</div>
-
-    <div class="slide__layout">
-      <div class="slide__content">
-        <div class="slide__label">Collection Privée · Paris</div>
-        <h2 class="slide__title" data-title="Krypton"></h2>
-        <div class="slide__divider"></div>
-        <div class="slide__notes">Bergamote · Cèdre · Vétiver · Ambre Vert</div>
-        <div class="slide__ctas">
-          <a href="#collection-privee-paris" class="slide__cta">
-            <span>Voir la collection</span>
-            <span class="cta-arrow"></span>
-          </a>
-          <a href="#krypton" class="slide__cta slide__cta--ghost">
-            <span>Acheter — 9,99 €</span>
-            <span class="cta-arrow"></span>
-          </a>
-        </div>
-      </div>
-      <div class="slide__bottle-col">
-        <img class="slide__bottle slide__bottle--light" src="images/bottle-krypton.png" alt="Krypton — Collection Privée Paris">
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       SLIDE 3 — ROSE VANILLE · Collection Privée Intense
-       BG  → images/bg-rose-vanille.jpg
-       Bottle → images/bottle-rose-vanille.png (fond noir → screen)
-       ════════════════════════════════════════════ -->
-  <div class="slide" data-index="2">
-    <div class="slide__bg" style="background-image:url('images/bg-rose-vanille.jpg'); background-color:#6b3040; transform:scale(1.03);"></div>
-    <div class="slide__overlay-dark--strong slide__overlay-dark"></div>
-    <div class="slide__overlay-bottom"></div>
-    <div class="slide__grain"></div>
-    <div class="slide__watermark">Rose Vanille</div>
-
-    <div class="slide__layout">
-      <div class="slide__content">
-        <div class="slide__label">Collection Privée · Intense</div>
-        <h2 class="slide__title" data-title="Rose Vanille" style="font-size:clamp(34px,5vw,80px);"></h2>
-        <div class="slide__divider"></div>
-        <div class="slide__notes">Rose · Vanille · Jasmin · Musc Blanc</div>
-        <div class="slide__ctas">
-          <a href="#collection-privee-intense" class="slide__cta">
-            <span>Voir la collection</span>
-            <span class="cta-arrow"></span>
-          </a>
-          <a href="#rose-vanille" class="slide__cta slide__cta--ghost">
-            <span>Acheter — 9,99 €</span>
-            <span class="cta-arrow"></span>
-          </a>
-        </div>
-      </div>
-      <div class="slide__bottle-col">
-        <img class="slide__bottle" src="images/bottle-rose-vanille.png" alt="Rose Vanille — Collection Privée Intense">
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════
-       SLIDE 4 — COTON FRAIS · Collection Privée L'Original
-       BG  → images/bg-coton-frais.jpg
-       Bottle → images/bottle-coton-frais.png (fond noir → screen)
-       ════════════════════════════════════════════ -->
-  <div class="slide" data-index="3">
     <div class="slide__bg" style="background-image:url('images/bg-coton-frais.jpg'); background-color:#d0dce8; transform:scale(1.03);"></div>
     <div class="slide__overlay-dark slide__overlay-dark--strong"></div>
     <div class="slide__overlay-bottom"></div>
@@ -602,16 +587,16 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
     <div class="slide__layout">
       <div class="slide__content">
         <div class="slide__label">Collection Privée · L'Original</div>
-        <h2 class="slide__title" data-title="Coton Frais" style="font-size:clamp(34px,5vw,80px);"></h2>
+        <h2 class="slide__title" data-title="Coton Frais" style="font-size:clamp(30px,4.5vw,74px);"></h2>
         <div class="slide__divider"></div>
         <div class="slide__notes">Coton · Musc Blanc · Iris · Bois de Santal</div>
         <div class="slide__ctas">
-          <a href="#collection-privee-original" class="slide__cta">
-            <span>Voir la collection</span>
+          <a href="https://www.collectionloriginal.com/product/coton-frais-coton-frais-collection-privee-loriginal/" class="slide__cta">
+            <span>Découvrir</span>
             <span class="cta-arrow"></span>
           </a>
-          <a href="#coton-frais" class="slide__cta slide__cta--ghost">
-            <span>Acheter — 9,99 €</span>
+          <a href="https://www.collectionloriginal.com/product-category/collection-privee-loriginal/" class="slide__cta slide__cta--ghost">
+            <span>Voir la collection</span>
             <span class="cta-arrow"></span>
           </a>
         </div>
@@ -623,9 +608,78 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
   </div>
 
   <!-- ════════════════════════════════════════════
+       SLIDE 3 — Collection Privée Paris · Krypton
+       BG  → images/bg-krypton.jpg
+       Bottle → images/bottle-krypton.png (fond blanc → multiply)
+       ════════════════════════════════════════════ -->
+  <div class="slide" data-index="2">
+    <div class="slide__bg" style="background-image:url('images/bg-krypton.jpg'); background-color:#0a1505; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark"></div>
+    <div class="slide__overlay-bottom"></div>
+    <div class="slide__grain"></div>
+    <div class="slide__watermark">Krypton</div>
+
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · Paris</div>
+        <h2 class="slide__title" data-title="Paris"></h2>
+        <div class="slide__divider"></div>
+        <p class="slide__desc">L'élégance parisienne sublimée en fragrance. Des compositions florales, fraîches et raffinées, pour incarner l'art de vivre à la française avec une sophistication absolue.</p>
+        <div class="slide__notes">Floral · Frais · Élégant · Parisien</div>
+        <div class="slide__ctas">
+          <a href="https://www.collectionloriginal.com/product-category/collection-privee-paris/" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle slide__bottle--light" src="images/bottle-krypton.png" alt="Krypton — Collection Privée Paris">
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SLIDE 4 — Collection Privée Intense · Dima Morocco
+       BG  → images/bg-dima-morocco.jpg
+       Bottle → images/bottle-dima-morocco.png
+       ════════════════════════════════════════════ -->
+  <div class="slide" data-index="3">
+    <div class="slide__bg" style="background-image:url('images/bg-dima-morocco.jpg'); background-color:#7a4020; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark slide__overlay-dark--strong"></div>
+    <div class="slide__overlay-bottom"></div>
+    <div class="slide__grain"></div>
+    <div class="slide__watermark">Dima Morocco</div>
+
+    <div class="slide__layout">
+      <div class="slide__content">
+        <div class="slide__label">Collection Privée · Intense</div>
+        <h2 class="slide__title" data-title="Intense" style="font-size:clamp(36px,5.5vw,88px);"></h2>
+        <div class="slide__divider"></div>
+        <p class="slide__desc">Des sillages d'une intensité captivante, pour ceux qui osent s'affirmer. Une collection orientale et puissante, dont chaque fragrance révèle un caractère inoubliable.</p>
+        <div class="slide__notes">Oriental · Intense · Captivant · Envoûtant</div>
+        <div class="slide__ctas">
+          <a href="https://www.collectionloriginal.com/product-category/collection-privee-intense/" class="slide__cta">
+            <span>Voir la collection</span>
+            <span class="cta-arrow"></span>
+          </a>
+          <a href="https://www.collectionloriginal.com/product/dima-maghreb-althair-collection-privee-lintense/" class="slide__cta slide__cta--ghost">
+            <span>Dima Morocco</span>
+            <span class="cta-arrow"></span>
+          </a>
+        </div>
+      </div>
+      <div class="slide__bottle-col">
+        <img class="slide__bottle" src="images/bottle-dima-morocco.png" alt="Dima Morocco — Collection Privée Intense">
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
        SLIDE 5 — PISTACHIO · Collection Privée L'Original
+       Titre flottant derrière la brume
        BG  → images/bg-pistachio.jpg
-       Bottle → images/bottle-pistachio.png (fond noir → screen)
+       Bottle → images/bottle-pistachio.png
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="4">
     <div class="slide__bg" style="background-image:url('images/bg-pistachio.jpg'); background-color:#7aad6a; transform:scale(1.03);"></div>
@@ -639,55 +693,56 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
         <div class="slide__label">Collection Privée · L'Original</div>
         <h2 class="slide__title" data-title="Pistachio"></h2>
         <div class="slide__divider"></div>
-        <div class="slide__notes">Pistache · Amande · Musc Blanc · Vanille</div>
+        <div class="slide__notes">Pistache · Caramel · Vanille · Musc Blanc</div>
         <div class="slide__ctas">
-          <a href="#collection-privee-original" class="slide__cta">
-            <span>Voir la collection</span>
+          <a href="https://www.collectionloriginal.com/product/pistachio-pistachio-collection-privee-loriginal/" class="slide__cta">
+            <span>Découvrir</span>
             <span class="cta-arrow"></span>
           </a>
-          <a href="#pistachio" class="slide__cta slide__cta--ghost">
-            <span>Acheter — 9,99 €</span>
+          <a href="https://www.collectionloriginal.com/product-category/collection-privee-loriginal/" class="slide__cta slide__cta--ghost">
+            <span>Voir la collection</span>
             <span class="cta-arrow"></span>
           </a>
         </div>
       </div>
       <div class="slide__bottle-col">
+        <div class="slide__bg-title">Pistachio</div>
         <img class="slide__bottle" src="images/bottle-pistachio.png" alt="Pistachio — Collection Privée L'Original">
       </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════
-       SLIDE 6 — DIMA MOROCCO · Collection Privée Intense
-       BG  → images/bg-dima-morocco.jpg
-       Bottle → images/bottle-dima-morocco.png (fond noir → screen)
+       SLIDE 6 — ROSE VANILLE · Collection Privée Intense
+       BG  → images/bg-rose-vanille.jpg
+       Bottle → images/bottle-rose-vanille.png
        ════════════════════════════════════════════ -->
   <div class="slide" data-index="5">
-    <div class="slide__bg" style="background-image:url('images/bg-dima-morocco.jpg'); background-color:#7a4020; transform:scale(1.03);"></div>
-    <div class="slide__overlay-dark slide__overlay-dark--strong"></div>
+    <div class="slide__bg" style="background-image:url('images/bg-rose-vanille.jpg'); background-color:#6b3040; transform:scale(1.03);"></div>
+    <div class="slide__overlay-dark--strong slide__overlay-dark"></div>
     <div class="slide__overlay-bottom"></div>
     <div class="slide__grain"></div>
-    <div class="slide__watermark">Dima Morocco</div>
+    <div class="slide__watermark">Rose Vanille</div>
 
     <div class="slide__layout">
       <div class="slide__content">
         <div class="slide__label">Collection Privée · Intense</div>
-        <h2 class="slide__title" data-title="Dima Morocco" style="font-size:clamp(28px,4.5vw,72px);"></h2>
+        <h2 class="slide__title" data-title="Rose Vanille" style="font-size:clamp(30px,4.5vw,74px);"></h2>
         <div class="slide__divider"></div>
-        <div class="slide__notes">Rose · Oud · Ambre · Épices Orientales</div>
+        <div class="slide__notes">Rose de Grasse · Jasmin · Vanille · Musc Blanc</div>
         <div class="slide__ctas">
-          <a href="#collection-privee-intense" class="slide__cta">
-            <span>Voir la collection</span>
+          <a href="https://www.collectionloriginal.com/product/rose-vanille-roses-vanille-collection-privee-lintense/" class="slide__cta">
+            <span>Découvrir</span>
             <span class="cta-arrow"></span>
           </a>
-          <a href="#dima-morocco" class="slide__cta slide__cta--ghost">
-            <span>Acheter — 9,99 €</span>
+          <a href="https://www.collectionloriginal.com/product-category/collection-privee-intense/" class="slide__cta slide__cta--ghost">
+            <span>Voir la collection</span>
             <span class="cta-arrow"></span>
           </a>
         </div>
       </div>
       <div class="slide__bottle-col">
-        <img class="slide__bottle" src="images/bottle-dima-morocco.png" alt="Dima Morocco — Collection Privée Intense">
+        <img class="slide__bottle" src="images/bottle-rose-vanille.png" alt="Rose Vanille — Collection Privée Intense">
       </div>
     </div>
   </div>

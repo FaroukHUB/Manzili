@@ -687,11 +687,11 @@
 
   <!-- ── Header ─────────────────────────────────────────────────────────── -->
   <header>
-    <a href="#" class="logo">Manzili</a>
+    <a href="/" class="logo">Manzili</a>
     <nav>
-      <a href="#">Accueil</a>
-      <a href="#">Collections</a>
-      <a href="#" class="active">Contact</a>
+      <a href="/">Accueil</a>
+      <a href="/collections">Collections</a>
+      <a href="/contact" class="active">Contact</a>
     </nav>
   </header>
 
@@ -862,7 +862,7 @@
             <!-- Consent -->
             <div class="full consent">
               <div class="consent-box" id="consentBox" role="checkbox" aria-checked="false" tabindex="0"></div>
-              <p>J'accepte que mes données soient utilisées pour traiter ma demande conformément à la <a href="#" style="color:var(--gold);text-decoration:none">politique de confidentialité</a> de Manzili.</p>
+              <p>J'accepte que mes données soient utilisées pour traiter ma demande conformément à la <a href="/politique-de-confidentialite" style="color:var(--gold);text-decoration:none">politique de confidentialité</a> de Manzili.</p>
             </div>
 
           </div>
@@ -912,7 +912,13 @@
   <!-- ── Footer ─────────────────────────────────────────────────────────── -->
   <footer class="page-footer">
     <p>© 2025 Manzili — L'excellence olfactive à portée de peau.</p>
-    <p>Mentions légales · CGV · Confidentialité</p>
+    <p>
+      <a href="/mentions-legales" style="color:var(--muted);text-decoration:none;transition:color .3s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">Mentions légales</a>
+      ·
+      <a href="/cgv" style="color:var(--muted);text-decoration:none;transition:color .3s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">CGV</a>
+      ·
+      <a href="/politique-de-confidentialite" style="color:var(--muted);text-decoration:none;transition:color .3s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">Confidentialité</a>
+    </p>
   </footer>
 
   <!-- ── Scripts ────────────────────────────────────────────────────────── -->

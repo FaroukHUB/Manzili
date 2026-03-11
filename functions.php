@@ -526,6 +526,10 @@ function manzili_fragrance_slider() {
             'link2'       => '',
             'link2_label' => '',
             'has_bg_title'=> false,
+            'deco_imgs'   => [
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/sandalwood-scaled-1.png',                          'alt'=>'Sandalwood',        'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:160px;left:35%;bottom:18%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons de santal', 'float'=>'med',  'delay'=>'1.15s', 'style'=>'width:120px;right:20%;top:28%;'],
+            ],
         ],
         /* 2 — Coton Frais (produit) */
         [
@@ -598,6 +602,11 @@ function manzili_fragrance_slider() {
             'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> true,
+            'deco_imgs'   => [
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p9-1.png', 'alt'=>'Pistache', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:120px;left:36%;top:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p7.png',   'alt'=>'Pistache', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:110px;right:18%;top:30%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p3.png',   'alt'=>'Pistache', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:130px;right:22%;bottom:25%;'],
+            ],
         ],
         /* 6 — Rose Vanille (produit) */
         [
@@ -616,6 +625,11 @@ function manzili_fragrance_slider() {
             'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-intense/',
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> false,
+            'deco_imgs'   => [
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png', 'alt'=>'Fleur de vanille', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:130px;left:35%;top:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',    'alt'=>'Rose',    'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:140px;right:16%;top:18%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png', 'alt'=>'Vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:110px;right:20%;bottom:22%;'],
+            ],
         ],
     ];
     ob_start(); ?>
@@ -660,6 +674,12 @@ function manzili_fragrance_slider() {
               <?php if ( $s['has_bg_title'] ) : ?>
               <div class="lx-bg-title"><?php echo esc_html($s['title']); ?></div>
               <?php endif; ?>
+              <?php if ( ! empty($s['deco_imgs']) ) : foreach ( $s['deco_imgs'] as $d ) : ?>
+              <img class="lx-deco lx-deco--<?php echo esc_attr($d['float']); ?>"
+                   src="<?php echo esc_url($d['url']); ?>"
+                   alt="<?php echo esc_attr($d['alt']); ?>"
+                   style="<?php echo esc_attr($d['style']); ?> transition-delay:<?php echo esc_attr($d['delay']); ?>;">
+              <?php endforeach; endif; ?>
               <div class="lx-bottle-wrap">
               <img class="lx-bottle<?php echo $s['bottle_blend'] ? ' lx-bottle--light' : ''; ?>"
                    src="<?php echo esc_url($s['bottle']); ?>"
@@ -1091,6 +1111,33 @@ function manzili_fragrance_slider() {
       box-shadow:0 0 8px rgba(201,169,110,0.5);
     }
 
+    /* ── DECO INGREDIENT IMAGES ── */
+    .lx-deco {
+      position:absolute;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity 1.3s var(--lx-ease-out);
+      z-index:3;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 20px rgba(0,0,0,0.50));
+    }
+    .lx-slide.is-active .lx-deco { opacity:1; }
+    @keyframes lxDecoSlow {
+      from { transform:translateY(0)    rotate(-4deg); }
+      to   { transform:translateY(-18px) rotate(4deg); }
+    }
+    @keyframes lxDecoMed {
+      from { transform:translateY(0)    rotate(3deg); }
+      to   { transform:translateY(-12px) rotate(-3deg); }
+    }
+    @keyframes lxDecoFast {
+      from { transform:translateY(-6px) rotate(-2deg); }
+      to   { transform:translateY(10px)  rotate(3deg); }
+    }
+    .lx-deco--slow { animation:lxDecoSlow 8s ease-in-out infinite alternate; }
+    .lx-deco--med  { animation:lxDecoMed  6s ease-in-out infinite alternate; }
+    .lx-deco--fast { animation:lxDecoFast 5s ease-in-out infinite alternate; }
+
     /* ── RESPONSIVE MOBILE ── */
     @media (max-width:768px) {
       .lx-slider { height:100svh; min-height:580px; }
@@ -1160,6 +1207,9 @@ function manzili_fragrance_slider() {
 
       /* Watermark réduit */
       .lx-watermark { font-size:clamp(18px,5vw,42px); }
+
+      /* Ingrédients déco masqués sur mobile */
+      .lx-deco { display:none; }
 
       /* Dots masqués, flèches centrées en bas */
       .lx-dots { display:none; }

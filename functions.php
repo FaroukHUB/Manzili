@@ -660,9 +660,11 @@ function manzili_fragrance_slider() {
               <?php if ( $s['has_bg_title'] ) : ?>
               <div class="lx-bg-title"><?php echo esc_html($s['title']); ?></div>
               <?php endif; ?>
+              <div class="lx-bottle-wrap">
               <img class="lx-bottle<?php echo $s['bottle_blend'] ? ' lx-bottle--light' : ''; ?>"
                    src="<?php echo esc_url($s['bottle']); ?>"
                    alt="<?php echo esc_attr($s['title'].' — '.$s['label']); ?>">
+              </div>
             </div>
           </div>
         </div>
@@ -806,17 +808,18 @@ function manzili_fragrance_slider() {
     .lx-layout {
       position:absolute; inset:0;
       z-index:5;
-      display:grid;
-      grid-template-columns:46% 54%;
     }
 
-    /* ── CONTENT (left) ── */
+    /* ── CONTENT (left — absolute) ── */
     .lx-content {
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width:46%;
       display:flex;
       flex-direction:column;
       justify-content:center;
-      padding:0 5% 0 7%;
-      padding-top:8%;
+      padding:8% 5% 6% 7%;
+      z-index:3;
     }
 
     /* Label */
@@ -963,34 +966,60 @@ function manzili_fragrance_slider() {
     .lx-cta--ghost::before { background:rgba(255,255,255,0.12); }
     .lx-cta--ghost:hover { color:#ffffff; }
 
-    /* ── BOTTLE (right) ── */
+    /* ── BOTTLE (centré sur tout le slide) ── */
     .lx-bottle-col {
-      position:relative;
+      position:absolute;
+      inset:0;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding-bottom:4%;
-      padding-right:3%;
+      padding-bottom:3%;
+      z-index:2;
+      pointer-events:none;
     }
+    /* Ombre au sol — s'anime avec le flottement */
     .lx-bottle-col::after {
       content:'';
       position:absolute;
-      bottom:5%; left:50%;
-      transform:translateX(-50%);
-      width:38%; height:14px;
-      background:radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%);
+      bottom:4%; left:50%;
+      transform:translateX(-50%) scaleX(1);
+      width:18%; height:14px;
+      background:radial-gradient(ellipse at center, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0) 70%);
       border-radius:50%;
       pointer-events:none;
-      filter:blur(6px);
+      filter:blur(7px);
+      transition:none;
     }
+    .lx-slide.is-active .lx-bottle-col::after {
+      animation:lxShadowFloat 4s ease-in-out 1.8s infinite;
+    }
+    @keyframes lxShadowFloat {
+      0%,100% { transform:translateX(-50%) scaleX(1);   opacity:0.85; }
+      50%      { transform:translateX(-50%) scaleX(0.6); opacity:0.40; }
+    }
+
+    /* Wrapper float — ne perturbe pas l'animation d'entrée de l'image */
+    .lx-bottle-wrap {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .lx-slide.is-active .lx-bottle-wrap {
+      animation:lxBottleFloat 4s ease-in-out 1.8s infinite;
+    }
+    @keyframes lxBottleFloat {
+      0%,100% { transform:translateY(0);    }
+      50%      { transform:translateY(-14px); }
+    }
+
     .lx-bottle {
-      height:clamp(280px,62vh,580px);
+      height:clamp(300px,65vh,600px);
       width:auto; max-width:90%;
       object-fit:contain;
       filter:
-        drop-shadow(0 30px 40px rgba(0,0,0,0.60))
-        drop-shadow(0  8px 16px rgba(0,0,0,0.45))
-        brightness(1.04) contrast(1.02);
+        drop-shadow(0 30px 45px rgba(0,0,0,0.65))
+        drop-shadow(0  8px 18px rgba(0,0,0,0.45))
+        brightness(1.05) contrast(1.02);
       opacity:0;
       transform:translateY(40px) scale(0.94);
       transition:opacity 1.3s 0.5s var(--lx-ease-out), transform 1.3s 0.5s var(--lx-ease-out);
@@ -1062,16 +1091,78 @@ function manzili_fragrance_slider() {
       box-shadow:0 0 8px rgba(201,169,110,0.5);
     }
 
-    /* ── RESPONSIVE ── */
+    /* ── RESPONSIVE MOBILE ── */
     @media (max-width:768px) {
-      .lx-slider { height:100svh; min-height:600px; }
-      .lx-layout { grid-template-columns:1fr; }
-      .lx-bottle-col { display:none; }
-      .lx-content { padding:0 6% 6%; }
-      .lx-dots { display:none; }
-      .lx-ctas { flex-direction:column; }
+      .lx-slider { height:100svh; min-height:580px; }
+
+      /* Overlay adapté mobile : sombre haut (texte) + transparent milieu (bouteille) + sombre bas (ctas) */
       .lx-overlay {
-        background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%);
+        background:linear-gradient(to bottom,
+          rgba(0,0,0,0.72) 0%,
+          rgba(0,0,0,0.30) 30%,
+          rgba(0,0,0,0.10) 55%,
+          rgba(0,0,0,0.68) 100%
+        );
+      }
+
+      /* Content : haut de l'écran pleine largeur */
+      .lx-content {
+        width:100%;
+        top:0; left:0; right:0; bottom:auto;
+        height:auto;
+        padding:52px 6% 0;
+        justify-content:flex-start;
+        z-index:10;
+      }
+
+      /* Bouteille : visible, centrée, positionnée légèrement en bas */
+      .lx-bottle-col {
+        display:flex;
+        align-items:flex-end;
+        justify-content:center;
+        padding-bottom:18%;
+        z-index:4;
+      }
+      .lx-bottle-col::after {
+        bottom:17%; width:28%;
+      }
+
+      .lx-bottle { height:clamp(200px,42vh,320px); }
+
+      /* Masquer la description longue */
+      .lx-desc { display:none; }
+
+      /* Textes compacts */
+      .lx-label  { margin-bottom:10px; font-size:9px; letter-spacing:5px; }
+      .lx-title  { font-size:clamp(26px,9vw,48px) !important; margin-bottom:12px; white-space:nowrap; }
+      .lx-divider{ margin-bottom:10px; }
+      .lx-notes  { font-size:8px; letter-spacing:3px; margin-bottom:0; }
+
+      /* CTAs : en bas de l'écran, côte à côte */
+      .lx-ctas {
+        position:absolute;
+        bottom:52px; left:6%; right:6%;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        gap:8px;
+        transform:none !important;
+      }
+      .lx-cta {
+        flex:1;
+        justify-content:center;
+        padding:11px 10px;
+        font-size:7.5px;
+        letter-spacing:3px;
+        gap:8px;
+        text-align:center;
+      }
+
+      /* Dots masqués, flèches centrées en bas */
+      .lx-dots { display:none; }
+      .lx-arrows {
+        bottom:16px;
+        right:50%;
+        transform:translateX(50%);
       }
     }
     </style>

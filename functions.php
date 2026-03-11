@@ -1208,9 +1208,6 @@ function manzili_fragrance_slider() {
       /* Watermark réduit */
       .lx-watermark { font-size:clamp(18px,5vw,42px); }
 
-      /* Ingrédients déco masqués sur mobile */
-      .lx-deco { display:none; }
-
       /* Dots masqués, flèches centrées en bas */
       .lx-dots { display:none; }
       .lx-arrows { bottom:18px; right:50%; transform:translateX(50%); }

@@ -753,7 +753,7 @@ function manzili_fragrance_slider() {
     /* ── WATERMARK ── */
     .lx-watermark {
       position:absolute;
-      top:5%; left:50%;
+      top:50%; left:50%;
       font-family:'Montserrat', sans-serif;
       font-size:clamp(28px,6vw,90px);
       font-weight:900;
@@ -765,7 +765,7 @@ function manzili_fragrance_slider() {
       pointer-events:none;
       z-index:3;
       opacity:0;
-      transform:translateX(-50%);
+      transform:translate(-50%,-50%);
       transition:opacity 1.2s 0.2s;
     }
     .lx-slide.is-active .lx-watermark {
@@ -773,8 +773,8 @@ function manzili_fragrance_slider() {
       animation:lxWmFloat 14s ease-in-out infinite alternate;
     }
     @keyframes lxWmFloat {
-      0%   { transform:translateX(calc(-50% - 45px)); }
-      100% { transform:translateX(calc(-50% + 45px)); }
+      0%   { transform:translate(calc(-50% - 45px),-50%); }
+      100% { transform:translate(calc(-50% + 45px),-50%); }
     }
 
     /* ── BG TITLE (Pistachio — titre flottant derrière la brume) ── */

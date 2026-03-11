@@ -757,8 +757,8 @@ function manzili_fragrance_slider() {
       font-weight:900;
       letter-spacing:0.28em;
       text-transform:uppercase;
-      color:transparent;
-      -webkit-text-stroke:1px rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.08);
+      -webkit-text-stroke:1.5px rgba(255,255,255,0.35);
       white-space:nowrap;
       pointer-events:none;
       z-index:3;

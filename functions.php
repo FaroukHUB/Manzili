@@ -1095,53 +1095,41 @@ function manzili_fragrance_slider() {
     @media (max-width:768px) {
       .lx-slider { height:100svh; min-height:580px; }
 
-      /* Overlay adapté mobile : sombre haut (texte) + transparent milieu (bouteille) + sombre bas (ctas) */
+      /* Overlay : sombre haut (texte lisible), transparent milieu (bouteille visible), sombre bas */
       .lx-overlay {
         background:linear-gradient(to bottom,
-          rgba(0,0,0,0.72) 0%,
-          rgba(0,0,0,0.30) 30%,
-          rgba(0,0,0,0.10) 55%,
-          rgba(0,0,0,0.68) 100%
+          rgba(0,0,0,0.78) 0%,
+          rgba(0,0,0,0.38) 30%,
+          rgba(0,0,0,0.12) 55%,
+          rgba(0,0,0,0.72) 100%
         );
       }
 
-      /* Content : haut de l'écran pleine largeur */
+      /* Content : pleine hauteur en flex column
+         → les éléments s'empilent verticalement sans se chevaucher
+         → .lx-notes avec flex:1 pousse les CTAs en bas naturellement */
       .lx-content {
+        position:absolute;
+        top:0; left:0; right:0; bottom:0;
         width:100%;
-        top:0; left:0; right:0; bottom:auto;
-        height:auto;
-        padding:52px 6% 0;
+        padding:46px 6% 70px;
         justify-content:flex-start;
         z-index:10;
       }
 
-      /* Bouteille : visible, centrée, positionnée légèrement en bas */
-      .lx-bottle-col {
-        display:flex;
-        align-items:flex-end;
-        justify-content:center;
-        padding-bottom:18%;
-        z-index:4;
-      }
-      .lx-bottle-col::after {
-        bottom:17%; width:28%;
-      }
-
-      .lx-bottle { height:clamp(200px,42vh,320px); }
-
-      /* Masquer la description longue */
+      /* Description masquée */
       .lx-desc { display:none; }
 
       /* Textes compacts */
-      .lx-label  { margin-bottom:10px; font-size:9px; letter-spacing:5px; }
-      .lx-title  { font-size:clamp(26px,9vw,48px) !important; margin-bottom:12px; white-space:nowrap; }
-      .lx-divider{ margin-bottom:10px; }
-      .lx-notes  { font-size:8px; letter-spacing:3px; margin-bottom:0; }
+      .lx-label   { margin-bottom:8px;  font-size:8px;  letter-spacing:4px; }
+      .lx-title   { font-size:clamp(22px,8vw,40px) !important; margin-bottom:10px; white-space:normal; line-height:1.0; }
+      .lx-divider { margin-bottom:10px; }
+      /* flex:1 = espace élastique qui pousse les CTAs tout en bas */
+      .lx-notes   { font-size:7.5px; letter-spacing:2.5px; margin-bottom:0; flex:1; }
 
-      /* CTAs : en bas de l'écran, côte à côte */
+      /* CTAs : dans le flux flex (pas position:absolute), poussés en bas */
       .lx-ctas {
-        position:absolute;
-        bottom:52px; left:6%; right:6%;
+        position:static;
         flex-direction:row;
         flex-wrap:nowrap;
         gap:8px;
@@ -1150,20 +1138,32 @@ function manzili_fragrance_slider() {
       .lx-cta {
         flex:1;
         justify-content:center;
-        padding:11px 10px;
-        font-size:7.5px;
-        letter-spacing:3px;
-        gap:8px;
+        padding:10px 8px;
+        font-size:7px;
+        letter-spacing:2.5px;
+        gap:0;
         text-align:center;
       }
+      /* Flèche décorative masquée sur mobile */
+      .lx-cta .lx-arrow { display:none; }
+
+      /* Bouteille : visible, centrée */
+      .lx-bottle-col {
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding-bottom:10%;
+        z-index:4;
+      }
+      .lx-bottle-col::after { bottom:9%; width:26%; }
+      .lx-bottle { height:clamp(180px,38vh,300px); }
+
+      /* Watermark réduit */
+      .lx-watermark { font-size:clamp(18px,5vw,42px); }
 
       /* Dots masqués, flèches centrées en bas */
       .lx-dots { display:none; }
-      .lx-arrows {
-        bottom:16px;
-        right:50%;
-        transform:translateX(50%);
-      }
+      .lx-arrows { bottom:18px; right:50%; transform:translateX(50%); }
     }
     </style>
     <script>

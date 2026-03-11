@@ -966,14 +966,14 @@ function manzili_fragrance_slider() {
     .lx-cta--ghost::before { background:rgba(255,255,255,0.12); }
     .lx-cta--ghost:hover { color:#ffffff; }
 
-    /* ── BOTTLE (centré sur tout le slide) ── */
+    /* ── BOTTLE (posée au sol) ── */
     .lx-bottle-col {
       position:absolute;
       inset:0;
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       justify-content:center;
-      padding-bottom:3%;
+      padding-bottom:10%;
       z-index:2;
       pointer-events:none;
     }
@@ -1150,9 +1150,9 @@ function manzili_fragrance_slider() {
       /* Bouteille : visible, centrée */
       .lx-bottle-col {
         display:flex;
-        align-items:center;
+        align-items:flex-end;
         justify-content:center;
-        padding-bottom:10%;
+        padding-bottom:18%;
         z-index:4;
       }
       .lx-bottle-col::after { bottom:9%; width:26%; }

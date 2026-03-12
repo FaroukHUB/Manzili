@@ -527,8 +527,8 @@ function manzili_fragrance_slider() {
             'link2_label' => '',
             'has_bg_title'=> false,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/sandalwood-scaled-1.png',                          'alt'=>'Sandalwood',        'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:62px;left:38%;bottom:22%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons de santal', 'float'=>'med',  'delay'=>'1.15s', 'style'=>'width:60px;right:38%;top:28%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/sandalwood-scaled-1.png',                          'alt'=>'Sandalwood',        'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:55px;left:41%;bottom:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons de santal', 'float'=>'med',  'delay'=>'1.15s', 'style'=>'width:52px;right:41%;top:28%;'],
             ],
         ],
         /* 2 — Coton Frais (produit) */
@@ -548,6 +548,14 @@ function manzili_fragrance_slider() {
             'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> false,
+            'deco_imgs'   => [
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_51_35.png', 'alt'=>'Coton', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:45px;left:41%;top:20%;rotate:15deg;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_51_35.png', 'alt'=>'Coton', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:45px;left:41%;top:47%;rotate:140deg;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_51_35.png', 'alt'=>'Coton', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:45px;left:41%;bottom:20%;rotate:-10deg;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_51_35.png', 'alt'=>'Coton', 'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:45px;right:41%;top:20%;rotate:-15deg;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_51_35.png', 'alt'=>'Coton', 'float'=>'fast', 'delay'=>'1.1s',  'style'=>'width:45px;right:41%;top:47%;rotate:-140deg;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_51_35.png', 'alt'=>'Coton', 'float'=>'med',  'delay'=>'1.3s',  'style'=>'width:45px;right:41%;bottom:20%;rotate:10deg;'],
+            ],
         ],
         /* 3 — Collection Privée Paris · Krypton */
         [
@@ -567,12 +575,12 @@ function manzili_fragrance_slider() {
             'link2_label' => '',
             'has_bg_title'=> false,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_41_58.png', 'alt'=>'Krypton deco', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:58px;left:37%;top:22%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:56px;left:36%;top:48%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_45_23.png', 'alt'=>'Krypton deco', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:58px;left:37%;bottom:20%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_45_23.png', 'alt'=>'Krypton deco', 'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:58px;right:37%;top:22%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_41_58.png', 'alt'=>'Krypton deco', 'float'=>'fast', 'delay'=>'1.1s',  'style'=>'width:56px;right:36%;top:48%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.3s',  'style'=>'width:58px;right:37%;bottom:20%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_41_58.png', 'alt'=>'Krypton deco', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:34px;left:28%;top:20%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:32px;left:34%;top:50%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_45_23.png', 'alt'=>'Krypton deco', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:34px;left:31%;bottom:14%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_45_23.png', 'alt'=>'Krypton deco', 'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:34px;right:26%;top:20%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_41_58.png', 'alt'=>'Krypton deco', 'float'=>'fast', 'delay'=>'1.1s',  'style'=>'width:32px;right:30%;top:50%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.3s',  'style'=>'width:34px;right:24%;bottom:14%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
             ],
         ],
         /* 4 — Collection Privée Intense · Dima Morocco */
@@ -593,12 +601,12 @@ function manzili_fragrance_slider() {
             'link2_label' => 'Dima Morocco',
             'has_bg_title'=> false,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons',        'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:55px;left:38%;top:22%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/peche.webp',                                             'alt'=>'Pêche',         'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:58px;left:36%;top:48%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png',      'alt'=>'Fleur vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:52px;left:38%;bottom:20%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-apple.webp',                                       'alt'=>'Fleur apple',   'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:55px;right:38%;top:22%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',                                               'alt'=>'Rose',          'float'=>'med',  'delay'=>'1.1s',  'style'=>'width:58px;right:36%;top:48%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png',                                            'alt'=>'Vanille',       'float'=>'fast', 'delay'=>'1.3s',  'style'=>'width:52px;right:38%;bottom:20%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons',        'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:50px;left:41%;top:18%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/peche.webp',                                             'alt'=>'Pêche',         'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:52px;left:41%;top:46%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png',      'alt'=>'Fleur vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:48px;left:41%;bottom:18%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-apple.webp',                                       'alt'=>'Fleur apple',   'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:50px;right:41%;top:18%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',                                               'alt'=>'Rose',          'float'=>'med',  'delay'=>'1.1s',  'style'=>'width:52px;right:41%;top:46%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png',                                            'alt'=>'Vanille',       'float'=>'fast', 'delay'=>'1.3s',  'style'=>'width:48px;right:41%;bottom:18%;'],
             ],
         ],
         /* 5 — Pistachio (produit · titre flottant derrière la brume) */
@@ -619,9 +627,9 @@ function manzili_fragrance_slider() {
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> true,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p9-1.png', 'alt'=>'Pistache', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:55px;left:38%;top:30%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p7.png',   'alt'=>'Pistache', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:52px;right:38%;top:25%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p3.png',   'alt'=>'Pistache', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:58px;right:38%;bottom:20%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p9-1.png', 'alt'=>'Pistache', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:50px;left:41%;top:28%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p7.png',   'alt'=>'Pistache', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:48px;right:41%;top:24%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p3.png',   'alt'=>'Pistache', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:52px;right:41%;bottom:20%;'],
             ],
         ],
         /* 6 — Rose Vanille (produit) */
@@ -642,9 +650,9 @@ function manzili_fragrance_slider() {
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> false,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png', 'alt'=>'Fleur de vanille', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:60px;left:38%;top:25%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',    'alt'=>'Rose',    'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:58px;right:38%;top:20%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png', 'alt'=>'Vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:52px;right:38%;bottom:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png', 'alt'=>'Fleur de vanille', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:52px;left:41%;top:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',    'alt'=>'Rose',    'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:52px;right:41%;top:18%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png', 'alt'=>'Vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:46px;right:41%;bottom:22%;'],
             ],
         ],
     ];
@@ -1220,6 +1228,13 @@ function manzili_fragrance_slider() {
       }
       .lx-bottle-col::after { bottom:9%; width:26%; }
       .lx-bottle { height:clamp(180px,38vh,300px); }
+
+      /* Décos : repositionnées collées au flacon sur mobile */
+      .lx-deco { width:30px !important; }
+      .lx-deco[style*="left:28%"],.lx-deco[style*="left:31%"],.lx-deco[style*="left:34%"] { left:38% !important; }
+      .lx-deco[style*="right:24%"],.lx-deco[style*="right:26%"],.lx-deco[style*="right:30%"] { right:38% !important; }
+      .lx-deco[style*="left:41%"] { left:42% !important; }
+      .lx-deco[style*="right:41%"] { right:42% !important; }
 
       /* Watermark réduit */
       .lx-watermark { font-size:clamp(18px,5vw,42px); }

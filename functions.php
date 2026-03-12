@@ -566,6 +566,14 @@ function manzili_fragrance_slider() {
             'link2'       => '',
             'link2_label' => '',
             'has_bg_title'=> false,
+            'deco_imgs'   => [
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_41_58.png', 'alt'=>'Krypton deco', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:58px;left:37%;top:22%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:56px;left:36%;top:48%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_45_23.png', 'alt'=>'Krypton deco', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:58px;left:37%;bottom:20%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_45_23.png', 'alt'=>'Krypton deco', 'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:58px;right:37%;top:22%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_41_58.png', 'alt'=>'Krypton deco', 'float'=>'fast', 'delay'=>'1.1s',  'style'=>'width:56px;right:36%;top:48%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.3s',  'style'=>'width:58px;right:37%;bottom:20%;filter:drop-shadow(0 0 14px rgba(57,255,20,0.85)) drop-shadow(0 8px 20px rgba(0,0,0,0.50)) saturate(2) brightness(1.3);'],
+            ],
         ],
         /* 4 — Collection Privée Intense · Dima Morocco */
         [

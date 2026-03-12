@@ -527,8 +527,8 @@ function manzili_fragrance_slider() {
             'link2_label' => '',
             'has_bg_title'=> false,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/sandalwood-scaled-1.png',                          'alt'=>'Sandalwood',        'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:70px;left:41%;bottom:16%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons de santal', 'float'=>'med',  'delay'=>'1.15s', 'style'=>'width:72px;right:24%;top:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/sandalwood-scaled-1.png',                          'alt'=>'Sandalwood',        'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:62px;left:38%;bottom:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons de santal', 'float'=>'med',  'delay'=>'1.15s', 'style'=>'width:60px;right:38%;top:28%;'],
             ],
         ],
         /* 2 — Coton Frais (produit) */
@@ -603,9 +603,9 @@ function manzili_fragrance_slider() {
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> true,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p9-1.png', 'alt'=>'Pistache', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:62px;left:42%;top:18%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p7.png',   'alt'=>'Pistache', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:58px;right:22%;top:26%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p3.png',   'alt'=>'Pistache', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:66px;right:26%;bottom:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p9-1.png', 'alt'=>'Pistache', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:55px;left:38%;top:30%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p7.png',   'alt'=>'Pistache', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:52px;right:38%;top:25%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p3.png',   'alt'=>'Pistache', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:58px;right:38%;bottom:20%;'],
             ],
         ],
         /* 6 — Rose Vanille (produit) */
@@ -626,9 +626,9 @@ function manzili_fragrance_slider() {
             'link2_label' => 'Voir la collection',
             'has_bg_title'=> false,
             'deco_imgs'   => [
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png', 'alt'=>'Fleur de vanille', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:78px;left:39%;top:18%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',    'alt'=>'Rose',    'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:80px;right:20%;top:16%;'],
-                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png', 'alt'=>'Vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:64px;right:24%;bottom:20%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png', 'alt'=>'Fleur de vanille', 'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:60px;left:38%;top:25%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',    'alt'=>'Rose',    'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:58px;right:38%;top:20%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png', 'alt'=>'Vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:52px;right:38%;bottom:22%;'],
             ],
         ],
     ];

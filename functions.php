@@ -584,6 +584,14 @@ function manzili_fragrance_slider() {
             'link2'       => 'https://www.collectionloriginal.com/product/dima-maghreb-althair-collection-privee-lintense/',
             'link2_label' => 'Dima Morocco',
             'has_bg_title'=> false,
+            'deco_imgs'   => [
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/batons-bois-santal-isoles-fond-transparent-png-psd.png', 'alt'=>'Bâtons',        'float'=>'slow', 'delay'=>'0.8s',  'style'=>'width:55px;left:38%;top:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/peche.webp',                                             'alt'=>'Pêche',         'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:58px;left:36%;top:48%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-vanille-blanche-isolee-fond-transparent.png',      'alt'=>'Fleur vanille', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:52px;left:38%;bottom:20%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/fleur-apple.webp',                                       'alt'=>'Fleur apple',   'float'=>'slow', 'delay'=>'0.9s',  'style'=>'width:55px;right:38%;top:22%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/rose.png',                                               'alt'=>'Rose',          'float'=>'med',  'delay'=>'1.1s',  'style'=>'width:58px;right:36%;top:48%;'],
+                ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/vanille.png',                                            'alt'=>'Vanille',       'float'=>'fast', 'delay'=>'1.3s',  'style'=>'width:52px;right:38%;bottom:20%;'],
+            ],
         ],
         /* 5 — Pistachio (produit · titre flottant derrière la brume) */
         [

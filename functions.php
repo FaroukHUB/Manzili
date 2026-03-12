@@ -1048,6 +1048,8 @@ function manzili_fragrance_slider() {
       display:flex;
       align-items:center;
       justify-content:center;
+      position:relative;
+      z-index:6;
     }
     .lx-slide.is-active .lx-bottle-wrap {
       animation:lxBottleFloat 4s ease-in-out 1.8s infinite;

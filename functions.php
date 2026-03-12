@@ -702,6 +702,7 @@ function manzili_fragrance_slider() {
               <img class="lx-deco lx-deco--<?php echo esc_attr($d['float']); ?>"
                    src="<?php echo esc_url($d['url']); ?>"
                    alt="<?php echo esc_attr($d['alt']); ?>"
+                   data-side="<?php echo (strpos($d['style'],'left:') !== false) ? 'left' : 'right'; ?>"
                    style="<?php echo esc_attr($d['style']); ?> transition-delay:<?php echo esc_attr($d['delay']); ?>;">
               <?php endforeach; endif; ?>
               <div class="lx-bottle-wrap">
@@ -1230,11 +1231,9 @@ function manzili_fragrance_slider() {
       .lx-bottle { height:clamp(180px,38vh,300px); }
 
       /* Décos : repositionnées collées au flacon sur mobile */
-      .lx-deco { width:30px !important; }
-      .lx-deco[style*="left:28%"],.lx-deco[style*="left:31%"],.lx-deco[style*="left:34%"] { left:38% !important; }
-      .lx-deco[style*="right:24%"],.lx-deco[style*="right:26%"],.lx-deco[style*="right:30%"] { right:38% !important; }
-      .lx-deco[style*="left:41%"] { left:42% !important; }
-      .lx-deco[style*="right:41%"] { right:42% !important; }
+      .lx-deco { width:28px !important; }
+      .lx-deco[data-side="left"]  { left:29% !important; right:auto !important; }
+      .lx-deco[data-side="right"] { right:29% !important; left:auto !important; }
 
       /* Watermark réduit */
       .lx-watermark { font-size:clamp(18px,5vw,42px); }

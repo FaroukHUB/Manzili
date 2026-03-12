@@ -509,7 +509,43 @@ function manzili_save_parfums_to_order( $item, $cart_item_key, $values, $order )
    ============================================= */
 function manzili_fragrance_slider() {
     $slides = [
-        /* 1 — Collection Privée Paris · Krypton */
+        /* 1 — Collection L'Original · Bois Intense */
+        [
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-bois.png',
+            'bg_color'    => '#1a2010',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coloriginal-scaled.png',
+            'bottle_blend'=> false,
+            'label'       => "Collection Privée · L'Original",
+            'title'       => "L'Original",
+            'title_size'  => '',
+            'watermark'   => 'Bois Intense',
+            'desc'        => "Des fragrances d'exception inspirées des plus grands parfums du monde. Boisées, poudrées et sensuelles, chaque création allie noblesse olfactive et élégance intemporelle.",
+            'notes'       => 'Boisé · Poudré · Sensuel · Intemporel',
+            'link'        => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
+            'link_label'  => 'Voir la collection',
+            'link2'       => '',
+            'link2_label' => '',
+            'has_bg_title'=> false,
+        ],
+        /* 2 — Coton Frais (produit) */
+        [
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-coton.png',
+            'bg_color'    => '#d0dce8',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coton.png',
+            'bottle_blend'=> false,
+            'label'       => "Collection Privée · L'Original",
+            'title'       => 'Coton Frais',
+            'title_size'  => 'font-size:clamp(30px,4.5vw,74px);',
+            'watermark'   => 'Coton Frais',
+            'desc'        => '',
+            'notes'       => 'Coton · Musc Blanc · Iris · Bois de Santal',
+            'link'        => 'https://www.collectionloriginal.com/product/coton-frais-coton-frais-collection-privee-loriginal/',
+            'link_label'  => 'Découvrir',
+            'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
+            'link2_label' => 'Voir la collection',
+            'has_bg_title'=> false,
+        ],
+        /* 3 — Collection Privée Paris · Krypton */
         [
             'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-krypton.png',
             'bg_color'    => '#0a1505',
@@ -535,7 +571,25 @@ function manzili_fragrance_slider() {
                 ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/ChatGPT-Image-12-mars-2026-15_43_00.png', 'alt'=>'Krypton deco', 'float'=>'med',  'delay'=>'1.3s',  'style'=>'width:34px;right:24%;bottom:14%;filter:drop-shadow(0 0 12px rgba(57,255,20,0.9)) saturate(2.2) brightness(1.4);'],
             ],
         ],
-        /* 2 — Pistachio (produit · titre flottant derrière la brume) */
+        /* 4 — Collection Privée Intense · Dima Morocco */
+        [
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-dima.png',
+            'bg_color'    => '#7a4020',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-dima.png',
+            'bottle_blend'=> false,
+            'label'       => 'Collection Privée · Intense',
+            'title'       => 'Intense',
+            'title_size'  => 'font-size:clamp(36px,5.5vw,88px);',
+            'watermark'   => 'Dima Morocco',
+            'desc'        => "Des sillages d'une intensité captivante, pour ceux qui osent s'affirmer. Une collection orientale et puissante, dont chaque fragrance révèle un caractère inoubliable.",
+            'notes'       => 'Oriental · Intense · Captivant · Envoûtant',
+            'link'        => 'https://www.collectionloriginal.com/product-category/collection-privee-intense/',
+            'link_label'  => 'Voir la collection',
+            'link2'       => 'https://www.collectionloriginal.com/product/dima-maghreb-althair-collection-privee-lintense/',
+            'link2_label' => 'Dima Morocco',
+            'has_bg_title'=> false,
+        ],
+        /* 5 — Pistachio (produit · titre flottant derrière la brume) */
         [
             'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-pistachio.png',
             'bg_color'    => '#7aad6a',
@@ -557,6 +611,24 @@ function manzili_fragrance_slider() {
                 ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p7.png',   'alt'=>'Pistache', 'float'=>'med',  'delay'=>'1.0s',  'style'=>'width:48px;right:41%;top:24%;'],
                 ['url'=>'https://www.collectionloriginal.com/wp-content/uploads/2026/03/p3.png',   'alt'=>'Pistache', 'float'=>'fast', 'delay'=>'1.2s',  'style'=>'width:52px;right:41%;bottom:20%;'],
             ],
+        ],
+        /* 6 — Rose Vanille (produit) */
+        [
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-rose.png',
+            'bg_color'    => '#6b3040',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-rose.png',
+            'bottle_blend'=> false,
+            'label'       => 'Collection Privée · Intense',
+            'title'       => 'Rose Vanille',
+            'title_size'  => 'font-size:clamp(30px,4.5vw,74px);',
+            'watermark'   => 'Rose Vanille',
+            'desc'        => '',
+            'notes'       => 'Rose de Grasse · Jasmin · Vanille · Musc Blanc',
+            'link'        => 'https://www.collectionloriginal.com/product/rose-vanille-roses-vanille-collection-privee-lintense/',
+            'link_label'  => 'Découvrir',
+            'link2'       => 'https://www.collectionloriginal.com/product-category/collection-privee-intense/',
+            'link2_label' => 'Voir la collection',
+            'has_bg_title'=> false,
         ],
     ];
     ob_start(); ?>

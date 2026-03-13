@@ -34,7 +34,14 @@ Version: 3.0
 .navbar-logo {
     display: flex !important;
     align-items: center !important;
+    justify-content: center !important;
     line-height: 1 !important;
+}
+
+.header-logo a,
+.logo a,
+.navbar-logo a {
+    margin: 0 auto !important;
 }
 
 }

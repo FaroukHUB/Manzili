@@ -20,5 +20,12 @@ Version: 3.0
 @media only screen and (max-width: 48em) {
 /*************** ADD MOBILE ONLY CSS HERE  ***************/
 
+/* Logo plus grand sur mobile */
+.header-logo img,
+.logo img,
+.navbar-logo img {
+    max-height: 80px !important;
+    width: auto !important;
+}
 
 }

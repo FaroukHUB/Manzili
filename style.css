@@ -20,12 +20,21 @@ Version: 3.0
 @media only screen and (max-width: 48em) {
 /*************** ADD MOBILE ONLY CSS HERE  ***************/
 
-/* Logo plus grand sur mobile */
+/* Logo plus grand sur mobile sans descendre */
 .header-logo img,
 .logo img,
 .navbar-logo img {
     max-height: 80px !important;
     width: auto !important;
+    vertical-align: middle !important;
+}
+
+.header-logo,
+.logo,
+.navbar-logo {
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
 }
 
 }

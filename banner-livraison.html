@@ -23,12 +23,13 @@
       border-bottom: 1px solid #2a2a2a;
       overflow: hidden;
       padding: 10px 0;
+      position: relative;
     }
 
     .ticker-track {
       display: flex;
-      width: max-content;
-      animation: ticker 22s linear infinite;
+      animation: ticker 18s linear infinite;
+      will-change: transform;
     }
 
     .ticker-track:hover {
@@ -47,6 +48,7 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #fff;
+      flex-shrink: 0;
     }
 
     .ticker-item .dot {
@@ -70,46 +72,32 @@
 <body>
 
   <div class="ticker-wrap">
-    <div class="ticker-track">
-
-      <!-- Bloc 1 (original) -->
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
-      </div>
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Paiement 3x sans frais avec Klarna
-      </div>
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
-      </div>
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Retours gratuits sous 30 jours
-      </div>
-
-      <!-- Bloc 2 (copie pour boucle infinie) -->
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
-      </div>
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Paiement 3x sans frais avec Klarna
-      </div>
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
-      </div>
-      <div class="ticker-item">
-        <span class="dot"></span>
-        Retours gratuits sous 30 jours
-      </div>
-
-    </div>
+    <div class="ticker-track" id="track"></div>
   </div>
+
+  <script>
+    const messages = [
+      'Livraison offerte à partir de <span class="highlight">69 €</span>',
+      'Paiement 3x sans frais avec Klarna',
+      'Livraison offerte à partir de <span class="highlight">69 €</span>',
+      'Retours gratuits sous 30 jours',
+    ];
+
+    const track = document.getElementById('track');
+
+    // On double le contenu pour la boucle infinie
+    // On répète assez de fois pour toujours remplir l'écran
+    const repeat = 8;
+    let html = '';
+    for (let i = 0; i < repeat; i++) {
+      messages.forEach(msg => {
+        html += `<div class="ticker-item"><span class="dot"></span>${msg}</div>`;
+      });
+    }
+
+    // Contenu doublé pour le translateX(-50%) seamless
+    track.innerHTML = html + html;
+  </script>
 
 </body>
 </html>

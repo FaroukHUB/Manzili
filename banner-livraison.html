@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banner Livraison</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .ticker-wrap {
+      width: 100%;
+      background: #000;
+      border-top: 1px solid #2a2a2a;
+      border-bottom: 1px solid #2a2a2a;
+      overflow: hidden;
+      padding: 10px 0;
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 22s linear infinite;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 60px;
+      white-space: nowrap;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .ticker-item .dot {
+      width: 5px;
+      height: 5px;
+      background: #c9a96e;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .ticker-item .highlight {
+      color: #c9a96e;
+    }
+
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+
+      <!-- Bloc 1 (original) -->
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
+      </div>
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Paiement 3x sans frais avec Klarna
+      </div>
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
+      </div>
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Retours gratuits sous 30 jours
+      </div>
+
+      <!-- Bloc 2 (copie pour boucle infinie) -->
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
+      </div>
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Paiement 3x sans frais avec Klarna
+      </div>
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Livraison offerte à partir de <span class="highlight">&nbsp;69 €</span>
+      </div>
+      <div class="ticker-item">
+        <span class="dot"></span>
+        Retours gratuits sous 30 jours
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

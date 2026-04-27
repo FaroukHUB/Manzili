@@ -6,11 +6,12 @@ import { eq, and, gte, lte, desc } from "drizzle-orm"
 import { calculateHoursWorked, calculateEarnings } from "@/lib/utils"
 
 export async function GET(req: Request) {
+  try {
   const session = await auth()
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
 
   const { searchParams } = new URL(req.url)
-  const month = searchParams.get("month") // format: YYYY-MM
+  const month = searchParams.get("month")
 
   let rows
 
@@ -33,6 +34,10 @@ export async function GET(req: Request) {
   }
 
   return NextResponse.json(rows)
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
 }
 
 export async function POST(req: Request) {

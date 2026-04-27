@@ -99,7 +99,7 @@ export default function DebtsPage() {
   const globalProgress = totalDebt > 0 ? (totalPaid / totalDebt) * 100 : 0
 
   return (
-    <div className="p-4 md:p-6 max-w-2xl mx-auto">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>Mes dettes</h1>
         <Button onClick={openAdd} size="sm">
@@ -144,7 +144,7 @@ export default function DebtsPage() {
           <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Ajoute tes dettes pour suivre ta progression</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {debts.sort((a, b) => a.priority - b.priority).map((debt) => {
             const total = parseFloat(debt.totalAmount)
             const paid = parseFloat(debt.paidAmount)
@@ -153,50 +153,22 @@ export default function DebtsPage() {
             const isPaid = remaining <= 0
 
             return (
-              <Card key={debt.id} className={isPaid ? "opacity-60" : ""}>
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="text-xs px-2 py-0.5 rounded-full font-medium"
-                        style={{ background: "var(--bg-hover)", color: "var(--text-secondary)" }}
-                      >
-                        #{debt.priority}
-                      </span>
-                      <h3 className="font-semibold" style={{ color: "var(--text-primary)" }}>
-                        {debt.name}
-                      </h3>
-                      {isPaid && <span className="text-xs text-emerald-400">✓ Remboursé</span>}
-                    </div>
-                    {debt.dueDate && (
-                      <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>
-                        Échéance : {formatDateFR(debt.dueDate)}
-                      </p>
-                    )}
-                    {debt.note && (
-                      <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>{debt.note}</p>
-                    )}
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold" style={{ color: isPaid ? "var(--color-gain)" : "var(--color-debt)" }}>
-                      {formatCurrency(remaining)}
-                    </p>
-                    <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                      / {formatCurrency(total)}
-                    </p>
-                  </div>
+              <Card key={debt.id} className={`flex flex-col gap-2 ${isPaid ? "opacity-60" : ""}`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium" style={{ background: "var(--bg-hover)", color: "var(--text-secondary)" }}>#{debt.priority}</span>
+                  {isPaid && <span className="text-[10px]" style={{ color: "var(--color-gain)" }}>✓</span>}
                 </div>
-                <ProgressBar value={pct} color={isPaid ? "green" : "red"} showLabel className="mb-3" />
-                <div className="flex gap-2">
-                  {!isPaid && (
-                    <Button variant="success" size="sm" onClick={() => openPay(debt)}>
-                      <CreditCard size={14} /> Payer
-                    </Button>
-                  )}
-                  <Button variant="ghost" size="sm" onClick={() => openEdit(debt)}>Modifier</Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(debt.id)}>
-                    <Trash2 size={14} />
-                  </Button>
+                <p className="font-semibold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>{debt.name}</p>
+                <div>
+                  <p className="text-xl font-bold" style={{ color: isPaid ? "var(--color-gain)" : "var(--color-debt)" }}>{formatCurrency(remaining)}</p>
+                  <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>sur {formatCurrency(total)}</p>
+                </div>
+                <ProgressBar value={pct} color={isPaid ? "green" : "red"} className="my-1" />
+                {debt.dueDate && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Éch. {formatDateFR(debt.dueDate)}</p>}
+                <div className="flex gap-1 mt-auto pt-1">
+                  {!isPaid && <Button variant="success" size="sm" className="flex-1 text-xs py-1" onClick={() => openPay(debt)}><CreditCard size={12} /></Button>}
+                  <Button variant="ghost" size="sm" className="flex-1 text-xs py-1" onClick={() => openEdit(debt)}>✏️</Button>
+                  <Button variant="ghost" size="sm" className="text-xs py-1 px-2" onClick={() => handleDelete(debt.id)}><Trash2 size={12} /></Button>
                 </div>
               </Card>
             )

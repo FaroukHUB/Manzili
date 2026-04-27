@@ -61,7 +61,7 @@ export default function AssetsPage() {
   const total = assets.reduce((s, a) => s + parseFloat(a.amount), 0)
 
   return (
-    <div className="p-4 md:p-6 max-w-3xl mx-auto">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Actif</h1>
@@ -84,19 +84,18 @@ export default function AssetsPage() {
           <p className="text-sm text-center py-4" style={{ color: "var(--text-secondary)" }}>Aucun actif enregistré</p>
         </Card>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {assets.map(a => (
-            <Card key={a.id} className="cursor-pointer flex items-center justify-between" onClick={() => openEdit(a)}>
-              <div>
-                <p className="font-semibold" style={{ color: "var(--text-primary)" }}>{a.name}</p>
-                {a.note && <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>{a.note}</p>}
-              </div>
-              <div className="flex items-center gap-3">
-                <p className="text-lg font-bold" style={{ color: "var(--color-gain)" }}>{formatCurrency(parseFloat(a.amount))}</p>
-                <button onClick={e => { e.stopPropagation(); handleDelete(a.id) }} className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10">
-                  <Trash2 size={14} style={{ color: "var(--color-debt)" }} />
+            <Card key={a.id} className="flex flex-col gap-2 cursor-pointer" onClick={() => openEdit(a)}>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full border" style={{ color: "var(--color-gain)", borderColor: "var(--color-gain)" }}>Actif</span>
+                <button onClick={e => { e.stopPropagation(); handleDelete(a.id) }} className="p-1 rounded transition-colors hover:bg-red-500/10">
+                  <Trash2 size={11} style={{ color: "var(--color-debt)" }} />
                 </button>
               </div>
+              <p className="font-semibold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>{a.name}</p>
+              {a.note && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>{a.note}</p>}
+              <p className="text-xl font-bold" style={{ color: "var(--color-gain)" }}>{formatCurrency(parseFloat(a.amount))}</p>
             </Card>
           ))}
         </div>

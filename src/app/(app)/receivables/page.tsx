@@ -84,7 +84,7 @@ export default function ReceivablesPage() {
   const totalPending = totalExpected - totalReceived
 
   return (
-    <div className="p-4 md:p-6 max-w-2xl mx-auto">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>On me doit</h1>
         <Button onClick={openAdd} size="sm">
@@ -120,7 +120,7 @@ export default function ReceivablesPage() {
           <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Ajoute ce qu'on te doit pour le suivre</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {items.map((item) => {
             const total = parseFloat(item.totalAmount)
             const received = parseFloat(item.receivedAmount)
@@ -129,38 +129,22 @@ export default function ReceivablesPage() {
             const status = STATUS_LABELS[item.status] || STATUS_LABELS.pending
 
             return (
-              <Card key={item.id}>
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold" style={{ color: "var(--text-primary)" }}>{item.name}</h3>
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "var(--bg-hover)", color: status.color }}>
-                        {status.label}
-                      </span>
-                    </div>
-                    {item.reason && <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>{item.reason}</p>}
-                    {item.expectedDate && (
-                      <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>
-                        Prévu le : {formatDateFR(item.expectedDate)}
-                      </p>
-                    )}
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold" style={{ color: "var(--color-warning)" }}>{formatCurrency(remaining)}</p>
-                    <p className="text-xs" style={{ color: "var(--text-secondary)" }}>/ {formatCurrency(total)}</p>
-                  </div>
+              <Card key={item.id} className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium border" style={{ color: status.color, borderColor: status.color }}>{status.label}</span>
                 </div>
-                <ProgressBar value={pct} color="amber" showLabel className="mb-3" />
-                <div className="flex gap-2">
-                  {item.status !== "received" && (
-                    <Button variant="success" size="sm" onClick={() => markReceived(item)}>
-                      <CheckCircle size={14} /> Reçu en totalité
-                    </Button>
-                  )}
-                  <Button variant="ghost" size="sm" onClick={() => openEdit(item)}>Modifier</Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(item.id)}>
-                    <Trash2 size={14} />
-                  </Button>
+                <p className="font-semibold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>{item.name}</p>
+                {item.reason && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>{item.reason}</p>}
+                <div>
+                  <p className="text-xl font-bold" style={{ color: "var(--color-warning)" }}>{formatCurrency(remaining)}</p>
+                  <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>sur {formatCurrency(total)}</p>
+                </div>
+                <ProgressBar value={pct} color="amber" className="my-1" />
+                {item.expectedDate && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Prévu {formatDateFR(item.expectedDate)}</p>}
+                <div className="flex gap-1 mt-auto pt-1">
+                  {item.status !== "received" && <Button variant="success" size="sm" className="flex-1 text-xs py-1" onClick={() => markReceived(item)}><CheckCircle size={12} /></Button>}
+                  <Button variant="ghost" size="sm" className="flex-1 text-xs py-1" onClick={() => openEdit(item)}>✏️</Button>
+                  <Button variant="ghost" size="sm" className="text-xs py-1 px-2" onClick={() => handleDelete(item.id)}><Trash2 size={12} /></Button>
                 </div>
               </Card>
             )

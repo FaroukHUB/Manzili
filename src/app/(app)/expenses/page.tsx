@@ -73,7 +73,7 @@ export default function ExpensesPage() {
   }, {} as Record<string, number>)
 
   return (
-    <div className="p-4 md:p-6 max-w-2xl mx-auto">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>Dépenses fixes</h1>
         <Button onClick={openAdd} size="sm"><Plus size={16} /> Ajouter</Button>
@@ -105,23 +105,21 @@ export default function ExpensesPage() {
           <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Ajoute tes dépenses mensuelles obligatoires</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {items.map((item) => (
-            <Card key={item.id} className="flex items-center justify-between py-3 px-4">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full shrink-0" style={{ background: CATEGORY_COLORS[item.category] }} />
-                <div>
-                  <p className="font-medium text-sm" style={{ color: "var(--text-primary)" }}>{item.name}</p>
-                  <p className="text-xs" style={{ color: "var(--text-secondary)" }}>{CATEGORY_LABELS[item.category] || item.category}</p>
+            <Card key={item.id} className="flex flex-col gap-2 cursor-pointer" onClick={() => openEdit(item)}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full shrink-0" style={{ background: CATEGORY_COLORS[item.category] }} />
+                  <span className="text-[10px] font-medium" style={{ color: CATEGORY_COLORS[item.category] }}>{CATEGORY_LABELS[item.category] || item.category}</span>
                 </div>
+                <button onClick={e => { e.stopPropagation(); handleDelete(item.id) }} className="p-1 rounded transition-colors hover:bg-red-500/10">
+                  <Trash2 size={11} style={{ color: "var(--color-debt)" }} />
+                </button>
               </div>
-              <div className="flex items-center gap-3">
-                <p className="font-bold" style={{ color: "var(--color-debt)" }}>{formatCurrency(parseFloat(item.amount))}</p>
-                <div className="flex gap-1">
-                  <Button variant="ghost" size="sm" onClick={() => openEdit(item)}>Modifier</Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDelete(item.id)}><Trash2 size={14} /></Button>
-                </div>
-              </div>
+              <p className="font-semibold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>{item.name}</p>
+              <p className="text-xl font-bold" style={{ color: "var(--color-debt)" }}>{formatCurrency(parseFloat(item.amount))}</p>
+              <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>par mois</p>
             </Card>
           ))}
         </div>

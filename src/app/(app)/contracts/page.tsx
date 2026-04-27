@@ -113,45 +113,25 @@ export default function ContractsPage() {
           <p className="text-sm text-center py-4" style={{ color: "var(--text-secondary)" }}>Aucun contrat enregistré</p>
         </Card>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {contracts.map(c => {
             const remaining = parseFloat(c.totalAmount) - parseFloat(c.depositReceived)
             const st = STATUS_LABELS[c.status] || { label: c.status, color: "var(--text-secondary)" }
             return (
-              <Card key={c.id} className="cursor-pointer" onClick={() => openEdit(c)}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="font-semibold truncate" style={{ color: "var(--text-primary)" }}>{c.clientName}</p>
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border shrink-0" style={{ color: st.color, borderColor: st.color }}>
-                        {st.label}
-                      </span>
-                    </div>
-                    {c.description && <p className="text-xs mb-2 truncate" style={{ color: "var(--text-secondary)" }}>{c.description}</p>}
-                    <div className="grid grid-cols-3 gap-3">
-                      <div>
-                        <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Total</p>
-                        <p className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>{formatCurrency(parseFloat(c.totalAmount))}</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Acompte</p>
-                        <p className="text-sm font-semibold" style={{ color: "var(--color-gain)" }}>{formatCurrency(parseFloat(c.depositReceived))}</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Reste</p>
-                        <p className="text-sm font-semibold" style={{ color: "var(--color-warning)" }}>{formatCurrency(remaining)}</p>
-                      </div>
-                    </div>
-                    {c.expectedDate && (
-                      <p className="text-[10px] mt-2 flex items-center gap-1" style={{ color: "var(--text-secondary)" }}>
-                        <Clock size={10} /> Livraison : {new Date(c.expectedDate).toLocaleDateString("fr-FR")}
-                      </p>
-                    )}
-                  </div>
-                  <button onClick={e => { e.stopPropagation(); handleDelete(c.id) }} className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10">
-                    <Trash2 size={14} style={{ color: "var(--color-debt)" }} />
+              <Card key={c.id} className="flex flex-col gap-2 cursor-pointer" onClick={() => openEdit(c)}>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full border" style={{ color: st.color, borderColor: st.color }}>{st.label}</span>
+                  <button onClick={e => { e.stopPropagation(); handleDelete(c.id) }} className="p-1 rounded transition-colors hover:bg-red-500/10">
+                    <Trash2 size={11} style={{ color: "var(--color-debt)" }} />
                   </button>
                 </div>
+                <p className="font-semibold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>{c.clientName}</p>
+                {c.description && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>{c.description}</p>}
+                <div>
+                  <p className="text-xl font-bold" style={{ color: "var(--color-warning)" }}>{formatCurrency(remaining)}</p>
+                  <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>acompte {formatCurrency(parseFloat(c.depositReceived))}</p>
+                </div>
+                {c.expectedDate && <p className="text-[10px] flex items-center gap-1" style={{ color: "var(--text-secondary)" }}><Clock size={9} />{new Date(c.expectedDate).toLocaleDateString("fr-FR")}</p>}
               </Card>
             )
           })}

@@ -10,7 +10,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   const { id } = await params
   const body = await req.json()
-  const { name, totalAmount, paidAmount, priority, dueDate, note, isActive } = body
+  const { name, totalAmount, paidAmount, priority, dueDate, note, whatsappNumber, isActive } = body
 
   const [updated] = await db
     .update(debts)
@@ -21,6 +21,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       ...(priority !== undefined && { priority: Number(priority) }),
       ...(dueDate !== undefined && { dueDate }),
       ...(note !== undefined && { note }),
+      ...(whatsappNumber !== undefined && { whatsappNumber }),
       ...(isActive !== undefined && { isActive }),
     })
     .where(eq(debts.id, id))

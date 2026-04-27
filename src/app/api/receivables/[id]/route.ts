@@ -10,7 +10,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
   const { id } = await params
   const body = await req.json()
-  const { name, reason, totalAmount, receivedAmount, expectedDate, note } = body
+  const { name, reason, totalAmount, receivedAmount, expectedDate, note, whatsappNumber } = body
 
   const total = parseFloat(String(totalAmount))
   const received = parseFloat(String(receivedAmount || 0))
@@ -25,6 +25,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       ...(receivedAmount !== undefined && { receivedAmount: String(receivedAmount) }),
       ...(expectedDate !== undefined && { expectedDate }),
       ...(note !== undefined && { note }),
+      ...(whatsappNumber !== undefined && { whatsappNumber }),
       status,
     })
     .where(eq(receivables.id, id))

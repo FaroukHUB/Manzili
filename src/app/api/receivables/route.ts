@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
 
   const body = await req.json()
-  const { name, reason, totalAmount, receivedAmount = "0", expectedDate, note } = body
+  const { name, reason, totalAmount, receivedAmount = "0", expectedDate, note, whatsappNumber } = body
 
   if (!name || !totalAmount) {
     return NextResponse.json({ error: "Champs manquants" }, { status: 400 })
@@ -39,6 +39,7 @@ export async function POST(req: Request) {
       expectedDate: expectedDate || null,
       status: Number(receivedAmount) >= Number(totalAmount) ? "received" : Number(receivedAmount) > 0 ? "partial" : "pending",
       note: note || null,
+      whatsappNumber: whatsappNumber || null,
     })
     .returning()
 

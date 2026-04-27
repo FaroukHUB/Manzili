@@ -51,6 +51,7 @@ export const debts = pgTable("debts", {
   priority: integer("priority").notNull().default(1),
   dueDate: date("due_date"),
   note: text("note"),
+  whatsappNumber: text("whatsapp_number"),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow(),
 })
@@ -76,6 +77,7 @@ export const receivables = pgTable("receivables", {
   expectedDate: date("expected_date"),
   status: text("status").notNull().default("pending"),
   note: text("note"),
+  whatsappNumber: text("whatsapp_number"),
   createdAt: timestamp("created_at").defaultNow(),
 })
 
@@ -108,6 +110,7 @@ export const contracts = pgTable("contracts", {
   status: text("status").notNull().default("signed"),
   expectedDate: date("expected_date"),
   note: text("note"),
+  whatsappNumber: text("whatsapp_number"),
   createdAt: timestamp("created_at").defaultNow(),
 })
 

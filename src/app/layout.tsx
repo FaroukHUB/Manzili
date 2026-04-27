@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Geist } from "next/font/google"
+import { PwaRegister } from "@/components/pwa-register"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -8,21 +9,34 @@ const geistSans = Geist({
 })
 
 export const metadata: Metadata = {
-  title: "Manzili — Mon tableau de bord",
-  description: "Suis tes heures, tes gains et tes dettes",
-  manifest: "/manifest.json",
+  title: "Manzili",
+  description: "Suivi de finances personnelles",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Manzili",
+  },
+  formatDetection: { telephone: false },
 }
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0a0a10",
+  minimumScale: 1,
+  viewportFit: "cover",
+  themeColor: "#8b5e3c",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={geistSans.variable}>
-      <body>{children}</body>
+      <head>
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
+      <body>
+        <PwaRegister />
+        {children}
+      </body>
     </html>
   )
 }

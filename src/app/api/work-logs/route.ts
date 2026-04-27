@@ -7,7 +7,7 @@ import { calculateHoursWorked, calculateEarnings } from "@/lib/utils"
 
 export async function GET(req: Request) {
   try {
-  const session = await auth()
+    const session = await auth()
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
 
   const { searchParams } = new URL(req.url)

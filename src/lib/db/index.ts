@@ -11,7 +11,9 @@ export function getDb(): DrizzleDb {
     if (!process.env.DATABASE_URL) {
       throw new Error("DATABASE_URL n'est pas définie. Configure ta base de données Neon.")
     }
-    const sql = neon(process.env.DATABASE_URL)
+    const url = new URL(process.env.DATABASE_URL)
+    url.searchParams.delete("channel_binding")
+    const sql = neon(url.toString())
     _db = drizzle(sql, { schema })
   }
   return _db

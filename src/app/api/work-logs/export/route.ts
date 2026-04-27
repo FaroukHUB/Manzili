@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { workLogs, USER_ID } from "@/lib/db/schema"
-import { eq, and, gte, lte } from "drizzle-orm"
+import { eq, and, gte, lt } from "drizzle-orm"
 
 export async function GET(req: Request) {
   const session = await auth()
@@ -16,11 +16,13 @@ export async function GET(req: Request) {
   if (month) {
     const [year, m] = month.split("-").map(Number)
     const start = `${year}-${String(m).padStart(2, "0")}-01`
-    const end = `${year}-${String(m).padStart(2, "0")}-31`
+    const nextM = m === 12 ? 1 : m + 1
+    const nextY = m === 12 ? year + 1 : year
+    const end = `${nextY}-${String(nextM).padStart(2, "0")}-01`
     rows = await db
       .select()
       .from(workLogs)
-      .where(and(eq(workLogs.userId, USER_ID), gte(workLogs.date, start), lte(workLogs.date, end)))
+      .where(and(eq(workLogs.userId, USER_ID), gte(workLogs.date, start), lt(workLogs.date, end)))
       .orderBy(workLogs.date)
   } else {
     rows = await db.select().from(workLogs).where(eq(workLogs.userId, USER_ID)).orderBy(workLogs.date)

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Calendar, TrendingDown, HandCoins, Wallet, Settings } from "lucide-react"
+import { LayoutDashboard, Calendar, TrendingDown, HandCoins, Wallet, FileSignature, PiggyBank, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -10,6 +10,8 @@ const navItems = [
   { href: "/calendar", icon: Calendar, label: "Calendrier" },
   { href: "/debts", icon: TrendingDown, label: "Dettes" },
   { href: "/receivables", icon: HandCoins, label: "On me doit" },
+  { href: "/contracts", icon: FileSignature, label: "Contrats" },
+  { href: "/assets", icon: PiggyBank, label: "Actif" },
   { href: "/expenses", icon: Wallet, label: "Dépenses" },
   { href: "/settings", icon: Settings, label: "Paramètres" },
 ]
@@ -32,7 +34,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </span>
           </div>
         </div>
-        <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
+        <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {navItems.map(({ href, icon: Icon, label }) => {
             const active = pathname === href
             return (
@@ -41,9 +43,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 href={href}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-                  active
-                    ? "text-white"
-                    : "hover:bg-[var(--bg-hover)]"
+                  active ? "text-white" : "hover:bg-[var(--bg-hover)]"
                 )}
                 style={
                   active

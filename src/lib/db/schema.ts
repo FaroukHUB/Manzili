@@ -89,6 +89,28 @@ export const fixedExpenses = pgTable("fixed_expenses", {
   createdAt: timestamp("created_at").defaultNow(),
 })
 
+export const assets = pgTable("assets", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id").notNull().default("user_1"),
+  name: text("name").notNull(),
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull().default("0"),
+  note: text("note"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+})
+
+export const contracts = pgTable("contracts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id").notNull().default("user_1"),
+  clientName: text("client_name").notNull(),
+  description: text("description"),
+  totalAmount: numeric("total_amount", { precision: 10, scale: 2 }).notNull(),
+  depositReceived: numeric("deposit_received", { precision: 10, scale: 2 }).notNull().default("0"),
+  status: text("status").notNull().default("signed"),
+  expectedDate: date("expected_date"),
+  note: text("note"),
+  createdAt: timestamp("created_at").defaultNow(),
+})
+
 export const businessActivities = pgTable("business_activities", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: text("user_id").notNull().default("user_1"),
@@ -127,3 +149,5 @@ export type Receivable = typeof receivables.$inferSelect
 export type FixedExpense = typeof fixedExpenses.$inferSelect
 export type BusinessActivity = typeof businessActivities.$inferSelect
 export type BusinessTransaction = typeof businessTransactions.$inferSelect
+export type Asset = typeof assets.$inferSelect
+export type Contract = typeof contracts.$inferSelect

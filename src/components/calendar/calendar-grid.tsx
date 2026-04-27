@@ -20,13 +20,16 @@ export function CalendarGrid() {
     setLoading(true)
     try {
       const monthStr = `${year}-${String(month + 1).padStart(2, "0")}`
-      const [logsRes, settingsRes] = await Promise.all([
-        fetch(`/api/work-logs?month=${monthStr}`),
-        fetch("/api/settings"),
-      ])
-      const [logs, sett] = await Promise.all([logsRes.json(), settingsRes.json()])
-      setWorkLogs(Array.isArray(logs) ? logs : [])
-      setSettings(sett?.id ? sett : null)
+      const logsRes = await fetch(`/api/work-logs?month=${monthStr}`)
+      if (logsRes.ok) {
+        const logs = await logsRes.json()
+        setWorkLogs(Array.isArray(logs) ? logs : [])
+      }
+      const settingsRes = await fetch("/api/settings")
+      if (settingsRes.ok) {
+        const sett = await settingsRes.json()
+        setSettings(sett?.id ? sett : null)
+      }
     } catch (e) {
       console.error("Calendar fetch error:", e)
     } finally {

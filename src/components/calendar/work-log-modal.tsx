@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Modal } from "@/components/ui/modal"
 import { Input, Textarea, Select } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { formatCurrency, formatHours, calculateHoursWorked, calculateEarnings, formatDateFR } from "@/lib/utils"
+import { formatCurrency, formatHours, calculateHoursWorked, calculateEarnings, formatDateFR, toISODate } from "@/lib/utils"
 import type { WorkLog, Settings } from "@/lib/db/schema"
 
 interface WorkLogModalProps {
@@ -65,7 +65,7 @@ export function WorkLogModal({
     if (!date) return
     setLoading(true)
 
-    const dateStr = date.toISOString().split("T")[0]
+    const dateStr = toISODate(date)
     const payload = { date: dateStr, startTime, endTime, breakMinutes: Number(breakMinutes) || 0, hourlyRate, source, note }
 
     const url = existingLog ? `/api/work-logs/${existingLog.id}` : "/api/work-logs"

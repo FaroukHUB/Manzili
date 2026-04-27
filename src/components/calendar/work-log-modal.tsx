@@ -34,6 +34,7 @@ export function WorkLogModal({
   const [note, setNote] = useState("")
   const [loading, setLoading] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (open) {
@@ -78,11 +79,12 @@ export function WorkLogModal({
 
     setLoading(false)
     if (res.ok) {
+      setError(null)
       await onSaved()
       onClose()
     } else {
-      const err = await res.json().catch(() => ({}))
-      console.error("Save error:", err)
+      const err = await res.json().catch(() => ({ error: `Erreur ${res.status}` }))
+      setError(err?.error || `Erreur ${res.status}`)
     }
   }
 
@@ -196,6 +198,10 @@ export function WorkLogModal({
           >
             Copier les horaires du jour précédent ({previousLog.startTime} → {previousLog.endTime})
           </button>
+        )}
+
+        {error && (
+          <p className="text-xs text-red-500 text-center">{error}</p>
         )}
 
         <div className="flex gap-2 pt-1">

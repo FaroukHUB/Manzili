@@ -27,7 +27,10 @@ export function calculateHoursWorked(
 ): number {
   const [startH, startM] = startTime.split(":").map(Number)
   const [endH, endM] = endTime.split(":").map(Number)
-  const totalMinutes = (endH * 60 + endM) - (startH * 60 + startM) - breakMinutes
+  let endTotal = endH * 60 + endM
+  const startTotal = startH * 60 + startM
+  if (endTotal <= startTotal) endTotal += 24 * 60 // passage minuit
+  const totalMinutes = endTotal - startTotal - breakMinutes
   return Math.max(0, totalMinutes / 60)
 }
 

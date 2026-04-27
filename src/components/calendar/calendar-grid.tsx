@@ -18,15 +18,20 @@ export function CalendarGrid() {
 
   const fetchData = useCallback(async () => {
     setLoading(true)
-    const monthStr = `${year}-${String(month + 1).padStart(2, "0")}`
-    const [logsRes, settingsRes] = await Promise.all([
-      fetch(`/api/work-logs?month=${monthStr}`),
-      fetch("/api/settings"),
-    ])
-    const [logs, sett] = await Promise.all([logsRes.json(), settingsRes.json()])
-    setWorkLogs(Array.isArray(logs) ? logs : [])
-    setSettings(sett)
-    setLoading(false)
+    try {
+      const monthStr = `${year}-${String(month + 1).padStart(2, "0")}`
+      const [logsRes, settingsRes] = await Promise.all([
+        fetch(`/api/work-logs?month=${monthStr}`),
+        fetch("/api/settings"),
+      ])
+      const [logs, sett] = await Promise.all([logsRes.json(), settingsRes.json()])
+      setWorkLogs(Array.isArray(logs) ? logs : [])
+      setSettings(sett?.id ? sett : null)
+    } catch (e) {
+      console.error("Calendar fetch error:", e)
+    } finally {
+      setLoading(false)
+    }
   }, [year, month])
 
   useEffect(() => { fetchData() }, [fetchData])

@@ -70,15 +70,20 @@ export function WorkLogModal({
     const url = existingLog ? `/api/work-logs/${existingLog.id}` : "/api/work-logs"
     const method = existingLog ? "PUT" : "POST"
 
-    await fetch(url, {
+    const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
 
     setLoading(false)
-    onSaved()
-    onClose()
+    if (res.ok) {
+      await onSaved()
+      onClose()
+    } else {
+      const err = await res.json().catch(() => ({}))
+      console.error("Save error:", err)
+    }
   }
 
   async function handleDelete() {

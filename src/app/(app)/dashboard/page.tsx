@@ -25,30 +25,35 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function fetchAll() {
-      const now = new Date()
-      const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
-      const todayStr = toISODate(now)
+      try {
+        const now = new Date()
+        const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
+        const todayStr = toISODate(now)
 
-      const [logsRes, debtsRes, expensesRes, settingsRes, receivablesRes] = await Promise.all([
-        fetch(`/api/work-logs?month=${monthStr}`),
-        fetch("/api/debts"),
-        fetch("/api/expenses"),
-        fetch("/api/settings"),
-        fetch("/api/receivables"),
-      ])
+        const [logsRes, debtsRes, expensesRes, settingsRes, receivablesRes] = await Promise.all([
+          fetch(`/api/work-logs?month=${monthStr}`),
+          fetch("/api/debts"),
+          fetch("/api/expenses"),
+          fetch("/api/settings"),
+          fetch("/api/receivables"),
+        ])
 
-      const [logs, dbts, exps, sett, recvs] = await Promise.all([
-        logsRes.json(), debtsRes.json(), expensesRes.json(), settingsRes.json(), receivablesRes.json()
-      ])
+        const [logs, dbts, exps, sett, recvs] = await Promise.all([
+          logsRes.json(), debtsRes.json(), expensesRes.json(), settingsRes.json(), receivablesRes.json()
+        ])
 
-      const allLogs: WorkLog[] = Array.isArray(logs) ? logs : []
-      setMonthLogs(allLogs)
-      setTodayLog(allLogs.find((l) => l.date === todayStr) ?? null)
-      setDebts(Array.isArray(dbts) ? dbts.filter((d: Debt) => d.isActive) : [])
-      setExpenses(Array.isArray(exps) ? exps.filter((e: FixedExpense) => e.isActive) : [])
-      setSettings(sett)
-      setReceivables(Array.isArray(recvs) ? recvs : [])
-      setLoading(false)
+        const allLogs: WorkLog[] = Array.isArray(logs) ? logs : []
+        setMonthLogs(allLogs)
+        setTodayLog(allLogs.find((l) => l.date === todayStr) ?? null)
+        setDebts(Array.isArray(dbts) ? dbts.filter((d: Debt) => d.isActive) : [])
+        setExpenses(Array.isArray(exps) ? exps.filter((e: FixedExpense) => e.isActive) : [])
+        setSettings(sett?.id ? sett : null)
+        setReceivables(Array.isArray(recvs) ? recvs : [])
+      } catch (e) {
+        console.error("Dashboard fetch error:", e)
+      } finally {
+        setLoading(false)
+      }
     }
     fetchAll()
   }, [])

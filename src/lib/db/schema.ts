@@ -87,6 +87,8 @@ export const fixedExpenses = pgTable("fixed_expenses", {
   name: text("name").notNull(),
   amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
   category: text("category").notNull().default("other"),
+  frequency: text("frequency").notNull().default("monthly"), // "monthly" | "one_time"
+  expenseDate: date("expense_date"), // for one_time expenses
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow(),
 })

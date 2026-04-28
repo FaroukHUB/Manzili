@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
 
   const body = await req.json()
-  const { name, amount, category = "other" } = body
+  const { name, amount, category = "other", frequency = "monthly", expenseDate } = body
 
   if (!name || !amount) {
     return NextResponse.json({ error: "Champs manquants" }, { status: 400 })
@@ -29,7 +29,14 @@ export async function POST(req: Request) {
 
   const [created] = await db
     .insert(fixedExpenses)
-    .values({ userId: USER_ID, name, amount: String(amount), category })
+    .values({
+      userId: USER_ID,
+      name,
+      amount: String(amount),
+      category,
+      frequency,
+      expenseDate: frequency === "one_time" ? (expenseDate || null) : null,
+    })
     .returning()
 
   return NextResponse.json(created, { status: 201 })

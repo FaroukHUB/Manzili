@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Modal } from "@/components/ui/modal"
 import { Input, Textarea, Select } from "@/components/ui/input"
 import { formatCurrency } from "@/lib/utils"
-import type { Contract } from "@/lib/db/schema"
+import type { Contract, Asset } from "@/lib/db/schema"
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   signed:    { label: "Signé",    color: "var(--color-warning)" },
@@ -25,6 +25,7 @@ function WhatsAppIcon() {
 
 export default function ContractsPage() {
   const [contracts, setContracts] = useState<Contract[]>([])
+  const [assets, setAssets] = useState<Asset[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Contract | null>(null)
@@ -33,6 +34,7 @@ export default function ContractsPage() {
   const [description, setDescription] = useState("")
   const [totalAmount, setTotalAmount] = useState("")
   const [depositReceived, setDepositReceived] = useState("0")
+  const [depositSourceId, setDepositSourceId] = useState("")
   const [status, setStatus] = useState("signed")
   const [expectedDate, setExpectedDate] = useState("")
   const [note, setNote] = useState("")
@@ -41,8 +43,9 @@ export default function ContractsPage() {
 
   async function fetchData() {
     try {
-      const res = await fetch("/api/contracts")
-      if (res.ok) setContracts(await res.json())
+      const [contractRes, assetRes] = await Promise.all([fetch("/api/contracts"), fetch("/api/assets")])
+      if (contractRes.ok) setContracts(await contractRes.json())
+      if (assetRes.ok) setAssets(await assetRes.json())
     } catch (e) {
       console.error(e)
     } finally {
@@ -55,7 +58,7 @@ export default function ContractsPage() {
   function openNew() {
     setEditing(null)
     setClientName(""); setDescription(""); setTotalAmount("")
-    setDepositReceived("0"); setStatus("signed"); setExpectedDate(""); setNote(""); setWhatsappNumber("")
+    setDepositReceived("0"); setDepositSourceId(assets[0]?.id || ""); setStatus("signed"); setExpectedDate(""); setNote(""); setWhatsappNumber("")
     setModalOpen(true)
   }
 
@@ -63,6 +66,7 @@ export default function ContractsPage() {
     setEditing(c)
     setClientName(c.clientName); setDescription(c.description || "")
     setTotalAmount(c.totalAmount); setDepositReceived(c.depositReceived)
+    setDepositSourceId(assets[0]?.id || "")
     setStatus(c.status); setExpectedDate(c.expectedDate || ""); setNote(c.note || "")
     setWhatsappNumber(c.whatsappNumber || "")
     setModalOpen(true)
@@ -71,10 +75,20 @@ export default function ContractsPage() {
   async function handleSave() {
     if (!clientName || !totalAmount) return
     setSaving(true)
+    const prevDeposit = parseFloat(editing?.depositReceived || "0")
+    const newDeposit = parseFloat(depositReceived || "0")
     const payload = { clientName, description, totalAmount, depositReceived, status, expectedDate: expectedDate || null, note, whatsappNumber: whatsappNumber || null }
     const url = editing ? `/api/contracts/${editing.id}` : "/api/contracts"
     const method = editing ? "PUT" : "POST"
     const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+    const delta = newDeposit - prevDeposit
+    if (res.ok && depositSourceId && delta > 0) {
+      await fetch(`/api/assets/${depositSourceId}/adjust`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta }),
+      })
+    }
     setSaving(false)
     if (res.ok) { await fetchData(); setModalOpen(false) }
   }
@@ -179,6 +193,10 @@ export default function ContractsPage() {
             <Input label="Montant total" type="number" value={totalAmount} onChange={e => setTotalAmount(e.target.value)} suffix="€" />
             <Input label="Acompte reçu" type="number" value={depositReceived} onChange={e => setDepositReceived(e.target.value)} suffix="€" />
           </div>
+          {assets.length > 0 && parseFloat(depositReceived || "0") > parseFloat(editing?.depositReceived || "0") && (
+            <Select label="Acompte crédité sur" value={depositSourceId} onChange={e => setDepositSourceId(e.target.value)}
+              options={[{ value: "", label: "— Ne pas créditer —" }, ...assets.map(a => ({ value: a.id, label: `${a.name} (${formatCurrency(parseFloat(a.amount))})` }))]} />
+          )}
           <div className="grid grid-cols-2 gap-3">
             <Select label="Statut" value={status} onChange={e => setStatus(e.target.value)} options={[
               { value: "signed", label: "Signé" },

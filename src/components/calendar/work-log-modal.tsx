@@ -5,7 +5,7 @@ import { Modal } from "@/components/ui/modal"
 import { Input, Textarea, Select } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { formatCurrency, formatHours, calculateHoursWorked, calculateEarnings, formatDateFR, toISODate } from "@/lib/utils"
-import type { WorkLog, Settings } from "@/lib/db/schema"
+import type { WorkLog, Settings, Asset } from "@/lib/db/schema"
 
 interface WorkLogModalProps {
   open: boolean
@@ -35,6 +35,8 @@ export function WorkLogModal({
   const [loading, setLoading] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [assetList, setAssetList] = useState<Asset[]>([])
+  const [creditAssetId, setCreditAssetId] = useState("")
 
   useEffect(() => {
     if (open) {
@@ -53,6 +55,12 @@ export function WorkLogModal({
         setSource("pizzeria")
         setNote("")
       }
+      fetch("/api/assets").then(r => r.json()).then((data: Asset[]) => {
+        if (Array.isArray(data)) {
+          setAssetList(data)
+          setCreditAssetId(data[0]?.id || "")
+        }
+      }).catch(() => {})
     }
   }, [open, existingLog, settings])
 
@@ -76,6 +84,14 @@ export function WorkLogModal({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
+
+    if (res.ok && !existingLog && creditAssetId && earnings > 0) {
+      await fetch(`/api/assets/${creditAssetId}/adjust`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta: earnings }),
+      })
+    }
 
     setLoading(false)
     if (res.ok) {
@@ -181,6 +197,18 @@ export function WorkLogModal({
             { value: "other", label: "📦 Autre" },
           ]}
         />
+
+        {!existingLog && assetList.length > 0 && (
+          <Select
+            label="Créditer sur"
+            value={creditAssetId}
+            onChange={(e) => setCreditAssetId(e.target.value)}
+            options={[
+              { value: "", label: "— Ne pas créditer —" },
+              ...assetList.map(a => ({ value: a.id, label: `${a.name} (${a.amount} €)` })),
+            ]}
+          />
+        )}
 
         <Textarea
           label="Note (optionnel)"

@@ -8,7 +8,7 @@ import { Input, Textarea, Select } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ProgressBar } from "@/components/ui/progress-bar"
 import { formatCurrency, formatDateFR } from "@/lib/utils"
-import type { Debt } from "@/lib/db/schema"
+import type { Debt, Asset } from "@/lib/db/schema"
 
 const PAYMENT_METHODS = [
   { value: "virement bancaire", label: "Virement bancaire" },
@@ -30,6 +30,7 @@ function WhatsAppIcon() {
 
 export default function DebtsPage() {
   const [debts, setDebts] = useState<Debt[]>([])
+  const [assets, setAssets] = useState<Asset[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [payModalOpen, setPayModalOpen] = useState(false)
@@ -49,14 +50,17 @@ export default function DebtsPage() {
   const [payDate, setPayDate] = useState(new Date().toISOString().split("T")[0])
   const [payNote, setPayNote] = useState("")
   const [payMethod, setPayMethod] = useState("virement bancaire")
+  const [paySourceId, setPaySourceId] = useState("")
   const [paymentDone, setPaymentDone] = useState(false)
   const [lastPayAmount, setLastPayAmount] = useState("")
 
   async function fetchDebts() {
     setLoading(true)
-    const res = await fetch("/api/debts")
-    const data = await res.json()
-    setDebts(Array.isArray(data) ? data.filter((d: Debt) => d.isActive) : [])
+    const [debtRes, assetRes] = await Promise.all([fetch("/api/debts"), fetch("/api/assets")])
+    const debtData = await debtRes.json()
+    const assetData = await assetRes.json()
+    setDebts(Array.isArray(debtData) ? debtData.filter((d: Debt) => d.isActive) : [])
+    setAssets(Array.isArray(assetData) ? assetData : [])
     setLoading(false)
   }
 
@@ -79,7 +83,7 @@ export default function DebtsPage() {
   function openPay(debt: Debt) {
     setPaying(debt)
     setPayAmount(""); setPayDate(new Date().toISOString().split("T")[0])
-    setPayNote(""); setPayMethod("virement bancaire"); setPaymentDone(false); setLastPayAmount("")
+    setPayNote(""); setPayMethod("virement bancaire"); setPaySourceId(assets[0]?.id || ""); setPaymentDone(false); setLastPayAmount("")
     setPayModalOpen(true)
   }
 
@@ -106,6 +110,13 @@ export default function DebtsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: payAmount, paymentDate: payDate, note: payNote }),
     })
+    if (paySourceId) {
+      await fetch(`/api/assets/${paySourceId}/adjust`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta: -parseFloat(payAmount) }),
+      })
+    }
     setSaving(false)
     setLastPayAmount(payAmount)
     setPaymentDone(true)
@@ -237,6 +248,10 @@ export default function DebtsPage() {
             <>
               <Input label="Montant payé" type="number" min="0" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} suffix="€" autoFocus />
               <Select label="Mode de paiement" value={payMethod} onChange={(e) => setPayMethod(e.target.value)} options={PAYMENT_METHODS} />
+              {assets.length > 0 && (
+                <Select label="Déduire de" value={paySourceId} onChange={(e) => setPaySourceId(e.target.value)}
+                  options={[{ value: "", label: "— Ne pas déduire —" }, ...assets.map(a => ({ value: a.id, label: `${a.name} (${formatCurrency(parseFloat(a.amount))})` }))]} />
+              )}
               <Input label="Date du paiement" type="date" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
               <Textarea label="Note (optionnel)" value={payNote} onChange={(e) => setPayNote(e.target.value)} />
               <Button onClick={handlePay} loading={saving}>Confirmer le paiement</Button>

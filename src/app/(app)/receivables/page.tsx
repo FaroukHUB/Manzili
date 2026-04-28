@@ -4,11 +4,11 @@ import { useState, useEffect } from "react"
 import { Plus, Trash2, CheckCircle } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Modal } from "@/components/ui/modal"
-import { Input, Textarea } from "@/components/ui/input"
+import { Input, Textarea, Select } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ProgressBar } from "@/components/ui/progress-bar"
 import { formatCurrency, formatDateFR } from "@/lib/utils"
-import type { Receivable } from "@/lib/db/schema"
+import type { Receivable, Asset } from "@/lib/db/schema"
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   pending: { label: "En attente", color: "var(--color-warning)" },
@@ -26,6 +26,7 @@ function WhatsAppIcon() {
 
 export default function ReceivablesPage() {
   const [items, setItems] = useState<Receivable[]>([])
+  const [assets, setAssets] = useState<Asset[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Receivable | null>(null)
@@ -39,11 +40,17 @@ export default function ReceivablesPage() {
   const [note, setNote] = useState("")
   const [whatsappNumber, setWhatsappNumber] = useState("")
 
+  const [receiveModalOpen, setReceiveModalOpen] = useState(false)
+  const [receiving, setReceiving] = useState<Receivable | null>(null)
+  const [receiveSourceId, setReceiveSourceId] = useState("")
+
   async function fetchItems() {
     setLoading(true)
-    const res = await fetch("/api/receivables")
-    const data = await res.json()
-    setItems(Array.isArray(data) ? data : [])
+    const [itemRes, assetRes] = await Promise.all([fetch("/api/receivables"), fetch("/api/assets")])
+    const itemData = await itemRes.json()
+    const assetData = await assetRes.json()
+    setItems(Array.isArray(itemData) ? itemData : [])
+    setAssets(Array.isArray(assetData) ? assetData : [])
     setLoading(false)
   }
 
@@ -72,12 +79,30 @@ export default function ReceivablesPage() {
     setSaving(false); setModalOpen(false); fetchItems()
   }
 
-  async function markReceived(item: Receivable) {
-    await fetch(`/api/receivables/${item.id}`, {
+  function openReceive(item: Receivable) {
+    setReceiving(item)
+    setReceiveSourceId(assets[0]?.id || "")
+    setReceiveModalOpen(true)
+  }
+
+  async function confirmReceive() {
+    if (!receiving) return
+    setSaving(true)
+    const delta = parseFloat(receiving.totalAmount) - parseFloat(receiving.receivedAmount)
+    await fetch(`/api/receivables/${receiving.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...item, receivedAmount: item.totalAmount }),
+      body: JSON.stringify({ ...receiving, receivedAmount: receiving.totalAmount }),
     })
+    if (receiveSourceId && delta > 0) {
+      await fetch(`/api/assets/${receiveSourceId}/adjust`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta }),
+      })
+    }
+    setSaving(false)
+    setReceiveModalOpen(false)
     fetchItems()
   }
 
@@ -158,7 +183,7 @@ export default function ReceivablesPage() {
                 {item.expectedDate && <p className="text-[10px]" style={{ color: "var(--text-secondary)" }}>Prévu {formatDateFR(item.expectedDate)}</p>}
                 <div className="flex gap-1 mt-auto pt-1">
                   {item.status !== "received" && (
-                    <Button variant="success" size="sm" className="flex-1 text-xs py-1" onClick={() => markReceived(item)}>
+                    <Button variant="success" size="sm" className="flex-1 text-xs py-1" onClick={() => openReceive(item)}>
                       <CheckCircle size={12} />
                     </Button>
                   )}
@@ -180,6 +205,24 @@ export default function ReceivablesPage() {
           })}
         </div>
       )}
+
+      <Modal open={receiveModalOpen} onClose={() => setReceiveModalOpen(false)} title={`Encaisser — ${receiving?.name}`}>
+        <div className="flex flex-col gap-3">
+          {receiving && (
+            <div className="rounded-xl p-3" style={{ background: "var(--color-gain-bg)" }}>
+              <p className="text-sm font-semibold" style={{ color: "var(--color-gain)" }}>
+                + {formatCurrency(parseFloat(receiving.totalAmount) - parseFloat(receiving.receivedAmount))}
+              </p>
+              <p className="text-xs mt-0.5" style={{ color: "var(--color-gain)" }}>Montant à encaisser</p>
+            </div>
+          )}
+          {assets.length > 0 && (
+            <Select label="Créditer sur" value={receiveSourceId} onChange={(e) => setReceiveSourceId(e.target.value)}
+              options={[{ value: "", label: "— Ne pas créditer —" }, ...assets.map(a => ({ value: a.id, label: `${a.name} (${formatCurrency(parseFloat(a.amount))})` }))]} />
+          )}
+          <Button onClick={confirmReceive} loading={saving}>Confirmer la réception</Button>
+        </div>
+      </Modal>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Modifier" : "Ce qu'on me doit"}>
         <div className="flex flex-col gap-3">

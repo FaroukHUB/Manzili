@@ -15,12 +15,16 @@ export async function POST(req: Request) {
   const session = await auth()
   if (!session) return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
   const body = await req.json()
-  const { clientName, description, totalAmount, depositReceived = 0, status = "signed", expectedDate, note } = body
+  const { clientName, description, totalAmount, depositReceived = 0, status = "signed", expectedDate, note, whatsappNumber } = body
   if (!clientName || totalAmount === undefined) return NextResponse.json({ error: "Champs manquants" }, { status: 400 })
+
+  const today = new Date().toISOString().slice(0, 10)
   const [created] = await db.insert(contracts).values({
     userId: USER_ID, clientName, description: description || null,
     totalAmount: String(totalAmount), depositReceived: String(depositReceived),
-    status, expectedDate: expectedDate || null, note: note || null,
+    status, expectedDate: expectedDate || null,
+    deliveredAt: status === "delivered" ? today : null,
+    note: note || null, whatsappNumber: whatsappNumber || null,
   }).returning()
   return NextResponse.json(created, { status: 201 })
 }

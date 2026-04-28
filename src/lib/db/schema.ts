@@ -111,6 +111,7 @@ export const contracts = pgTable("contracts", {
   depositReceived: numeric("deposit_received", { precision: 10, scale: 2 }).notNull().default("0"),
   status: text("status").notNull().default("signed"),
   expectedDate: date("expected_date"),
+  deliveredAt: date("delivered_at"),
   note: text("note"),
   whatsappNumber: text("whatsapp_number"),
   createdAt: timestamp("created_at").defaultNow(),

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { LayoutDashboard, Calendar, TrendingDown, HandCoins, Wallet, FileSignature, PiggyBank, Settings, MoreHorizontal, X } from "lucide-react"
+import { LayoutDashboard, Calendar, TrendingDown, HandCoins, Wallet, FileSignature, PiggyBank, Settings, MoreHorizontal, X, BarChart2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -14,6 +14,7 @@ const navItems = [
   { href: "/contracts", icon: FileSignature, label: "Contrats" },
   { href: "/assets", icon: PiggyBank, label: "Actif" },
   { href: "/expenses", icon: Wallet, label: "Dépenses" },
+  { href: "/reports", icon: BarChart2, label: "Rapports" },
   { href: "/settings", icon: Settings, label: "Paramètres" },
 ]
 

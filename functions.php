@@ -445,24 +445,51 @@ function manzili_pack_selector_assets() {
     <?php
 }
 
+// ── PANIER : valider la quantité côté serveur ─────────────────────────────────
+
+add_filter( 'woocommerce_add_to_cart_validation', 'manzili_validate_pack_qty', 10, 2 );
+function manzili_validate_pack_qty( $passed, $product_id ) {
+    if ( empty( $_POST['manzili_qty'] ) ) return $passed;
+
+    $pack_qty = absint( get_post_meta( $product_id, '_pack_quantity', true ) );
+    if ( $pack_qty <= 0 ) return $passed;
+
+    $total = 0;
+    foreach ( $_POST['manzili_qty'] as $qty ) {
+        $total += absint( $qty );
+    }
+
+    if ( $total !== $pack_qty ) {
+        wc_add_notice(
+            sprintf(
+                'Vous devez sélectionner exactement %d pcs. Total actuel : %d.',
+                $pack_qty,
+                $total
+            ),
+            'error'
+        );
+        return false;
+    }
+
+    return $passed;
+}
+
 // ── PANIER : sauvegarder la sélection ────────────────────────────────────────
 
 add_filter( 'woocommerce_add_cart_item_data', 'manzili_save_parfums_to_cart', 10, 2 );
 function manzili_save_parfums_to_cart( $cart_item_data, $product_id ) {
-    if ( empty( $_POST['manzili_parfums'] ) ) return $cart_item_data;
+    if ( empty( $_POST['manzili_qty'] ) ) return $cart_item_data;
 
     $selection = [];
-    foreach ( $_POST['manzili_parfums'] as $parfum ) {
-        $parfum = sanitize_text_field( $parfum );
-        $qty    = isset( $_POST['manzili_qty'][ $parfum ] ) ? absint( $_POST['manzili_qty'][ $parfum ] ) : 1;
+    foreach ( $_POST['manzili_qty'] as $parfum => $qty ) {
+        $qty = absint( $qty );
         if ( $qty > 0 ) {
-            $selection[ $parfum ] = $qty;
+            $selection[ sanitize_text_field( wp_unslash( $parfum ) ) ] = $qty;
         }
     }
 
     if ( ! empty( $selection ) ) {
         $cart_item_data['manzili_parfums'] = $selection;
-        // Clé unique pour éviter que WooCommerce fusionne des paniers différents
         $cart_item_data['manzili_unique_key'] = md5( serialize( $selection ) );
     }
 
@@ -499,7 +526,7 @@ function manzili_save_parfums_to_order( $item, $cart_item_key, $values, $order )
         $lines[] = esc_html( $parfum ) . ' × ' . intval( $qty );
     }
 
-    $item->add_meta_data( 'Références choisies', implode( ', ', $lines ), true );
+    $item->add_meta_data( 'Références choisies', implode( "\n", $lines ), true );
 }
 
 

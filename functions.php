@@ -1347,3 +1347,25 @@ function manzili_fragrance_slider() {
     return ob_get_clean();
 }
 add_shortcode( 'manzili_slider', 'manzili_fragrance_slider' );
+
+
+// ── LIVRAISON GRATUITE entre 69€ et 129€ ─────────────────────────────────────
+
+add_filter( 'woocommerce_package_rates', 'remove_free_shipping_above_max', 10, 2 );
+function remove_free_shipping_above_max( $rates, $package ) {
+    $min   = 69;
+    $max   = 129;
+    $total = WC()->cart->get_subtotal();
+
+    if ( $total >= $min && $total < $max ) {
+        return $rates;
+    }
+
+    foreach ( $rates as $rate_id => $rate ) {
+        if ( 'free_shipping' === $rate->method_id ) {
+            unset( $rates[ $rate_id ] );
+        }
+    }
+
+    return $rates;
+}

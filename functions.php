@@ -159,6 +159,18 @@ function manzili_display_parfum_selector() {
         </div>
 
         <p class="mzl-error" style="display:none;"></p>
+
+        <div class="mzl-vendor-wrap">
+            <button type="button" class="mzl-vendor-btn" id="mzlVendorBtn">
+                <span class="mzl-vendor-icon">★</span>
+                Laisser le vendeur choisir pour moi
+            </button>
+            <input type="hidden" name="manzili_vendor_chooses" id="manziliVendorChooses" value="0">
+            <p class="mzl-vendor-msg" id="mzlVendorMsg" style="display:none;">
+                Parfait — notre équipe sélectionnera les meilleures références pour vous.
+                <span class="mzl-vendor-undo" id="mzlVendorUndo">Annuler et choisir moi-même</span>
+            </p>
+        </div>
     </div>
     <?php
 }
@@ -320,6 +332,67 @@ function manzili_pack_selector_assets() {
             font-size: 13px;
             border-radius: 0 4px 4px 0;
         }
+
+        /* ── Bouton vendeur choisit ── */
+        .mzl-vendor-wrap {
+            margin-top: 20px;
+        }
+        .mzl-vendor-btn {
+            width: 100%;
+            padding: 15px 20px;
+            background: #111;
+            color: #c9a96e;
+            border: 1.5px solid #c9a96e;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.25s, color 0.25s;
+        }
+        .mzl-vendor-btn:hover {
+            background: #c9a96e;
+            color: #111;
+        }
+        .mzl-vendor-btn.is-active {
+            background: #c9a96e;
+            color: #111;
+            border-color: #c9a96e;
+        }
+        .mzl-vendor-icon {
+            font-size: 14px;
+        }
+        .mzl-vendor-msg {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #f9f6f0;
+            border-left: 3px solid #c9a96e;
+            color: #555;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .mzl-vendor-undo {
+            display: block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #c9a96e;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .mzl-grid.is-vendor-mode {
+            opacity: 0.35;
+            pointer-events: none;
+            user-select: none;
+        }
+        .mzl-header.is-vendor-mode .mzl-pill {
+            opacity: 0.4;
+        }
     </style>
 
     <script>
@@ -420,6 +493,8 @@ function manzili_pack_selector_assets() {
         var cartForm = document.querySelector('form.cart');
         if (cartForm) {
             cartForm.addEventListener('submit', function (e) {
+                if (vendorInput && vendorInput.value === '1') return;
+
                 var packQty = getPackQty();
                 if (packQty <= 0) return;
 
@@ -440,6 +515,41 @@ function manzili_pack_selector_assets() {
         /* Init : désactiver tous les boutons − */
         selector.querySelectorAll('.mzl-minus').forEach(function (btn) { btn.disabled = true; });
 
+        /* ── Mode vendeur choisit ── */
+        var vendorBtn   = document.getElementById('mzlVendorBtn');
+        var vendorInput = document.getElementById('manziliVendorChooses');
+        var vendorMsg   = document.getElementById('mzlVendorMsg');
+        var vendorUndo  = document.getElementById('mzlVendorUndo');
+        var grid        = selector.querySelector('.mzl-grid');
+        var header      = selector.querySelector('.mzl-header');
+
+        function enableVendorMode() {
+            selector.querySelectorAll('.mzl-item').forEach(function (item) { setItemQty(item, 0); });
+            vendorInput.value = '1';
+            vendorBtn.classList.add('is-active');
+            grid.classList.add('is-vendor-mode');
+            header.classList.add('is-vendor-mode');
+            vendorMsg.style.display = 'block';
+            selector.querySelector('.mzl-error').style.display = 'none';
+        }
+
+        function disableVendorMode() {
+            vendorInput.value = '0';
+            vendorBtn.classList.remove('is-active');
+            grid.classList.remove('is-vendor-mode');
+            header.classList.remove('is-vendor-mode');
+            vendorMsg.style.display = 'none';
+        }
+
+        if (vendorBtn) {
+            vendorBtn.addEventListener('click', function () {
+                if (vendorInput.value === '1') { disableVendorMode(); } else { enableVendorMode(); }
+            });
+        }
+        if (vendorUndo) {
+            vendorUndo.addEventListener('click', function () { disableVendorMode(); });
+        }
+
     })();
     </script>
     <?php
@@ -449,6 +559,10 @@ function manzili_pack_selector_assets() {
 
 add_filter( 'woocommerce_add_to_cart_validation', 'manzili_validate_pack_qty', 10, 2 );
 function manzili_validate_pack_qty( $passed, $product_id ) {
+    if ( ! empty( $_POST['manzili_vendor_chooses'] ) && '1' === $_POST['manzili_vendor_chooses'] ) {
+        return $passed;
+    }
+
     if ( empty( $_POST['manzili_qty'] ) ) return $passed;
 
     $pack_qty = absint( get_post_meta( $product_id, '_pack_quantity', true ) );
@@ -478,6 +592,12 @@ function manzili_validate_pack_qty( $passed, $product_id ) {
 
 add_filter( 'woocommerce_add_cart_item_data', 'manzili_save_parfums_to_cart', 10, 2 );
 function manzili_save_parfums_to_cart( $cart_item_data, $product_id ) {
+    if ( ! empty( $_POST['manzili_vendor_chooses'] ) && '1' === $_POST['manzili_vendor_chooses'] ) {
+        $cart_item_data['manzili_vendor_chooses'] = true;
+        $cart_item_data['manzili_unique_key']     = md5( 'vendor_chooses_' . $product_id . '_' . time() );
+        return $cart_item_data;
+    }
+
     if ( empty( $_POST['manzili_qty'] ) ) return $cart_item_data;
 
     $selection = [];
@@ -500,6 +620,14 @@ function manzili_save_parfums_to_cart( $cart_item_data, $product_id ) {
 
 add_filter( 'woocommerce_get_item_data', 'manzili_display_parfums_in_cart', 10, 2 );
 function manzili_display_parfums_in_cart( $item_data, $cart_item ) {
+    if ( ! empty( $cart_item['manzili_vendor_chooses'] ) ) {
+        $item_data[] = [
+            'name'  => 'Références choisies',
+            'value' => '⭐ Sélection au choix du vendeur',
+        ];
+        return $item_data;
+    }
+
     if ( empty( $cart_item['manzili_parfums'] ) ) return $item_data;
 
     $lines = [];
@@ -519,6 +647,11 @@ function manzili_display_parfums_in_cart( $item_data, $cart_item ) {
 
 add_action( 'woocommerce_checkout_create_order_line_item', 'manzili_save_parfums_to_order', 10, 4 );
 function manzili_save_parfums_to_order( $item, $cart_item_key, $values, $order ) {
+    if ( ! empty( $values['manzili_vendor_chooses'] ) ) {
+        $item->add_meta_data( 'Références choisies', '⭐ Sélection au choix du vendeur', true );
+        return;
+    }
+
     if ( empty( $values['manzili_parfums'] ) ) return;
 
     $lines = [];

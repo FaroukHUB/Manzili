@@ -710,7 +710,7 @@ function manzili_fragrance_slider() {
         [
             'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/07/ChatGPT-Image-31-juil.-2026-11_37_28.png',
             'bg_color'    => '#1a0d0a',
-            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/07/1000167726.jpg',
+            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/07/ChatGPT-Image-31-juil.-2026-11_50_44.png',
             'bottle_blend'=> false,
             'label'       => 'Collection Power',
             'title'       => 'Power',

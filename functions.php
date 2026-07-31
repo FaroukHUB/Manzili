@@ -708,8 +708,9 @@ function manzili_fragrance_slider() {
         ],
         /* 3 — Collection Power · Bakkara */
         [
-            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/07/ChatGPT-Image-31-juil.-2026-11_37_28.png',
+            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/07/ChatGPT-Image-31-juil.-2026-12_16_18.png',
             'bg_color'    => '#1a0d0a',
+            'bg_pos'      => 'center bottom',
             'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/07/ChatGPT-Image-31-juil.-2026-11_50_44.png',
             'bottle_blend'=> false,
             'label'       => 'Collection Power',
@@ -794,7 +795,7 @@ function manzili_fragrance_slider() {
 
         <?php foreach ( $slides as $i => $s ) : ?>
         <div class="lx-slide<?php echo $i === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $i; ?>">
-          <div class="lx-bg" style="background-image:url('<?php echo esc_url($s['bg']); ?>'); background-color:<?php echo esc_attr($s['bg_color']); ?>; transform:scale(1.03);"></div>
+          <div class="lx-bg" style="background-image:url('<?php echo esc_url($s['bg']); ?>'); background-color:<?php echo esc_attr($s['bg_color']); ?>; background-position:<?php echo esc_attr( $s['bg_pos'] ?? 'center' ); ?>; transform:scale(1.03);"></div>
           <div class="lx-overlay"></div>
           <div class="lx-overlay-bottom"></div>
           <div class="lx-grain"></div>

@@ -135,6 +135,18 @@ function manzili_display_parfum_selector() {
             <span class="mzl-pill"><strong class="mzl-count">0</strong> / <span class="mzl-pack-max"><?php echo esc_html( $max_display ); ?></span> pcs</span>
         </div>
 
+        <div class="mzl-vendor-wrap">
+            <button type="button" class="mzl-vendor-btn" id="mzlVendorBtn">
+                <span class="mzl-vendor-icon">★</span>
+                Laisser le vendeur choisir pour moi
+            </button>
+            <input type="hidden" name="manzili_vendor_chooses" id="manziliVendorChooses" value="0">
+            <p class="mzl-vendor-msg" id="mzlVendorMsg" style="display:none;">
+                Parfait — notre équipe sélectionnera les meilleures références pour vous.
+                <span class="mzl-vendor-undo" id="mzlVendorUndo">Annuler et choisir moi-même</span>
+            </p>
+        </div>
+
         <div class="mzl-grid">
             <?php foreach ( $parfums as $parfum ) :
                 $uid = 'mzl_' . sanitize_title( $parfum );
@@ -160,17 +172,6 @@ function manzili_display_parfum_selector() {
 
         <p class="mzl-error" style="display:none;"></p>
 
-        <div class="mzl-vendor-wrap">
-            <button type="button" class="mzl-vendor-btn" id="mzlVendorBtn">
-                <span class="mzl-vendor-icon">★</span>
-                Laisser le vendeur choisir pour moi
-            </button>
-            <input type="hidden" name="manzili_vendor_chooses" id="manziliVendorChooses" value="0">
-            <p class="mzl-vendor-msg" id="mzlVendorMsg" style="display:none;">
-                Parfait — notre équipe sélectionnera les meilleures références pour vous.
-                <span class="mzl-vendor-undo" id="mzlVendorUndo">Annuler et choisir moi-même</span>
-            </p>
-        </div>
     </div>
     <?php
 }
@@ -335,7 +336,7 @@ function manzili_pack_selector_assets() {
 
         /* ── Bouton vendeur choisit ── */
         .mzl-vendor-wrap {
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
         .mzl-vendor-btn {
             width: 100%;

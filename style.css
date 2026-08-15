@@ -25,6 +25,46 @@ Version: 3.0
     color: #1a1a1a !important;
 }
 
+/* ── Fix description produit : empêcher les colonnes de se chevaucher ── */
+.woocommerce-Tabs-panel--description table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.woocommerce-Tabs-panel--description td,
+.woocommerce-Tabs-panel--description th {
+    display: block;
+    width: 100% !important;
+    padding: 6px 0;
+    vertical-align: top;
+    float: none !important;
+}
+.woocommerce-Tabs-panel--description .wp-block-columns {
+    display: flex;
+    flex-direction: column !important;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.woocommerce-Tabs-panel--description .wp-block-column {
+    flex-basis: 100% !important;
+    min-width: 100% !important;
+    width: 100% !important;
+}
+.woocommerce-Tabs-panel--description [style*="float"],
+.woocommerce-Tabs-panel--description [style*="display:flex"],
+.woocommerce-Tabs-panel--description [style*="display: flex"] {
+    float: none !important;
+    display: block !important;
+    width: 100% !important;
+}
+.woocommerce-Tabs-panel--description .alignleft,
+.woocommerce-Tabs-panel--description .alignright {
+    float: none !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 16px 0 !important;
+}
+
 
 @media only screen and (max-width: 48em) {
 /*************** ADD MOBILE ONLY CSS HERE  ***************/

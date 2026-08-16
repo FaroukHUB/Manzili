@@ -1477,20 +1477,19 @@ add_shortcode( 'manzili_slider', 'manzili_fragrance_slider' );
 
 
 // ── LIVRAISON GRATUITE entre 69€ et 129€ ─────────────────────────────────────
+// Dans cette plage : tous les transporteurs passent à 0€ (client choisit, on paie)
+// En dehors de cette plage : les tarifs normaux s'appliquent
 
-add_filter( 'woocommerce_package_rates', 'remove_free_shipping_above_max', 10, 2 );
-function remove_free_shipping_above_max( $rates, $package ) {
+add_filter( 'woocommerce_package_rates', 'manzili_free_shipping_range', 10, 2 );
+function manzili_free_shipping_range( $rates, $package ) {
     $min   = 69;
     $max   = 129;
     $total = WC()->cart->get_subtotal();
 
     if ( $total >= $min && $total < $max ) {
-        return $rates;
-    }
-
-    foreach ( $rates as $rate_id => $rate ) {
-        if ( 'free_shipping' === $rate->method_id ) {
-            unset( $rates[ $rate_id ] );
+        foreach ( $rates as $rate_id => $rate ) {
+            $rates[ $rate_id ]->cost = 0;
+            $rates[ $rate_id ]->taxes = [];
         }
     }
 

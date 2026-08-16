@@ -1488,8 +1488,12 @@ function manzili_free_shipping_range( $rates, $package ) {
 
     if ( $total >= $min && $total < $max ) {
         foreach ( $rates as $rate_id => $rate ) {
-            $rates[ $rate_id ]->cost = 0;
-            $rates[ $rate_id ]->taxes = [];
+            if ( false !== stripos( $rate->label, 'Mondial Relay' ) ) {
+                $rates[ $rate_id ]->cost  = 0;
+                $rates[ $rate_id ]->taxes = [];
+            } else {
+                unset( $rates[ $rate_id ] );
+            }
         }
     }
 

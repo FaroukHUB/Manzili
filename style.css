@@ -66,6 +66,67 @@ Version: 3.0
 }
 
 
+/* ── Top Bar Livraison ── */
+#top-bar,
+#top-bar .bg-fill,
+#top-bar .nav-bar {
+    background: #0c0c0c !important;
+    border-bottom: 1px solid #b8973a !important;
+    padding: 10px 0 !important;
+    min-height: unset !important;
+}
+.mzl-tb-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 3px;
+    padding: 4px 0;
+}
+.mzl-tb-truck {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 2px;
+}
+.mzl-tb-title {
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 900;
+    color: #ffffff !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: block;
+    line-height: 1.1;
+}
+.mzl-tb-sep {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+}
+.mzl-tb-line {
+    flex: 1;
+    max-width: 90px;
+    height: 1px;
+    background: #b8973a;
+    display: block;
+}
+.mzl-tb-price {
+    color: #c9a84c !important;
+    font-weight: 800;
+    font-size: clamp(13px, 2vw, 17px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.mzl-tb-note {
+    font-size: 11px;
+    color: #888 !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+}
+
 @media only screen and (max-width: 48em) {
 /*************** ADD MOBILE ONLY CSS HERE  ***************/
 

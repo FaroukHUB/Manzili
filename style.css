@@ -85,9 +85,9 @@ Version: 3.0
 }
 .mzl-tb-truck {
     display: block;
-    width: 52px;
+    width: 30px;
     height: auto;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 .mzl-tb-title {
     font-size: clamp(18px, 3vw, 26px);

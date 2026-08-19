@@ -1476,6 +1476,125 @@ function manzili_fragrance_slider() {
 add_shortcode( 'manzili_slider', 'manzili_fragrance_slider' );
 
 
+// ── GARANTIES : barre icônes luxe ─────────────────────────────────────────────
+
+add_shortcode( 'manzili_garanties', 'manzili_render_garanties' );
+function manzili_render_garanties() {
+    ob_start(); ?>
+    <div class="mzl-gars">
+
+        <div class="mzl-gar">
+            <div class="mzl-gar-icon">
+                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 3L5 7.5v7c0 7.5 5 12.5 11 14.5 6-2 11-7 11-14.5v-7L16 3z" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/>
+                    <clipPath id="mzl-fr-clip"><path d="M16 3L5 7.5v7c0 7.5 5 12.5 11 14.5 6-2 11-7 11-14.5v-7L16 3z"/></clipPath>
+                    <rect x="5" y="3" width="8" height="26" fill="#1844c9" opacity="0.55" clip-path="url(#mzl-fr-clip)"/>
+                    <rect x="13" y="3" width="6" height="26" fill="#ffffff" opacity="0.35" clip-path="url(#mzl-fr-clip)"/>
+                    <rect x="19" y="3" width="8" height="26" fill="#c0112f" opacity="0.55" clip-path="url(#mzl-fr-clip)"/>
+                </svg>
+            </div>
+            <span class="mzl-gar-label">Fabriqué en France</span>
+        </div>
+
+        <div class="mzl-gar-sep"></div>
+
+        <div class="mzl-gar">
+            <div class="mzl-gar-icon">
+                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="1" y1="13" x2="4" y2="13" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="1" y1="16" x2="3" y2="16" stroke="#c9a84c" stroke-width="1.2" stroke-linecap="round"/>
+                    <rect x="4" y="9" width="17" height="13" rx="1" stroke="#c9a84c" stroke-width="1.2"/>
+                    <path d="M21 13h7l3 5v4H21V13z" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/>
+                    <circle cx="9" cy="24" r="2.5" stroke="#c9a84c" stroke-width="1.2"/>
+                    <circle cx="25" cy="24" r="2.5" stroke="#c9a84c" stroke-width="1.2"/>
+                </svg>
+            </div>
+            <span class="mzl-gar-label">Livraison Rapide</span>
+        </div>
+
+        <div class="mzl-gar-sep"></div>
+
+        <div class="mzl-gar">
+            <div class="mzl-gar-icon">
+                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2L4 7v8c0 7.5 5.5 13 12 15 6.5-2 12-7.5 12-15V7L16 2z" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round"/>
+                    <rect x="11" y="15" width="10" height="8" rx="1.5" stroke="#c9a84c" stroke-width="1.2"/>
+                    <path d="M13 15v-2.5a3 3 0 0 1 6 0V15" stroke="#c9a84c" stroke-width="1.2"/>
+                    <circle cx="16" cy="19" r="1.2" fill="#c9a84c"/>
+                </svg>
+            </div>
+            <span class="mzl-gar-label">Paiement sécurisé</span>
+        </div>
+
+        <div class="mzl-gar-sep"></div>
+
+        <div class="mzl-gar">
+            <div class="mzl-gar-icon">
+                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 19v-3a9 9 0 0 1 18 0v3" stroke="#c9a84c" stroke-width="1.2"/>
+                    <rect x="4" y="17" width="5" height="8" rx="2.5" stroke="#c9a84c" stroke-width="1.2"/>
+                    <rect x="23" y="17" width="5" height="8" rx="2.5" stroke="#c9a84c" stroke-width="1.2"/>
+                    <path d="M27 25v2a4 4 0 0 1-4 4h-5" stroke="#c9a84c" stroke-width="1.2"/>
+                    <circle cx="18" cy="31" r="1.5" stroke="#c9a84c" stroke-width="1.2"/>
+                </svg>
+            </div>
+            <span class="mzl-gar-label">Service Client 24/7</span>
+        </div>
+
+    </div>
+    <style>
+    .mzl-gars {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(12px, 3vw, 48px);
+        padding: 18px 20px;
+        background: #0c0c0c;
+        flex-wrap: wrap;
+    }
+    .mzl-gar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .mzl-gar-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 38% 35%, #2c2c2c, #080808);
+        border: 1.5px solid #c9a84c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 0 14px rgba(201,168,76,0.18);
+    }
+    .mzl-gar-icon svg { width: 26px; height: 26px; }
+    .mzl-gar-label {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+    .mzl-gar-sep {
+        width: 1px;
+        height: 36px;
+        background: #333;
+        flex-shrink: 0;
+    }
+    @media (max-width: 640px) {
+        .mzl-gars { flex-direction: column; align-items: flex-start; gap: 14px; }
+        .mzl-gar-sep { display: none; }
+        .mzl-gar-label { white-space: normal; }
+    }
+    </style>
+    <?php
+    return ob_get_clean();
+}
+
+
 // ── LIVRAISON GRATUITE entre 69€ et 129€ ─────────────────────────────────────
 // Dans cette plage : tous les transporteurs passent à 0€ (client choisit, on paie)
 // En dehors de cette plage : les tarifs normaux s'appliquent

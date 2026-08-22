@@ -1577,6 +1577,54 @@ function manzili_render_garanties() {
 }
 
 
+// ── STOCK : décrémenter les parfums individuels lors d'une commande pack ───────
+
+add_action( 'woocommerce_payment_complete',          'manzili_decrement_pack_stock' );
+add_action( 'woocommerce_order_status_processing',   'manzili_decrement_pack_stock' );
+function manzili_decrement_pack_stock( $order_id ) {
+    if ( get_post_meta( $order_id, '_manzili_stock_done', true ) ) return;
+    update_post_meta( $order_id, '_manzili_stock_done', '1' );
+
+    $order = wc_get_order( $order_id );
+    if ( ! $order ) return;
+
+    foreach ( $order->get_items() as $item ) {
+        $product_id = $item->get_product_id();
+        if ( ! get_post_meta( $product_id, '_pack_quantity', true ) ) continue;
+
+        $selection = $item->get_meta( 'Références choisies' );
+        if ( empty( $selection ) || false !== strpos( $selection, '⭐' ) ) continue;
+
+        foreach ( explode( "\n", $selection ) as $line ) {
+            $line = trim( $line );
+            if ( ! $line || ! preg_match( '/^(.+)\s×\s(\d+)$/', $line, $m ) ) continue;
+
+            $qty = (int) $m[2];
+            if ( $qty <= 0 ) continue;
+
+            $main = trim( preg_replace( '/\s*\(.*\)$/', '', $m[1] ) );
+
+            global $wpdb;
+            $pid = $wpdb->get_var( $wpdb->prepare(
+                "SELECT ID FROM {$wpdb->posts}
+                 WHERE post_type = 'product'
+                 AND post_status = 'publish'
+                 AND post_title LIKE %s
+                 LIMIT 1",
+                '%' . $wpdb->esc_like( $main ) . '%'
+            ) );
+
+            if ( ! $pid ) continue;
+
+            $product = wc_get_product( $pid );
+            if ( ! $product || ! $product->managing_stock() ) continue;
+
+            wc_update_product_stock( $product, $qty, 'decrease' );
+        }
+    }
+}
+
+
 // ── LIVRAISON GRATUITE entre 69€ et 129€ ─────────────────────────────────────
 // Dans cette plage : tous les transporteurs passent à 0€ (client choisit, on paie)
 // En dehors de cette plage : les tarifs normaux s'appliquent

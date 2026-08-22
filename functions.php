@@ -670,25 +670,7 @@ function manzili_save_parfums_to_order( $item, $cart_item_key, $values, $order )
    ============================================= */
 function manzili_fragrance_slider() {
     $slides = [
-        /* 1 — Collection L'Original · Bois Intense */
-        [
-            'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-bois.png',
-            'bg_color'    => '#1a2010',
-            'bottle'      => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bot-coloriginal-scaled.png',
-            'bottle_blend'=> false,
-            'label'       => "Collection Privée · L'Original",
-            'title'       => "L'Original",
-            'title_size'  => '',
-            'watermark'   => 'Bois Intense',
-            'desc'        => "Des fragrances d'exception inspirées des plus grands parfums du monde. Boisées, poudrées et sensuelles, chaque création allie noblesse olfactive et élégance intemporelle.",
-            'notes'       => 'Boisé · Poudré · Sensuel · Intemporel',
-            'link'        => 'https://www.collectionloriginal.com/product-category/collection-privee-loriginal/',
-            'link_label'  => 'Voir la collection',
-            'link2'       => '',
-            'link2_label' => '',
-            'has_bg_title'=> false,
-        ],
-        /* 2 — Coton Frais (produit) */
+        /* 1 — Coton Frais (produit) */
         [
             'bg'          => 'https://www.collectionloriginal.com/wp-content/uploads/2026/03/bg-coton.png',
             'bg_color'    => '#d0dce8',

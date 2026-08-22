@@ -1648,3 +1648,4 @@ function manzili_free_shipping_range( $rates, $package ) {
 
     return $rates;
 }
+

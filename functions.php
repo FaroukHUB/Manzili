@@ -1625,14 +1625,22 @@ function manzili_decrement_pack_stock( $order_id ) {
 }
 
 
-// ── LIVRAISON GRATUITE entre 69€ et 129€ ─────────────────────────────────────
-// Dans cette plage : tous les transporteurs passent à 0€ (client choisit, on paie)
-// En dehors de cette plage : les tarifs normaux s'appliquent
+// ── LIVRAISON GRATUITE entre 49€ et 129€ ─────────────────────────────────────
+// Dans cette plage : Mondial Relay uniquement à 0€ — hors packs revendeurs
+// Les packs revendeurs ne bénéficient jamais de la livraison gratuite
 
 add_filter( 'woocommerce_package_rates', 'manzili_free_shipping_range', 10, 2 );
 function manzili_free_shipping_range( $rates, $package ) {
-    $min   = 69;
-    $max   = 129;
+    $min = 49;
+    $max = 129;
+
+    // Packs revendeurs exclus : tarifs normaux s'appliquent
+    foreach ( WC()->cart->get_cart() as $item ) {
+        if ( get_post_meta( $item['product_id'], '_pack_quantity', true ) ) {
+            return $rates;
+        }
+    }
+
     $total = WC()->cart->get_subtotal();
 
     if ( $total >= $min && $total < $max ) {

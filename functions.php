@@ -1634,9 +1634,14 @@ function manzili_free_shipping_range( $rates, $package ) {
     $min = 49;
     $max = 129;
 
-    // Packs revendeurs exclus : tarifs normaux s'appliquent
+    // Packs revendeurs : on supprime la livraison gratuite native, tarifs normaux s'appliquent
     foreach ( WC()->cart->get_cart() as $item ) {
         if ( get_post_meta( $item['product_id'], '_pack_quantity', true ) ) {
+            foreach ( $rates as $rate_id => $rate ) {
+                if ( 'free_shipping' === $rate->method_id ) {
+                    unset( $rates[ $rate_id ] );
+                }
+            }
             return $rates;
         }
     }

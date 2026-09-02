@@ -842,9 +842,27 @@ function manzili_fragrance_slider() {
         </div>
 
         <div class="lx-progress" id="lxProgress"></div>
+        <h1 class="lx-seo-h1">Parfums inspirés des grandes signatures à prix accessible</h1>
       </div>
     </div>
     <style>
+    .lx-seo-h1 {
+      position:absolute;
+      bottom:28px; left:0; right:0;
+      text-align:center;
+      font-family:'Montserrat', sans-serif;
+      font-size:clamp(9px,1.1vw,13px);
+      font-weight:300;
+      letter-spacing:0.28em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.38);
+      margin:0; padding:0;
+      z-index:50;
+      pointer-events:none;
+    }
+    @media(max-width:48em) {
+      .lx-seo-h1 { bottom:52px; font-size:9px; letter-spacing:0.18em; }
+    }
     /* ── LUXURY SLIDER ── */
     :root {
       --lx-gold:      #c9a96e;

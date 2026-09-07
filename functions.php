@@ -1680,3 +1680,16 @@ function manzili_free_shipping_range( $rates, $package ) {
     return $rates;
 }
 
+
+// ── Badge Qualité du magasin Google Merchant Center ───────────────────────────
+add_action( 'wp_footer', 'manzili_google_store_badge' );
+function manzili_google_store_badge() {
+    ?>
+    <script src="https://www.google.com/shopping/stores/qualify/api/api.js" async></script>
+    <div class="g-storequalitybadge"
+         data-merchant-id="5787219288"
+         data-position="BOTTOM_LEFT">
+    </div>
+    <?php
+}
+

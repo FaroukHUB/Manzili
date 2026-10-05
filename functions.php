@@ -1743,3 +1743,25 @@ function manzili_google_store_badge() {
     <?php
 }
 
+
+// ── Styles des descriptions produits Collection L'Original ───────────────────
+function clo_enqueue_product_description_styles() {
+    if ( ! function_exists( 'is_product' ) || ! is_product() ) {
+        return;
+    }
+
+    $relative_path = '/assets/css/clo-products.css';
+    $file_path     = get_stylesheet_directory() . $relative_path;
+
+    if ( ! is_readable( $file_path ) ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'clo-product-descriptions',
+        get_stylesheet_directory_uri() . $relative_path,
+        array(),
+        (string) filemtime( $file_path )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'clo_enqueue_product_description_styles', 30 );

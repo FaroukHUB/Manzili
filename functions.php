@@ -1765,3 +1765,26 @@ function clo_enqueue_product_description_styles() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'clo_enqueue_product_description_styles', 30 );
+
+// ── CLO Template System ───────────────────────────────────────────────────────
+require_once get_stylesheet_directory() . '/includes/clo-meta-box.php';
+require_once get_stylesheet_directory() . '/includes/clo-template.php';
+
+add_filter( 'woocommerce_product_tabs', function ( $tabs ) {
+	if ( isset( $tabs['description'] ) ) {
+		$tabs['description']['callback'] = 'clo_product_description_tab_callback';
+	}
+	return $tabs;
+}, 98 );
+
+function clo_product_description_tab_callback(): void {
+	global $product;
+	if ( ! $product ) {
+		return;
+	}
+	if ( get_post_meta( $product->get_id(), '_clo_enabled', true ) ) {
+		echo clo_render_product_description( $product->get_id() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	} else {
+		wc_get_template( 'single-product/tabs/description.php' );
+	}
+}

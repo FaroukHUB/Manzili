@@ -108,7 +108,7 @@ add_action( 'save_post_product', function ( $post_id ) {
 		'_clo_disclaimer',
 	);
 
-	$int_fields = array( '_clo_image_1_id', '_clo_image_2_id', '_clo_image_3_id' );
+	$int_fields = array( '_clo_image_1_id', '_clo_image_2_id', '_clo_image_3_id', '_clo_video_id' );
 
 	foreach ( $text_fields as $field ) {
 		$key = ltrim( $field, '_' );
@@ -139,9 +139,11 @@ function clo_meta_box_render( WP_Post $post ): void {
 	$img1_id   = $gi( '_clo_image_1_id' );
 	$img2_id   = $gi( '_clo_image_2_id' );
 	$img3_id   = $gi( '_clo_image_3_id' );
+	$video_id  = $gi( '_clo_video_id' );
 	$img1_url  = $img1_id ? wp_get_attachment_image_url( $img1_id, 'thumbnail' ) : '';
 	$img2_url  = $img2_id ? wp_get_attachment_image_url( $img2_id, 'thumbnail' ) : '';
 	$img3_url  = $img3_id ? wp_get_attachment_image_url( $img3_id, 'thumbnail' ) : '';
+	$video_url = $video_id ? wp_get_attachment_url( $video_id ) : '';
 
 	?>
 	<p>
@@ -250,6 +252,27 @@ function clo_meta_box_render( WP_Post $post ): void {
 
 			<p class="clo-group-title">Image 3 (ambiance soirée)</p>
 			<?php clo_image_picker_row( 3, $img3_id, $img3_url, $g( '_clo_image_3_alt' ), $g( '_clo_image_3_caption' ), true ); ?>
+		</div>
+	</details>
+
+	<details class="clo-meta-section">
+		<summary>Vidéo popup (popup à l'entrée de la fiche)</summary>
+		<div class="inside">
+			<p style="color:#666;font-size:12px;margin-bottom:10px;">Vidéo uploadée dans la médiathèque WordPress. Elle s'affiche automatiquement en popup quand le visiteur arrive sur la fiche (une seule fois par session).</p>
+			<input type="hidden" id="clo_video_id" name="clo_video_id" value="<?php echo esc_attr( (string) $video_id ); ?>">
+			<div class="clo-img-picker">
+				<?php if ( $video_url ) : ?>
+					<video src="<?php echo esc_url( $video_url ); ?>" style="max-width:120px;max-height:80px;border:1px solid #ccc;" controls muted></video>
+				<?php endif; ?>
+				<div>
+					<button type="button" id="clo-video-pick" class="button" data-title="Choisir une vidéo">
+						<?php echo $video_url ? 'Changer la vidéo' : 'Choisir une vidéo'; ?>
+					</button>
+					<button type="button" id="clo-video-remove" class="button" style="<?php echo $video_url ? '' : 'display:none;'; ?>">
+						Supprimer
+					</button>
+				</div>
+			</div>
 		</div>
 	</details>
 

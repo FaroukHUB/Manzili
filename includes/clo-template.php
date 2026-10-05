@@ -378,6 +378,36 @@ function clo_render_product_description( int $post_id ): string {
 			</section>
 		<?php endif; ?>
 
+		<?php
+		$video_id  = (int) $m( '_clo_video_id' );
+		$video_url = $video_id ? (string) wp_get_attachment_url( $video_id ) : '';
+		if ( '' !== $video_url ) :
+		?>
+			<div class="clo-popup-overlay" id="clo-video-popup-<?php echo esc_attr( (string) $post_id ); ?>" role="dialog" aria-modal="true" aria-label="Vidéo <?php echo esc_attr( $product_name ); ?>">
+				<div class="clo-popup-inner">
+					<button class="clo-popup-close" aria-label="Fermer la vidéo">&#x2715;</button>
+					<video src="<?php echo esc_url( $video_url ); ?>" controls playsinline preload="metadata" style="width:100%;display:block;"></video>
+				</div>
+			</div>
+			<script>
+			(function(){
+				var id   = 'clo_popup_<?php echo esc_js( (string) $post_id ); ?>';
+				var popup = document.getElementById('clo-video-popup-<?php echo esc_js( (string) $post_id ); ?>');
+				if (!popup || sessionStorage.getItem(id)) return;
+				var close = function(){
+					popup.classList.remove('clo-popup--open');
+					var v = popup.querySelector('video');
+					if(v){ v.pause(); }
+					sessionStorage.setItem(id,'1');
+				};
+				setTimeout(function(){ popup.classList.add('clo-popup--open'); }, 800);
+				popup.querySelector('.clo-popup-close').addEventListener('click', close);
+				popup.addEventListener('click', function(e){ if(e.target===popup) close(); });
+				document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+			}());
+			</script>
+		<?php endif; ?>
+
 		<?php if ( ! empty( $disc_links ) ) : ?>
 			<aside class="clo-discover" aria-label="<?php echo esc_attr( 'Découvrir ' . $product_name ); ?>">
 				<?php if ( '' !== $disc_h2 ) : ?>

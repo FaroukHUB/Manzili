@@ -147,6 +147,10 @@ function manzili_display_parfum_selector() {
             </p>
         </div>
 
+        <div class="mzl-search-wrap">
+            <input type="text" class="mzl-search" placeholder="Rechercher un parfum…" autocomplete="off" spellcheck="false">
+        </div>
+
         <div class="mzl-grid">
             <?php foreach ( $parfums as $parfum ) :
                 $uid = 'mzl_' . sanitize_title( $parfum );
@@ -170,6 +174,7 @@ function manzili_display_parfum_selector() {
             <?php endforeach; ?>
         </div>
 
+        <p class="mzl-no-results">Aucun parfum ne correspond à votre recherche.</p>
         <p class="mzl-error" style="display:none;"></p>
 
     </div>
@@ -190,6 +195,31 @@ function manzili_pack_selector_assets() {
         .mzl-selector {
             margin: 28px 0 20px;
             font-family: inherit;
+        }
+
+        /* ── Recherche ── */
+        .mzl-search-wrap {
+            margin-bottom: 14px;
+        }
+        .mzl-search {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 9px 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color .2s;
+        }
+        .mzl-search:focus {
+            border-color: #111;
+        }
+        .mzl-no-results {
+            display: none;
+            padding: 10px 0;
+            font-size: 13px;
+            color: #888;
+            text-align: center;
         }
 
         /* ── En-tête ── */
@@ -515,6 +545,27 @@ function manzili_pack_selector_assets() {
 
         /* Init : désactiver tous les boutons − */
         selector.querySelectorAll('.mzl-minus').forEach(function (btn) { btn.disabled = true; });
+
+        /* ── Recherche en temps réel ── */
+        var searchInput  = selector.querySelector('.mzl-search');
+        var noResults    = selector.querySelector('.mzl-no-results');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                var q = this.value.trim().toLowerCase();
+                var items = selector.querySelectorAll('.mzl-item');
+                var visible = 0;
+                items.forEach(function (item) {
+                    var name = (item.getAttribute('data-parfum') || '').toLowerCase();
+                    if (!q || name.indexOf(q) !== -1) {
+                        item.style.display = '';
+                        visible++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+            });
+        }
 
         /* ── Mode vendeur choisit ── */
         var vendorBtn   = document.getElementById('mzlVendorBtn');

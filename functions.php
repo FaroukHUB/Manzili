@@ -1737,6 +1737,39 @@ function manzili_free_shipping_range( $rates, $package ) {
 // Produits éligibles : tag WooCommerce "offre-2plus1"
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// ── Drapeau sur les vignettes (pages catégorie / boutique) ───────────────────
+add_action( 'woocommerce_before_shop_loop_item_title', 'manzili_bogo_loop_flag', 5 );
+function manzili_bogo_loop_flag() {
+    global $product;
+    if ( ! $product || ! has_term( 'offre-2plus1', 'product_tag', $product->get_id() ) ) return;
+    echo '<span class="mzl-bogo-flag">2 achetés = 1 offert</span>';
+}
+add_action( 'wp_head', 'manzili_bogo_flag_style' );
+function manzili_bogo_flag_style() {
+    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() ) return;
+    ?>
+    <style>
+    .mzl-bogo-flag {
+        position: absolute;
+        top: 14px;
+        left: 0;
+        background: #111;
+        color: #c9a84c;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        padding: 5px 12px 5px 10px;
+        line-height: 1;
+        z-index: 10;
+        pointer-events: none;
+        clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 50%, 100% 100%, 0 100%);
+    }
+    .woocommerce ul.products li.product { position: relative; }
+    </style>
+    <?php
+}
+
 // ── Badge sur la fiche produit ────────────────────────────────────────────────
 add_action( 'woocommerce_single_product_summary', 'manzili_bogo_badge', 25 );
 function manzili_bogo_badge() {

@@ -1830,21 +1830,41 @@ function manzili_parfum_search_bar(): void {
         <p class="mzl-cat-no-results" id="mzlCatNoResults" style="display:none;">Aucun parfum ne correspond à votre recherche.</p>
     </div>
     <style>
-        .mzl-cat-search-wrap { margin: 0 0 24px; }
+        .mzl-cat-search-wrap { margin: 0 0 32px; }
         .mzl-cat-search {
             width: 100%;
-            max-width: 420px;
+            max-width: 460px;
             box-sizing: border-box;
-            padding: 11px 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            padding: 13px 20px 13px 44px;
+            border: 1px solid #c9a84c;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #111;
+            background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9a84c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 14px center;
             outline: none;
-            transition: border-color .2s;
+            transition: border-color .25s, box-shadow .25s;
             display: block;
         }
-        .mzl-cat-search:focus { border-color: #111; }
-        .mzl-cat-no-results { font-size: 13px; color: #888; margin-top: 12px; }
+        .mzl-cat-search::placeholder {
+            color: #aaa;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: none;
+        }
+        .mzl-cat-search:focus {
+            border-color: #b8901e;
+            box-shadow: 0 0 0 3px rgba(201,168,76,.15);
+        }
+        .mzl-cat-no-results {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #c9a84c;
+            margin-top: 14px;
+        }
     </style>
     <script>
     (function () {

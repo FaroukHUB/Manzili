@@ -1738,7 +1738,7 @@ function manzili_free_shipping_range( $rates, $package ) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ── Drapeau sur les vignettes (pages catégorie / boutique) ───────────────────
-add_action( 'woocommerce_before_shop_loop_item_title', 'manzili_bogo_loop_flag', 5 );
+add_action( 'woocommerce_before_shop_loop_item', 'manzili_bogo_loop_flag', 5 );
 function manzili_bogo_loop_flag() {
     global $product;
     if ( ! $product || ! has_term( 'offre-2plus1', 'product_tag', $product->get_id() ) ) return;
@@ -1749,6 +1749,7 @@ function manzili_bogo_flag_style() {
     if ( ! is_shop() && ! is_product_category() && ! is_product_tag() ) return;
     ?>
     <style>
+    .woocommerce ul.products li.product { position: relative; overflow: visible; }
     .mzl-bogo-flag {
         position: absolute;
         top: 14px;
@@ -1759,13 +1760,12 @@ function manzili_bogo_flag_style() {
         font-weight: 700;
         letter-spacing: 1.2px;
         text-transform: uppercase;
-        padding: 5px 12px 5px 10px;
+        padding: 5px 14px 5px 10px;
         line-height: 1;
-        z-index: 10;
+        z-index: 20;
         pointer-events: none;
-        clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 50%, 100% 100%, 0 100%);
+        clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 50%, 100% 100%, 0 100%);
     }
-    .woocommerce ul.products li.product { position: relative; }
     </style>
     <?php
 }

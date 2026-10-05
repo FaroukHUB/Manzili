@@ -165,7 +165,7 @@ add_action( 'wp_footer', function () {
 	<div id="clo-site-popup" role="dialog" aria-modal="true" aria-label="Bienvenue sur notre site" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:999999;opacity:0;pointer-events:none;transition:opacity .4s ease;">
 		<div style="position:relative;width:min(900px,92vw);max-height:92vh;">
 			<button id="clo-site-popup-close" aria-label="Fermer la vidéo" style="position:absolute;top:-2.6rem;right:0;background:none;border:none;color:#fff;font-size:1.8rem;line-height:1;cursor:pointer;padding:.25rem .5rem;opacity:.85;">&#x2715;</button>
-			<video id="clo-site-popup-video" src="<?php echo esc_url( $video_url ); ?>" controls playsinline preload="metadata" style="width:100%;display:block;max-height:88vh;object-fit:contain;background:#000;"></video>
+			<video id="clo-site-popup-video" src="<?php echo esc_url( $video_url ); ?>" controls autoplay playsinline muted preload="auto" style="width:100%;display:block;max-height:88vh;object-fit:contain;background:#000;"></video>
 		</div>
 	</div>
 	<script>
@@ -195,6 +195,7 @@ add_action( 'wp_footer', function () {
 		setTimeout(function(){
 			popup.style.opacity='1';
 			popup.style.pointerEvents='all';
+			if(video){ video.play().catch(function(){}); }
 		}, DELAY);
 
 		closeBtn.addEventListener('click', closePopup);

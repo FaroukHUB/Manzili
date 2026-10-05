@@ -1826,48 +1826,60 @@ function manzili_parfum_search_bar(): void {
     }
     ?>
     <div class="mzl-cat-search-wrap">
-        <input type="text" id="mzlCatSearch" class="mzl-cat-search" placeholder="Rechercher un parfum…" autocomplete="off" spellcheck="false">
-        <p class="mzl-cat-no-results" id="mzlCatNoResults" style="display:none;">Aucun parfum ne correspond à votre recherche.</p>
+        <div class="mzl-cat-search-inner">
+            <svg class="mzl-cat-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="mzlCatSearch" class="mzl-cat-search" placeholder="Rechercher un parfum…" autocomplete="off" spellcheck="false">
+        </div>
+        <p class="mzl-cat-no-results" id="mzlCatNoResults" style="display:none;">Aucun résultat pour cette recherche.</p>
     </div>
     <style>
-        .mzl-cat-search-wrap { margin: 0 0 32px !important; }
-        input#mzlCatSearch.mzl-cat-search {
-            width: 100% !important;
-            max-width: 460px !important;
-            box-sizing: border-box !important;
-            padding: 14px 20px 14px 46px !important;
-            border: 1.5px solid #c9a84c !important;
-            border-radius: 2px !important;
-            font-size: 12px !important;
-            font-weight: 500 !important;
-            letter-spacing: 1px !important;
-            color: #111 !important;
-            background-color: #fff !important;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9a84c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") !important;
-            background-repeat: no-repeat !important;
-            background-position: 16px center !important;
+        .mzl-cat-search-wrap {
+            margin: 0 0 40px;
+            text-align: center;
+        }
+        .mzl-cat-search-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1.5px solid #c9a84c;
+            padding: 10px 4px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .mzl-cat-search-icon {
+            flex-shrink: 0;
+            opacity: .85;
+        }
+        input#mzlCatSearch {
+            flex: 1;
+            border: none !important;
+            border-radius: 0 !important;
             outline: none !important;
             box-shadow: none !important;
-            transition: border-color .25s, box-shadow .25s !important;
-            display: block !important;
-        }
-        input#mzlCatSearch.mzl-cat-search::placeholder {
-            color: #bbb !important;
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 13px !important;
             font-weight: 400 !important;
-            letter-spacing: 0.5px !important;
-            text-transform: none !important;
-            font-style: italic !important;
-        }
-        input#mzlCatSearch.mzl-cat-search:focus {
-            border-color: #b8901e !important;
-            box-shadow: 0 0 0 3px rgba(201,168,76,.12) !important;
-        }
-        .mzl-cat-no-results {
-            font-size: 11px !important;
             letter-spacing: 1.5px !important;
             text-transform: uppercase !important;
-            color: #c9a84c !important;
-            margin-top: 14px !important;
+            color: #111 !important;
+        }
+        input#mzlCatSearch::placeholder {
+            color: #aaa !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1.5px !important;
+            font-weight: 300 !important;
+        }
+        .mzl-cat-search-inner:focus-within {
+            border-bottom-color: #b8901e;
+        }
+        .mzl-cat-no-results {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #c9a84c;
+            margin-top: 16px;
         }
     </style>
     <script>

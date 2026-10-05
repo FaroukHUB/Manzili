@@ -1817,6 +1817,60 @@ function clo_enqueue_product_description_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'clo_enqueue_product_description_styles', 30 );
 
+// ── Barre de recherche parfums sur les pages catégorie ───────────────────────
+
+add_action( 'woocommerce_before_shop_loop', 'manzili_parfum_search_bar', 5 );
+function manzili_parfum_search_bar(): void {
+    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() ) {
+        return;
+    }
+    ?>
+    <div class="mzl-cat-search-wrap">
+        <input type="text" id="mzlCatSearch" class="mzl-cat-search" placeholder="🔍 Rechercher un parfum…" autocomplete="off" spellcheck="false">
+        <p class="mzl-cat-no-results" id="mzlCatNoResults" style="display:none;">Aucun parfum ne correspond à votre recherche.</p>
+    </div>
+    <style>
+        .mzl-cat-search-wrap { margin: 0 0 24px; }
+        .mzl-cat-search {
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+            padding: 11px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color .2s;
+            display: block;
+        }
+        .mzl-cat-search:focus { border-color: #111; }
+        .mzl-cat-no-results { font-size: 13px; color: #888; margin-top: 12px; }
+    </style>
+    <script>
+    (function () {
+        var input = document.getElementById('mzlCatSearch');
+        if (!input) return;
+        input.addEventListener('input', function () {
+            var q = this.value.trim().toLowerCase();
+            var products = document.querySelectorAll('.products .product');
+            var visible = 0;
+            products.forEach(function (el) {
+                var title = (el.querySelector('.woocommerce-loop-product__title, h2, h3') || {}).textContent || '';
+                if (!q || title.toLowerCase().indexOf(q) !== -1) {
+                    el.style.display = '';
+                    visible++;
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+            var msg = document.getElementById('mzlCatNoResults');
+            if (msg) msg.style.display = visible === 0 ? 'block' : 'none';
+        });
+    }());
+    </script>
+    <?php
+}
+
 // ── CLO Template System ───────────────────────────────────────────────────────
 require_once get_stylesheet_directory() . '/includes/clo-meta-box.php';
 require_once get_stylesheet_directory() . '/includes/clo-template.php';

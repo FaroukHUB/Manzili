@@ -1769,6 +1769,7 @@ add_action( 'wp_enqueue_scripts', 'clo_enqueue_product_description_styles', 30 )
 // ── CLO Template System ───────────────────────────────────────────────────────
 require_once get_stylesheet_directory() . '/includes/clo-meta-box.php';
 require_once get_stylesheet_directory() . '/includes/clo-template.php';
+require_once get_stylesheet_directory() . '/includes/clo-site-popup.php';
 
 add_filter( 'woocommerce_product_tabs', function ( $tabs ) {
 	if ( isset( $tabs['description'] ) ) {

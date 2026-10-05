@@ -1681,6 +1681,56 @@ function manzili_free_shipping_range( $rates, $package ) {
 }
 
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// OFFRE 2+1 — Collection Dubaï Miraj
+// Produits éligibles : tag WooCommerce "offre-2plus1"
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Badge sur la fiche produit ────────────────────────────────────────────────
+add_action( 'woocommerce_single_product_summary', 'manzili_bogo_badge', 25 );
+function manzili_bogo_badge() {
+    global $product;
+    if ( ! has_term( 'offre-2plus1', 'product_tag', $product->get_id() ) ) return;
+    echo '
+    <div class="mzl-bogo">
+        <div class="mzl-bogo-left">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12v9H4v-9"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div class="mzl-bogo-right">
+            <strong>2 achetés = 1 offert</strong>
+            <span>Le moins cher offert automatiquement — Collection Dubaï Miraj</span>
+        </div>
+    </div>';
+}
+
+// ── Remise automatique dans le panier ─────────────────────────────────────────
+add_action( 'woocommerce_cart_calculate_fees', 'manzili_bogo_discount' );
+function manzili_bogo_discount( $cart ) {
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) return;
+
+    $eligible_prices = [];
+
+    foreach ( $cart->get_cart() as $item ) {
+        if ( ! has_term( 'offre-2plus1', 'product_tag', $item['product_id'] ) ) continue;
+        $price = (float) $item['data']->get_price();
+        for ( $i = 0; $i < (int) $item['quantity']; $i++ ) {
+            $eligible_prices[] = $price;
+        }
+    }
+
+    $total_qty  = count( $eligible_prices );
+    $free_count = (int) floor( $total_qty / 3 );
+    if ( $free_count < 1 ) return;
+
+    sort( $eligible_prices ); // les moins chers en premier
+    $discount = array_sum( array_slice( $eligible_prices, 0, $free_count ) );
+
+    if ( $discount > 0 ) {
+        $cart->add_fee( '🎁 Offre 2+1 — Dubaï Miraj', -$discount );
+    }
+}
+
+
 // ── Badge Qualité du magasin Google Merchant Center ───────────────────────────
 add_action( 'wp_footer', 'manzili_google_store_badge' );
 function manzili_google_store_badge() {

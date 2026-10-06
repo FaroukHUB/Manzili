@@ -1940,6 +1940,12 @@ function manzili_parfum_search_bar(): void {
     <?php
 }
 
+// ── Quiz parfum Collection L'Original ────────────────────────────────────────
+$clo_quiz_file = get_stylesheet_directory() . '/clo-quiz-parfum.php';
+if ( is_readable( $clo_quiz_file ) ) {
+    require_once $clo_quiz_file;
+}
+
 // ── CLO Template System ───────────────────────────────────────────────────────
 require_once get_stylesheet_directory() . '/includes/clo-meta-box.php';
 require_once get_stylesheet_directory() . '/includes/clo-template.php';

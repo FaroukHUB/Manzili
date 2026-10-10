@@ -1858,13 +1858,13 @@ function manzili_parfum_search_bar(): void {
         return;
     }
     ?>
-    <div class="mzl-cat-search-wrap">
+    <form class="mzl-cat-search-wrap" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <input type="hidden" name="post_type" value="product">
         <div class="mzl-cat-search-inner">
             <svg class="mzl-cat-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="mzlCatSearch" class="mzl-cat-search" placeholder="Rechercher un parfum…" autocomplete="off" spellcheck="false">
+            <input type="search" name="s" class="mzl-cat-search" placeholder="Rechercher un parfum…" autocomplete="off" spellcheck="false" value="<?php echo esc_attr( get_search_query() ); ?>">
         </div>
-        <p class="mzl-cat-no-results" id="mzlCatNoResults" style="display:none;">Aucun résultat pour cette recherche.</p>
-    </div>
+    </form>
     <style>
         .mzl-cat-search-wrap {
             margin: 0 0 40px;
@@ -1879,11 +1879,8 @@ function manzili_parfum_search_bar(): void {
             width: 100%;
             max-width: 500px;
         }
-        .mzl-cat-search-icon {
-            flex-shrink: 0;
-            opacity: .85;
-        }
-        input#mzlCatSearch {
+        .mzl-cat-search-icon { flex-shrink: 0; opacity: .85; }
+        input.mzl-cat-search {
             flex: 1;
             border: none !important;
             border-radius: 0 !important;
@@ -1898,45 +1895,15 @@ function manzili_parfum_search_bar(): void {
             text-transform: uppercase !important;
             color: #111 !important;
         }
-        input#mzlCatSearch::placeholder {
+        input.mzl-cat-search::placeholder {
             color: #aaa !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1.5px !important;
+            text-transform: none !important;
+            letter-spacing: 0.5px !important;
             font-weight: 300 !important;
+            font-style: italic !important;
         }
-        .mzl-cat-search-inner:focus-within {
-            border-bottom-color: #b8901e;
-        }
-        .mzl-cat-no-results {
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #c9a84c;
-            margin-top: 16px;
-        }
+        .mzl-cat-search-inner:focus-within { border-bottom-color: #b8901e; }
     </style>
-    <script>
-    (function () {
-        var input = document.getElementById('mzlCatSearch');
-        if (!input) return;
-        input.addEventListener('input', function () {
-            var q = this.value.trim().toLowerCase();
-            var products = document.querySelectorAll('.products .product');
-            var visible = 0;
-            products.forEach(function (el) {
-                var title = (el.querySelector('.woocommerce-loop-product__title, h2, h3') || {}).textContent || '';
-                if (!q || title.toLowerCase().indexOf(q) !== -1) {
-                    el.style.display = '';
-                    visible++;
-                } else {
-                    el.style.display = 'none';
-                }
-            });
-            var msg = document.getElementById('mzlCatNoResults');
-            if (msg) msg.style.display = visible === 0 ? 'block' : 'none';
-        });
-    }());
-    </script>
     <?php
 }
 

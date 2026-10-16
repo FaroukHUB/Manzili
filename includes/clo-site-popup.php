@@ -179,8 +179,13 @@ add_action( 'wp_footer', function () {
 	$cookie_days = max( 0, (int) get_option( 'clo_popup_cookie_days', 7 ) );
 	$category_id = (int) get_option( 'clo_popup_category', 0 );
 	if ( $category_id > 0 ) {
-		$term = get_term( $category_id, 'product_cat' );
-		if ( is_wp_error( $term ) || ! $term || ! is_product_category( $term->slug ) ) {
+		$queried = get_queried_object();
+		if (
+			! $queried ||
+			! ( $queried instanceof WP_Term ) ||
+			$queried->taxonomy !== 'product_cat' ||
+			(int) $queried->term_id !== $category_id
+		) {
 			return;
 		}
 	}

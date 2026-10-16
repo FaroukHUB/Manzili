@@ -180,6 +180,12 @@ add_action( 'wp_footer', function () {
 	$category_id = (int) get_option( 'clo_popup_category', 0 );
 	if ( $category_id > 0 ) {
 		$queried = get_queried_object();
+		// DEBUG TEMPORAIRE — à supprimer après diagnostic
+		echo '<!-- CLO POPUP DEBUG | category_id_saved=' . (int) $category_id
+			. ' | queried_class=' . ( $queried ? get_class( $queried ) : 'null' )
+			. ' | term_id=' . ( isset( $queried->term_id ) ? (int) $queried->term_id : 'n/a' )
+			. ' | taxonomy=' . ( isset( $queried->taxonomy ) ? esc_html( $queried->taxonomy ) : 'n/a' )
+			. ' -->';
 		if (
 			! $queried ||
 			! ( $queried instanceof WP_Term ) ||

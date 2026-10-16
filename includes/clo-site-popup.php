@@ -44,14 +44,17 @@ add_action( 'admin_init', function () {
 	register_setting( 'clo_site_popup_group', 'clo_popup_video_id',   array( 'sanitize_callback' => 'absint' ) );
 	register_setting( 'clo_site_popup_group', 'clo_popup_cookie_days',array( 'sanitize_callback' => 'absint' ) );
 	register_setting( 'clo_site_popup_group', 'clo_popup_delay_ms',   array( 'sanitize_callback' => 'absint' ) );
+	register_setting( 'clo_site_popup_group', 'clo_popup_category',   array( 'sanitize_callback' => 'absint' ) );
 } );
 
 function clo_site_popup_settings_page(): void {
-	$enabled     = (int) get_option( 'clo_popup_enabled', 0 );
-	$video_id    = (int) get_option( 'clo_popup_video_id', 0 );
-	$cookie_days = (int) get_option( 'clo_popup_cookie_days', 7 );
-	$delay_ms    = (int) get_option( 'clo_popup_delay_ms', 1000 );
-	$video_url   = $video_id ? wp_get_attachment_url( $video_id ) : '';
+	$enabled      = (int) get_option( 'clo_popup_enabled', 0 );
+	$video_id     = (int) get_option( 'clo_popup_video_id', 0 );
+	$cookie_days  = (int) get_option( 'clo_popup_cookie_days', 7 );
+	$delay_ms     = (int) get_option( 'clo_popup_delay_ms', 1000 );
+	$category_id  = (int) get_option( 'clo_popup_category', 0 );
+	$video_url    = $video_id ? wp_get_attachment_url( $video_id ) : '';
+	$categories   = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false, 'orderby' => 'name' ) );
 	?>
 	<div class="wrap">
 		<h1>Popup Vidéo — Site</h1>
@@ -101,6 +104,20 @@ function clo_site_popup_settings_page(): void {
 					<td>
 						<input type="number" name="clo_popup_cookie_days" value="<?php echo esc_attr( (string) $cookie_days ); ?>" min="0" max="365" style="width:80px;"> jours
 						<p class="description">Le popup ne réapparaît pas pendant cette durée. 0 = une seule fois par session navigateur.</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Restreindre à une catégorie</th>
+					<td>
+						<select name="clo_popup_category">
+							<option value="0" <?php selected( 0, $category_id ); ?>>— Tout le site (aucune restriction)</option>
+							<?php if ( ! is_wp_error( $categories ) ) : foreach ( $categories as $cat ) : ?>
+							<option value="<?php echo esc_attr( (string) $cat->term_id ); ?>" <?php selected( $cat->term_id, $category_id ); ?>>
+								<?php echo esc_html( $cat->name ); ?>
+							</option>
+							<?php endforeach; endif; ?>
+						</select>
+						<p class="description">Si une catégorie est sélectionnée, le popup n'apparaît que sur cette page catégorie.</p>
 					</td>
 				</tr>
 			</table>
@@ -160,6 +177,13 @@ add_action( 'wp_footer', function () {
 	}
 	$delay_ms    = max( 0, (int) get_option( 'clo_popup_delay_ms', 1000 ) );
 	$cookie_days = max( 0, (int) get_option( 'clo_popup_cookie_days', 7 ) );
+	$category_id = (int) get_option( 'clo_popup_category', 0 );
+	if ( $category_id > 0 ) {
+		$term = get_term( $category_id, 'product_cat' );
+		if ( is_wp_error( $term ) || ! $term || ! is_product_category( $term->slug ) ) {
+			return;
+		}
+	}
 	$cookie_key  = 'clo_site_popup_seen';
 	?>
 	<div id="clo-site-popup" role="dialog" aria-modal="true" aria-label="Bienvenue sur notre site" style="position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:999999;opacity:0;pointer-events:none;transition:opacity .4s ease;">

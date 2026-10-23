@@ -124,6 +124,22 @@ function manzili_display_parfum_selector() {
     $parfums     = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
     if ( empty( $parfums ) ) return;
 
+    // Map : nom normalisé → URL miniature (une seule requête)
+    $thumb_map = [];
+    $all_pids  = get_posts( [
+        'post_type'      => 'product',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+    ] );
+    foreach ( $all_pids as $pid ) {
+        $key    = strtolower( remove_accents( trim( get_the_title( $pid ) ) ) );
+        $img_id = get_post_thumbnail_id( $pid );
+        if ( $img_id ) {
+            $thumb_map[ $key ] = wp_get_attachment_image_url( $img_id, 'thumbnail' );
+        }
+    }
+
     $pack_qty    = (int) get_post_meta( $product->get_id(), '_pack_quantity', true );
     $is_variable = $product->is_type( 'variable' );
     $max_display = ( ! $is_variable && $pack_qty > 0 ) ? $pack_qty : '—';
@@ -153,9 +169,14 @@ function manzili_display_parfum_selector() {
 
         <div class="mzl-grid">
             <?php foreach ( $parfums as $parfum ) :
-                $uid = 'mzl_' . sanitize_title( $parfum );
+                $uid       = 'mzl_' . sanitize_title( $parfum );
+                $norm_key  = strtolower( remove_accents( trim( $parfum ) ) );
+                $thumb_url = isset( $thumb_map[ $norm_key ] ) ? $thumb_map[ $norm_key ] : '';
             ?>
             <div class="mzl-item" data-parfum="<?php echo esc_attr( $parfum ); ?>">
+                <?php if ( $thumb_url ) : ?>
+                <img src="<?php echo esc_url( $thumb_url ); ?>" alt="" class="mzl-thumb" loading="lazy">
+                <?php endif; ?>
                 <div class="mzl-left">
                     <input type="checkbox"
                            class="mzl-check"
@@ -264,6 +285,16 @@ function manzili_pack_selector_assets() {
         }
         @media (max-width: 520px) {
             .mzl-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Miniature parfum ── */
+        .mzl-thumb {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: block;
         }
 
         /* ── Ligne parfum ── */

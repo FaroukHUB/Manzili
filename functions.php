@@ -136,9 +136,26 @@ function manzili_display_parfum_selector() {
         $key    = strtolower( remove_accents( trim( get_the_title( $pid ) ) ) );
         $img_id = get_post_thumbnail_id( $pid );
         if ( $img_id ) {
-            $thumb_map[ $key ] = wp_get_attachment_image_url( $img_id, 'thumbnail' );
+            $img_url = wp_get_attachment_image_url( $img_id, 'thumbnail' );
+            if ( $img_url ) {
+                $thumb_map[ $key ] = $img_url;
+            }
         }
     }
+
+    // Fonction de recherche : exact d'abord, puis "titre commence par le nom"
+    $find_thumb = function( $parfum ) use ( $thumb_map ) {
+        $needle = strtolower( remove_accents( trim( $parfum ) ) );
+        if ( isset( $thumb_map[ $needle ] ) ) {
+            return $thumb_map[ $needle ];
+        }
+        foreach ( $thumb_map as $title => $url ) {
+            if ( strpos( $title, $needle ) === 0 ) {
+                return $url;
+            }
+        }
+        return '';
+    };
 
     $pack_qty    = (int) get_post_meta( $product->get_id(), '_pack_quantity', true );
     $is_variable = $product->is_type( 'variable' );
@@ -170,8 +187,7 @@ function manzili_display_parfum_selector() {
         <div class="mzl-grid">
             <?php foreach ( $parfums as $parfum ) :
                 $uid       = 'mzl_' . sanitize_title( $parfum );
-                $norm_key  = strtolower( remove_accents( trim( $parfum ) ) );
-                $thumb_url = isset( $thumb_map[ $norm_key ] ) ? $thumb_map[ $norm_key ] : '';
+                $thumb_url = $find_thumb( $parfum );
             ?>
             <div class="mzl-item" data-parfum="<?php echo esc_attr( $parfum ); ?>">
                 <?php if ( $thumb_url ) : ?>

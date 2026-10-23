@@ -158,10 +158,13 @@ function manzili_display_parfum_selector() {
             if ( isset( $thumb_map[ $base ] ) ) {
                 return $thumb_map[ $base ];
             }
-            // 3. Titre produit commence par le nom de base
+            // 3. Titre produit commence par le nom de base suivi d'un séparateur
             foreach ( $thumb_map as $title => $url ) {
                 if ( strpos( $title, $base ) === 0 ) {
-                    return $url;
+                    $after = substr( $title, strlen( $base ) );
+                    if ( '' === $after || preg_match( '/^[\s\-–—,.]/', $after ) ) {
+                        return $url;
+                    }
                 }
             }
         }

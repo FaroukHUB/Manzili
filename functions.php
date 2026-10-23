@@ -143,17 +143,29 @@ function manzili_display_parfum_selector() {
         }
     }
 
-    // Fonction de recherche : exact d'abord, puis "titre commence par le nom"
+    // Fonction de recherche : exact → sans parenthèse → préfixe
     $find_thumb = function( $parfum ) use ( $thumb_map ) {
         $needle = strtolower( remove_accents( trim( $parfum ) ) );
+
+        // 1. Correspondance exacte
         if ( isset( $thumb_map[ $needle ] ) ) {
             return $thumb_map[ $needle ];
         }
-        foreach ( $thumb_map as $title => $url ) {
-            if ( strpos( $title, $needle ) === 0 ) {
-                return $url;
+
+        // 2. Supprimer la partie "(INSPIRÉ DE …)" et réessayer
+        $base = trim( preg_replace( '/\s*\(.*$/', '', $needle ) );
+        if ( '' !== $base ) {
+            if ( isset( $thumb_map[ $base ] ) ) {
+                return $thumb_map[ $base ];
+            }
+            // 3. Titre produit commence par le nom de base
+            foreach ( $thumb_map as $title => $url ) {
+                if ( strpos( $title, $base ) === 0 ) {
+                    return $url;
+                }
             }
         }
+
         return '';
     };
 

@@ -1998,3 +1998,67 @@ function clo_product_description_tab_callback(): void {
 		wc_get_template( 'single-product/tabs/description.php' );
 	}
 }
+
+
+// ── Encadré code promo sous l'image produit ───────────────────────────────────
+
+add_action( 'woocommerce_product_thumbnails', 'clo_promo_code_banner', 25 );
+function clo_promo_code_banner(): void {
+	if ( ! is_product() ) {
+		return;
+	}
+	?>
+	<div class="clo-promo-banner" id="cloPromoBanner">
+		<span class="clo-promo-label">Code de bienvenue</span>
+		<div class="clo-promo-code-row">
+			<span class="clo-promo-code" id="cloPromoCode">BIENVENUE</span>
+			<button class="clo-promo-copy" id="cloPromoCopy" type="button" aria-label="Copier le code promo">
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+				<span class="clo-promo-copy-text">Copier</span>
+			</button>
+		</div>
+		<span class="clo-promo-desc">−5&nbsp;€ sur votre première commande</span>
+	</div>
+	<style>
+	.clo-promo-banner{margin-top:14px;padding:14px 16px;border:1px solid #c9a04a;background:#faf7f0;text-align:center;box-sizing:border-box}
+	.clo-promo-label{display:block;margin-bottom:8px;color:#7a5c1e;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+	.clo-promo-code-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:7px}
+	.clo-promo-code{padding:5px 14px;border:1.5px dashed #c9a04a;background:#fff;color:#111;font-size:17px;font-weight:800;letter-spacing:.12em;font-family:Georgia,serif}
+	.clo-promo-copy{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border:1px solid #c9a04a;background:#c9a04a;color:#17130c;font-size:11px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:background .2s,color .2s}
+	.clo-promo-copy:hover{background:#dfbd73;border-color:#dfbd73}
+	.clo-promo-copy.copied{background:#2d6a2d;border-color:#2d6a2d;color:#fff}
+	.clo-promo-desc{display:block;color:#7a5c1e;font-size:11px;letter-spacing:.03em}
+	</style>
+	<script>
+	(function(){
+		var btn  = document.getElementById('cloPromoCopy');
+		var code = document.getElementById('cloPromoCode');
+		if (!btn || !code) return;
+		btn.addEventListener('click', function(){
+			var text = code.textContent.trim();
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				navigator.clipboard.writeText(text).then(function(){ showCopied(); }).catch(function(){ fallback(text); });
+			} else {
+				fallback(text);
+			}
+		});
+		function fallback(text){
+			var ta = document.createElement('textarea');
+			ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+			document.body.appendChild(ta); ta.focus(); ta.select();
+			try{ document.execCommand('copy'); showCopied(); }catch(e){}
+			document.body.removeChild(ta);
+		}
+		function showCopied(){
+			var span = btn.querySelector('.clo-promo-copy-text');
+			btn.classList.add('copied');
+			if (span) span.textContent = 'Copié !';
+			setTimeout(function(){
+				btn.classList.remove('copied');
+				if (span) span.textContent = 'Copier';
+			}, 2200);
+		}
+	}());
+	</script>
+	<?php
+}

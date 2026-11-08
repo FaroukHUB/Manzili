@@ -2002,7 +2002,7 @@ function clo_product_description_tab_callback(): void {
 
 // ── Encadré code promo sous l'image produit ───────────────────────────────────
 
-add_action( 'woocommerce_product_thumbnails', 'clo_promo_code_banner', 25 );
+add_action( 'woocommerce_after_add_to_cart_form', 'clo_promo_code_banner', 10 );
 function clo_promo_code_banner(): void {
 	if ( ! is_product() ) {
 		return;

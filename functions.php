@@ -2384,6 +2384,37 @@ function clo_power_bundle_ui(): void {
 
 
 
+// ── Remise automatique bundle Collection Power dans le panier ────────────────
+
+add_action( 'woocommerce_cart_calculate_fees', 'clo_bundle_auto_discount' );
+function clo_bundle_auto_discount( WC_Cart $cart ): void {
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+        return;
+    }
+    $cp_total = 0.0;
+    $cp_qty   = 0;
+    foreach ( $cart->get_cart() as $item ) {
+        $pid = (int) $item['product_id'];
+        if (
+            has_term( 'collection-power', 'product_cat', $pid ) &&
+            ! get_post_meta( $pid, '_pack_parfums', true )
+        ) {
+            $cp_total += (float) $item['line_total'];
+            $cp_qty   += (int) $item['quantity'];
+        }
+    }
+    if ( $cp_qty < 2 ) {
+        return;
+    }
+    $rate     = ( $cp_qty >= 3 ) ? 0.15 : 0.10;
+    $label    = ( $cp_qty >= 3 )
+        ? 'Offre Collection Power — 3 parfums (−15 %)'
+        : 'Offre Collection Power — 2 parfums (−10 %)';
+    $discount = -round( $cp_total * $rate, 2 );
+    $cart->add_fee( $label, $discount, false );
+}
+
+
 // ── Encadré code promo sous l'image produit ───────────────────────────────────
 
 add_action( 'woocommerce_after_add_to_cart_form', 'clo_promo_code_banner', 10 );

@@ -2384,6 +2384,51 @@ function clo_power_bundle_ui(): void {
 
 
 
+// ── Teaser bundle sous le bouton ATC (Collection Power uniquement) ───────────
+
+add_action( 'woocommerce_after_add_to_cart_form', 'clo_bundle_teaser', 15 );
+function clo_bundle_teaser(): void {
+    if ( ! is_product() ) return;
+    global $product;
+    if ( ! $product || ! has_term( 'collection-power', 'product_cat', $product->get_id() ) ) return;
+    if ( get_post_meta( $product->get_id(), '_pack_parfums', true ) ) return;
+    ?>
+    <a href="#cloBndlWrap" class="clo-teaser" id="cloBndlTeaser">
+        <span class="clo-teaser__icon" aria-hidden="true">✦</span>
+        <span class="clo-teaser__text">
+            <strong>Offre multi-parfums</strong>
+            <span class="clo-teaser__prices">2 = 13,80&nbsp;€&nbsp;&nbsp;·&nbsp;&nbsp;3 = 17,90&nbsp;€</span>
+        </span>
+        <span class="clo-teaser__cta">Composer mon offre ↓</span>
+    </a>
+    <style>
+    .clo-teaser{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 14px;background:#fdf9f0;border:1px solid #c9a04a;text-decoration:none;transition:background .15s;cursor:pointer}
+    .clo-teaser:hover{background:#faf3e0}
+    .clo-teaser__icon{color:#c9a04a;font-size:14px;flex-shrink:0}
+    .clo-teaser__text{flex:1;min-width:0}
+    .clo-teaser__text strong{display:block;font-size:11px;font-weight:700;color:#1a140d;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+    .clo-teaser__prices{font-size:11px;color:#7a6a4f;line-height:1.6}
+    .clo-teaser__cta{flex-shrink:0;font-size:10px;font-weight:800;color:#c9a04a;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+    </style>
+    <script>
+    (function(){
+        var a = document.getElementById('cloBndlTeaser');
+        if (!a) return;
+        a.addEventListener('click', function(e){
+            e.preventDefault();
+            var target = document.getElementById('cloBndlWrap');
+            if (!target) return;
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            target.style.transition = 'box-shadow .3s';
+            target.style.boxShadow = '0 0 0 2px #c9a04a';
+            setTimeout(function(){ target.style.boxShadow = ''; }, 1800);
+        });
+    }());
+    </script>
+    <?php
+}
+
+
 // ── Remise automatique bundle Collection Power dans le panier ────────────────
 
 // Prix fixes des bundles Collection Power

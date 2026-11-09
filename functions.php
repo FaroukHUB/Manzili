@@ -2007,7 +2007,8 @@ add_action( 'wp_ajax_nopriv_clo_bundle_add_to_cart', 'clo_bundle_add_to_cart_han
 function clo_bundle_add_to_cart_handler(): void {
     check_ajax_referer( 'clo_bundle_nonce', 'nonce' );
     $ids = isset( $_POST['ids'] ) ? array_map( 'absint', (array) $_POST['ids'] ) : [];
-    if ( count( $ids ) < 2 || count( $ids ) > 3 ) {
+    $count = count( $ids );
+    if ( $count < 1 || $count > 3 ) {
         wp_send_json_error( [ 'message' => 'Sélection invalide.' ] );
     }
     foreach ( $ids as $id ) {
@@ -2026,201 +2027,330 @@ function clo_power_bundle_ui(): void {
     if ( ! is_product() ) return;
     global $product;
     if ( ! $product || ! has_term( 'collection-power', 'product_cat', $product->get_id() ) ) return;
+    // Ne pas afficher sur les packs (produits avec liste de parfums configurée)
+    if ( get_post_meta( $product->get_id(), '_pack_parfums', true ) ) return;
 
-    $products = wc_get_products( [
+    $all_products = wc_get_products( [
         'category' => [ 'collection-power' ],
         'status'   => 'publish',
         'limit'    => -1,
         'orderby'  => 'title',
         'order'    => 'ASC',
     ] );
-    if ( empty( $products ) ) return;
+
+    $items = [];
+    foreach ( $all_products as $p ) {
+        if ( get_post_meta( $p->get_id(), '_pack_parfums', true ) ) continue;
+        $img_id  = $p->get_image_id();
+        $img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' );
+        $raw     = $p->get_name();
+        $short   = preg_replace( '/\s*[-–]\s*(eau de parfum|collection power|50\s*ml).*/i', '', $raw );
+        $items[] = [
+            'id'    => $p->get_id(),
+            'name'  => $short ?: $raw,
+            'img'   => $img_url ?: '',
+            'price' => (float) $p->get_price(),
+        ];
+    }
+    if ( empty( $items ) ) return;
 
     $current_id = $product->get_id();
     $nonce      = wp_create_nonce( 'clo_bundle_nonce' );
     $ajax_url   = admin_url( 'admin-ajax.php' );
     ?>
-    <div class="clo-bundle" id="cloBundleWrap">
+    <div class="clo-bndl" id="cloBndlWrap">
 
-        <div class="clo-bundle__header">
-            <div>
-                <span class="clo-bundle__eyebrow">Collection Power · 50 ml</span>
-                <span class="clo-bundle__title">Composez votre pack</span>
-            </div>
-            <span class="clo-bundle__badge">Jusqu'à 35&nbsp;% de remise</span>
+        <div class="clo-bndl__head">
+            <span class="clo-bndl__eyebrow">Collection Power · 50 ml</span>
+            <span class="clo-bndl__title">Composez votre offre</span>
         </div>
 
-        <div class="clo-bundle__sizes">
-            <button type="button" class="clo-bundle__size is-active" data-size="2">
-                <strong>2</strong><span>parfums</span>
-            </button>
-            <button type="button" class="clo-bundle__size" data-size="3">
-                <strong>3</strong><span>parfums</span>
-            </button>
+        <div class="clo-bndl__tiers">
+            <label class="clo-bndl__tier-lbl">
+                <input type="radio" name="clo_bndl_tier" value="1" checked class="clo-bndl__tier-radio">
+                <span class="clo-bndl__tier-box">
+                    <span class="clo-bndl__tier-qty">Acheter 1</span>
+                    <span class="clo-bndl__tier-price" data-tier="1"></span>
+                </span>
+            </label>
+            <label class="clo-bndl__tier-lbl">
+                <input type="radio" name="clo_bndl_tier" value="2" class="clo-bndl__tier-radio">
+                <span class="clo-bndl__tier-box">
+                    <span class="clo-bndl__tier-qty">Achetez-en 2</span>
+                    <span class="clo-bndl__tier-price" data-tier="2"></span>
+                    <span class="clo-bndl__tier-save">-10 %</span>
+                </span>
+            </label>
+            <label class="clo-bndl__tier-lbl">
+                <input type="radio" name="clo_bndl_tier" value="3" class="clo-bndl__tier-radio">
+                <span class="clo-bndl__tier-box">
+                    <span class="clo-bndl__tier-qty">Achetez-en 3</span>
+                    <span class="clo-bndl__tier-price" data-tier="3"></span>
+                    <span class="clo-bndl__tier-save">-15 %</span>
+                </span>
+            </label>
         </div>
 
-        <div class="clo-bundle__scroll">
-            <div class="clo-bundle__grid">
-                <?php foreach ( $products as $p ) :
-                    $img_id    = $p->get_image_id();
-                    $img_url   = $img_id ? wp_get_attachment_image_url( $img_id, 'thumbnail' ) : wc_placeholder_img_src();
-                    $raw_name  = $p->get_name();
-                    $short     = preg_replace( '/\s*[-–]\s*(eau de parfum|collection power|50\s*ml).*/i', '', $raw_name );
-                    $price     = (float) $p->get_price();
-                    $pid       = $p->get_id();
-                    $selected  = ( $pid === $current_id );
-                ?>
-                <div class="clo-bundle__card<?php echo $selected ? ' is-selected' : ''; ?>"
-                     data-id="<?php echo esc_attr( $pid ); ?>"
-                     data-price="<?php echo esc_attr( $price ); ?>"
-                     role="checkbox" aria-checked="<?php echo $selected ? 'true' : 'false'; ?>"
-                     tabindex="0" title="<?php echo esc_attr( $raw_name ); ?>">
-                    <div class="clo-bundle__img-wrap">
-                        <img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy">
-                        <span class="clo-bundle__check" aria-hidden="true">✓</span>
-                    </div>
-                    <span class="clo-bundle__name"><?php echo esc_html( $short ); ?></span>
+        <div class="clo-bndl__slots" id="cloBndlSlots" style="display:none">
+            <?php for ( $s = 0; $s < 3; $s++ ) : ?>
+            <div class="clo-bndl__slot" id="cloBndlSlot<?php echo $s; ?>" data-slot="<?php echo $s; ?>" style="display:none">
+                <span class="clo-bndl__slot-num"><?php echo $s + 1; ?></span>
+                <div class="clo-bndl__slot-pick" id="cloBndlPick<?php echo $s; ?>" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                    <img class="clo-bndl__slot-img" src="" alt="" id="cloBndlImg<?php echo $s; ?>">
+                    <span class="clo-bndl__slot-name" id="cloBndlName<?php echo $s; ?>">Choisir un parfum</span>
+                    <svg class="clo-bndl__slot-arrow" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <?php endforeach; ?>
+                <div class="clo-bndl__panel" id="cloBndlPanel<?php echo $s; ?>" style="display:none" role="listbox">
+                    <div class="clo-bndl__search">
+                        <input type="search" placeholder="Rechercher un parfum..." class="clo-bndl__search-input" id="cloBndlSearch<?php echo $s; ?>" aria-label="Rechercher">
+                    </div>
+                    <ul class="clo-bndl__list" id="cloBndlList<?php echo $s; ?>"></ul>
+                </div>
             </div>
+            <?php endfor; ?>
         </div>
 
-        <div class="clo-bundle__footer">
-            <span class="clo-bundle__count" id="cloBundleCount">0 / 2 sélectionnés</span>
-            <span class="clo-bundle__total" id="cloBundleTotal"></span>
-            <button type="button" class="clo-bundle__cta" id="cloBundleCta" disabled>Ajouter au panier</button>
+        <div class="clo-bndl__footer" id="cloBndlFooter">
+            <span class="clo-bndl__total" id="cloBndlTotal"></span>
+            <button type="button" class="clo-bndl__cta" id="cloBndlCta" disabled>Ajouter au panier</button>
         </div>
-        <p class="clo-bundle__err" id="cloBundleErr"></p>
+        <p class="clo-bndl__err" id="cloBndlErr"></p>
 
     </div>
     <style>
-    .clo-bundle{margin:20px 0 0;background:#111;color:#eee;font-size:12px}
-    .clo-bundle *{box-sizing:border-box}
-    .clo-bundle__header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid #252525}
-    .clo-bundle__eyebrow{display:block;color:#c9a04a;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
-    .clo-bundle__title{display:block;font-family:Georgia,serif;font-size:15px;color:#fff;font-weight:400;letter-spacing:.03em}
-    .clo-bundle__badge{flex-shrink:0;padding:4px 8px;background:#c9a04a;color:#111;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;margin-top:2px}
-    .clo-bundle__sizes{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid #252525}
-    .clo-bundle__size{display:flex;flex-direction:column;align-items:center;padding:7px 20px;border:1px solid #333;background:none;color:#888;cursor:pointer;transition:all .15s;line-height:1}
-    .clo-bundle__size strong{font-size:20px;font-weight:800;color:inherit}
-    .clo-bundle__size span{font-size:9px;letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
-    .clo-bundle__size.is-active{border-color:#c9a04a;color:#c9a04a}
-    .clo-bundle__scroll{max-height:280px;overflow-y:auto;border-bottom:1px solid #252525}
-    .clo-bundle__scroll::-webkit-scrollbar{width:4px}
-    .clo-bundle__scroll::-webkit-scrollbar-track{background:#1a1a1a}
-    .clo-bundle__scroll::-webkit-scrollbar-thumb{background:#c9a04a;border-radius:2px}
-    .clo-bundle__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#252525}
-    .clo-bundle__card{background:#111;padding:10px 6px 8px;cursor:pointer;text-align:center;transition:background .12s;position:relative;outline:none}
-    .clo-bundle__card:hover{background:#191919}
-    .clo-bundle__card.is-selected{background:#17130a}
-    .clo-bundle__card:focus-visible{outline:1px solid #c9a04a;outline-offset:-1px}
-    .clo-bundle__img-wrap{position:relative;margin-bottom:6px}
-    .clo-bundle__img-wrap img{width:100%;height:72px;object-fit:contain;display:block;transition:opacity .12s}
-    .clo-bundle__card.is-selected .clo-bundle__img-wrap img{opacity:.85}
-    .clo-bundle__check{position:absolute;top:3px;right:3px;width:17px;height:17px;background:#c9a04a;color:#111;border-radius:50%;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .12s;line-height:1}
-    .clo-bundle__card.is-selected .clo-bundle__check{opacity:1}
-    .clo-bundle__name{display:block;font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#bbb;line-height:1.3}
-    .clo-bundle__footer{display:flex;align-items:center;gap:10px;padding:11px 16px;flex-wrap:wrap}
-    .clo-bundle__count{font-size:10px;color:#666;flex-shrink:0}
-    .clo-bundle__total{flex:1;font-size:14px;font-weight:800;color:#c9a04a;text-align:right}
-    .clo-bundle__cta{flex-shrink:0;padding:10px 18px;background:#c9a04a;color:#111;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;transition:background .15s}
-    .clo-bundle__cta:disabled{background:#2a2a2a;color:#555;cursor:not-allowed}
-    .clo-bundle__cta:not(:disabled):hover{background:#dfbd73}
-    .clo-bundle__err{margin:0;padding:0 16px 10px;color:#d44;font-size:10px;min-height:0}
-    @media(max-width:500px){.clo-bundle__grid{grid-template-columns:repeat(3,1fr)}}
+    .clo-bndl{margin:20px 0 0;border:1px solid #e0d5c0;background:#fff;font-size:13px}
+    .clo-bndl *{box-sizing:border-box}
+    .clo-bndl__head{padding:11px 14px 10px;border-bottom:1px solid #f0eae0}
+    .clo-bndl__eyebrow{display:block;color:#c9a04a;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
+    .clo-bndl__title{display:block;font-family:Georgia,serif;font-size:14px;color:#1a140d;font-weight:400;letter-spacing:.02em}
+    .clo-bndl__tiers{display:flex}
+    .clo-bndl__tier-radio{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+    .clo-bndl__tier-lbl{flex:1;display:block;cursor:pointer}
+    .clo-bndl__tier-lbl:not(:last-child) .clo-bndl__tier-box{border-right:1px solid #f0eae0}
+    .clo-bndl__tier-box{display:flex;flex-direction:column;align-items:center;padding:10px 6px 9px;text-align:center;background:#faf8f4;border-top:2px solid transparent;transition:background .12s,border-color .12s}
+    .clo-bndl__tier-radio:checked+.clo-bndl__tier-box{background:#fff7ec;border-top-color:#c9a04a}
+    .clo-bndl__tier-qty{font-size:11px;font-weight:700;color:#222;letter-spacing:.03em}
+    .clo-bndl__tier-price{font-size:10px;color:#666;margin-top:2px;min-height:14px}
+    .clo-bndl__tier-save{font-size:9px;font-weight:800;color:#c9a04a;letter-spacing:.05em;margin-top:3px;text-transform:uppercase}
+    .clo-bndl__slots{padding:10px 14px;border-top:1px solid #f0eae0;display:flex;flex-direction:column;gap:7px}
+    .clo-bndl__slot{display:flex;align-items:center;gap:10px;position:relative}
+    .clo-bndl__slot-num{width:20px;height:20px;border-radius:50%;background:#c9a04a;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
+    .clo-bndl__slot-pick{flex:1;display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid #d9d0c1;background:#fff;cursor:pointer;transition:border-color .12s;min-width:0}
+    .clo-bndl__slot-pick:hover,.clo-bndl__slot-pick.is-open{border-color:#c9a04a}
+    .clo-bndl__slot-pick:focus-visible{outline:2px solid #c9a04a;outline-offset:1px}
+    .clo-bndl__slot-img{width:38px;height:38px;object-fit:contain;flex-shrink:0;display:block}
+    .clo-bndl__slot-name{flex:1;font-size:12px;color:#222;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .clo-bndl__slot-arrow{width:10px;height:6px;color:#c9a04a;flex-shrink:0;transition:transform .15s}
+    .clo-bndl__slot-pick.is-open .clo-bndl__slot-arrow{transform:rotate(180deg)}
+    .clo-bndl__panel{position:absolute;left:30px;right:0;top:100%;margin-top:1px;z-index:200;background:#fff;border:1px solid #c9a04a;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+    .clo-bndl__search{padding:7px 8px;border-bottom:1px solid #f0eae0}
+    .clo-bndl__search-input{width:100%;padding:5px 9px;border:1px solid #ddd;font-size:12px;outline:none;background:#fff}
+    .clo-bndl__search-input:focus{border-color:#c9a04a}
+    .clo-bndl__list{list-style:none;margin:0;padding:0;max-height:220px;overflow-y:auto}
+    .clo-bndl__list::-webkit-scrollbar{width:4px}
+    .clo-bndl__list::-webkit-scrollbar-thumb{background:#d9d0c1;border-radius:2px}
+    .clo-bndl__list-item{display:flex;align-items:center;gap:9px;padding:7px 10px;cursor:pointer;border-bottom:1px solid #f8f5f0;transition:background .1s}
+    .clo-bndl__list-item:hover{background:#faf7f0}
+    .clo-bndl__list-item:last-child{border-bottom:none}
+    .clo-bndl__list-img{width:36px;height:36px;object-fit:contain;flex-shrink:0}
+    .clo-bndl__list-name{flex:1;font-size:11px;color:#222;line-height:1.3}
+    .clo-bndl__list-btn{padding:4px 10px;background:#c9a04a;color:#111;border:none;font-size:10px;font-weight:700;letter-spacing:.05em;cursor:pointer;white-space:nowrap;flex-shrink:0}
+    .clo-bndl__list-btn:hover{background:#dfbd73}
+    .clo-bndl__footer{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:11px 14px;border-top:1px solid #f0eae0;flex-wrap:wrap}
+    .clo-bndl__total{font-size:14px;font-weight:700;color:#1a140d;font-family:Georgia,serif}
+    .clo-bndl__cta{padding:11px 22px;background:#c9a04a;color:#111;border:none;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s}
+    .clo-bndl__cta:disabled{background:#e0d8cc;color:#a09080;cursor:not-allowed}
+    .clo-bndl__cta:not(:disabled):hover{background:#dfbd73}
+    .clo-bndl__err{margin:0;padding:0 14px 9px;color:#c0392b;font-size:11px;min-height:0}
+    @media(max-width:420px){.clo-bndl__tier-qty{font-size:10px}.clo-bndl__tier-save{font-size:8px}}
     </style>
     <script>
     (function(){
-        var wrap   = document.getElementById('cloBundleWrap');
+        var ITEMS    = <?php echo wp_json_encode( $items ); ?>;
+        var CUR_ID   = <?php echo (int) $current_id; ?>;
+        var AJAX_URL = <?php echo wp_json_encode( $ajax_url ); ?>;
+        var NONCE    = <?php echo wp_json_encode( $nonce ); ?>;
+        var DISC = [0, 0, 0.10, 0.15];
+
+        var wrap    = document.getElementById('cloBndlWrap');
         if (!wrap) return;
-        var cards  = wrap.querySelectorAll('.clo-bundle__card');
-        var sizes  = wrap.querySelectorAll('.clo-bundle__size');
-        var count  = document.getElementById('cloBundleCount');
-        var total  = document.getElementById('cloBundleTotal');
-        var cta    = document.getElementById('cloBundleCta');
-        var err    = document.getElementById('cloBundleErr');
-        var max    = 2;
+        var slotsEl = document.getElementById('cloBndlSlots');
+        var totalEl = document.getElementById('cloBndlTotal');
+        var cta     = document.getElementById('cloBndlCta');
+        var errEl   = document.getElementById('cloBndlErr');
+        var tier    = 1;
+        var chosen  = [null, null, null];
 
-        function getSel(){ return wrap.querySelectorAll('.clo-bundle__card.is-selected'); }
+        var byId = {};
+        ITEMS.forEach(function(it){ byId[it.id] = it; });
 
-        function refresh(){
-            var sel = getSel(); var n = sel.length; var t = 0;
-            sel.forEach(function(c){ t += parseFloat(c.dataset.price)||0; });
-            count.textContent = n + ' / ' + max + ' sélectionné' + (n>1?'s':'');
-            total.textContent = n ? t.toFixed(2).replace('.',',')+' €' : '';
-            cta.disabled = (n !== max);
+        function fmt(n){ return n.toFixed(2).replace('.',',')+' €'; }
+
+        function updateTierPrices(){
+            var ref = byId[CUR_ID] || ITEMS[0];
+            if (!ref) return;
+            var p = ref.price;
+            wrap.querySelectorAll('.clo-bndl__tier-price').forEach(function(el){
+                var t = parseInt(el.getAttribute('data-tier'),10);
+                if (t===1) el.textContent = fmt(p);
+                else if (t===2) el.textContent = fmt(p*(1-DISC[2]))+' / u';
+                else el.textContent = fmt(p*(1-DISC[3]))+' / u';
+            });
         }
 
-        sizes.forEach(function(btn){
-            btn.addEventListener('click', function(){
-                sizes.forEach(function(b){ b.classList.remove('is-active'); });
-                btn.classList.add('is-active');
-                max = parseInt(btn.dataset.size, 10);
-                var sel = getSel();
-                for (var i = max; i < sel.length; i++){
-                    sel[i].classList.remove('is-selected');
-                    sel[i].setAttribute('aria-checked','false');
+        function updateTotal(){
+            var sum = 0, filled = 0;
+            for (var i=0;i<tier;i++){
+                var it = chosen[i] ? byId[chosen[i]] : null;
+                if (it){ sum += it.price; filled++; }
+            }
+            sum = sum * (1 - (DISC[tier]||0));
+            totalEl.textContent = (sum > 0 && filled === tier) ? 'Total : '+fmt(sum) : '';
+        }
+
+        function countChosen(){ var c=0; for(var i=0;i<tier;i++) if(chosen[i]) c++; return c; }
+
+        function refreshCta(){
+            var n = countChosen(), ok = (n === tier);
+            cta.disabled = !ok;
+            if (!ok) cta.textContent = 'Choisissez vos parfums';
+            else if (tier===1) cta.textContent = 'Ajouter au panier';
+            else cta.textContent = 'Ajouter '+tier+' parfums au panier';
+        }
+
+        function closeAllPanels(){
+            for (var i=0;i<3;i++){
+                var p=document.getElementById('cloBndlPanel'+i);
+                var pi=document.getElementById('cloBndlPick'+i);
+                if (p) p.style.display='none';
+                if (pi){ pi.classList.remove('is-open'); pi.setAttribute('aria-expanded','false'); }
+            }
+        }
+
+        function renderList(slotIdx, query){
+            var ul = document.getElementById('cloBndlList'+slotIdx);
+            if (!ul) return;
+            var q = query.toLowerCase().trim();
+            ul.innerHTML = '';
+            ITEMS.forEach(function(it){
+                if (q && it.name.toLowerCase().indexOf(q) < 0) return;
+                var li = document.createElement('li');
+                li.className = 'clo-bndl__list-item';
+                li.setAttribute('role','option');
+                var img = document.createElement('img');
+                img.className = 'clo-bndl__list-img';
+                img.src = it.img; img.alt = ''; img.loading = 'lazy';
+                var nameEl = document.createElement('span');
+                nameEl.className = 'clo-bndl__list-name';
+                nameEl.textContent = it.name;
+                var btn = document.createElement('button');
+                btn.type = 'button'; btn.className = 'clo-bndl__list-btn';
+                btn.textContent = (chosen[slotIdx]===it.id) ? 'Selectionne' : 'Choisir';
+                if (chosen[slotIdx]===it.id) btn.disabled = true;
+                btn.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    selectItem(slotIdx, it.id);
+                });
+                li.appendChild(img); li.appendChild(nameEl); li.appendChild(btn);
+                ul.appendChild(li);
+            });
+        }
+
+        function selectItem(slotIdx, id){
+            chosen[slotIdx] = id;
+            var it = byId[id];
+            var imgEl  = document.getElementById('cloBndlImg'+slotIdx);
+            var nameEl = document.getElementById('cloBndlName'+slotIdx);
+            if (imgEl)  imgEl.src = it.img;
+            if (nameEl) nameEl.textContent = it.name;
+            closeAllPanels();
+            updateTotal(); refreshCta();
+            errEl.textContent = '';
+        }
+
+        function openPanel(slotIdx){
+            var panel = document.getElementById('cloBndlPanel'+slotIdx);
+            var pick  = document.getElementById('cloBndlPick'+slotIdx);
+            if (!panel) return;
+            var isOpen = panel.style.display !== 'none';
+            closeAllPanels();
+            if (isOpen) return;
+            panel.style.display = 'block';
+            pick.classList.add('is-open');
+            pick.setAttribute('aria-expanded','true');
+            var searchEl = document.getElementById('cloBndlSearch'+slotIdx);
+            if (searchEl){ searchEl.value=''; renderList(slotIdx,''); searchEl.focus(); }
+        }
+
+        function setTier(t){
+            tier = t;
+            if (t === 1){
+                slotsEl.style.display = 'none';
+                chosen[0] = CUR_ID; chosen[1] = null; chosen[2] = null;
+            } else {
+                slotsEl.style.display = 'flex';
+                for (var i=0;i<3;i++){
+                    var sl = document.getElementById('cloBndlSlot'+i);
+                    if (sl) sl.style.display = (i < t) ? 'flex' : 'none';
                 }
-                refresh();
+                for (var i=t;i<3;i++){
+                    chosen[i] = null;
+                    var imgEl2  = document.getElementById('cloBndlImg'+i);
+                    var nameEl2 = document.getElementById('cloBndlName'+i);
+                    if (imgEl2)  imgEl2.src = '';
+                    if (nameEl2) nameEl2.textContent = 'Choisir un parfum';
+                }
+                if (!chosen[0]) selectItem(0, CUR_ID);
+            }
+            updateTotal(); refreshCta();
+        }
+
+        wrap.querySelectorAll('.clo-bndl__tier-radio').forEach(function(r){
+            r.addEventListener('change', function(){
+                if (r.checked) setTier(parseInt(r.value, 10));
             });
         });
 
-        cards.forEach(function(card){
-            function toggle(){
-                if (card.classList.contains('is-selected')){
-                    card.classList.remove('is-selected');
-                    card.setAttribute('aria-checked','false');
-                } else {
-                    var sel = getSel();
-                    if (sel.length >= max){
-                        sel[0].classList.remove('is-selected');
-                        sel[0].setAttribute('aria-checked','false');
-                    }
-                    card.classList.add('is-selected');
-                    card.setAttribute('aria-checked','true');
+        for (var i=0;i<3;i++){
+            (function(si){
+                var pick   = document.getElementById('cloBndlPick'+si);
+                var search = document.getElementById('cloBndlSearch'+si);
+                if (pick){
+                    pick.addEventListener('click', function(){ openPanel(si); });
+                    pick.addEventListener('keydown', function(e){
+                        if (e.key==='Enter'||e.key===' '){ e.preventDefault(); openPanel(si); }
+                    });
                 }
-                refresh();
-            }
-            card.addEventListener('click', toggle);
-            card.addEventListener('keydown', function(e){
-                if (e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
-            });
-        });
+                if (search) search.addEventListener('input', function(){ renderList(si, this.value); });
+            })(i);
+        }
+
+        document.addEventListener('click', function(e){ if (!wrap.contains(e.target)) closeAllPanels(); });
+        document.addEventListener('keydown', function(e){ if (e.key==='Escape') closeAllPanels(); });
 
         cta.addEventListener('click', function(){
-            var sel = getSel();
-            if (sel.length !== max) return;
-            var ids = []; sel.forEach(function(c){ ids.push(c.dataset.id); });
-            cta.disabled = true; cta.textContent = 'Ajout en cours…'; err.textContent = '';
-            var body = new URLSearchParams({
-                action: 'clo_bundle_add_to_cart',
-                nonce: <?php echo json_encode( $nonce ); ?>
-            });
+            var ids = [];
+            for (var i=0;i<tier;i++){ if (chosen[i]) ids.push(chosen[i]); }
+            if (ids.length !== tier) return;
+            cta.disabled = true; cta.textContent = 'Ajout en cours...'; errEl.textContent = '';
+            var body = new URLSearchParams({ action:'clo_bundle_add_to_cart', nonce:NONCE });
             ids.forEach(function(id){ body.append('ids[]', id); });
-            fetch(<?php echo json_encode( $ajax_url ); ?>, {
-                method:'POST',
-                headers:{'Content-Type':'application/x-www-form-urlencoded'},
-                body: body.toString()
-            })
+            fetch(AJAX_URL, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body.toString() })
             .then(function(r){ return r.json(); })
             .then(function(d){
                 if (d.success){ window.location.href = d.data.redirect; }
-                else {
-                    err.textContent = d.data.message || 'Une erreur est survenue.';
-                    cta.disabled = false; cta.textContent = 'Ajouter au panier';
-                }
+                else { errEl.textContent = (d.data && d.data.message) || 'Une erreur est survenue.'; cta.disabled=false; refreshCta(); }
             })
-            .catch(function(){
-                err.textContent = 'Erreur réseau, veuillez réessayer.';
-                cta.disabled = false; cta.textContent = 'Ajouter au panier';
-            });
+            .catch(function(){ errEl.textContent='Erreur reseau, veuillez reessayer.'; cta.disabled=false; refreshCta(); });
         });
 
-        refresh();
+        updateTierPrices();
+        setTier(1);
     }());
     </script>
     <?php
 }
+
 
 
 // ── Encadré code promo sous l'image produit ───────────────────────────────────

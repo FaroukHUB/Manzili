@@ -2402,13 +2402,13 @@ function clo_bundle_teaser(): void {
         <span class="clo-teaser__cta">Composer mon offre ↓</span>
     </a>
     <style>
-    .clo-teaser{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 14px;background:#fdf9f0;border:1px solid #c9a04a;text-decoration:none;transition:background .15s;cursor:pointer}
-    .clo-teaser:hover{background:#faf3e0}
-    .clo-teaser__icon{color:#c9a04a;font-size:14px;flex-shrink:0}
+    .clo-teaser{display:flex;align-items:center;gap:12px;margin-top:12px;padding:13px 16px;background:#111;text-decoration:none;transition:background .15s;cursor:pointer}
+    .clo-teaser:hover{background:#1c1c1c}
+    .clo-teaser__icon{color:#c9a04a;font-size:16px;flex-shrink:0;line-height:1}
     .clo-teaser__text{flex:1;min-width:0}
-    .clo-teaser__text strong{display:block;font-size:11px;font-weight:700;color:#1a140d;letter-spacing:.04em;text-transform:uppercase;line-height:1}
-    .clo-teaser__prices{font-size:11px;color:#7a6a4f;line-height:1.6}
-    .clo-teaser__cta{flex-shrink:0;font-size:10px;font-weight:800;color:#c9a04a;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+    .clo-teaser__text strong{display:block;font-size:10px;font-weight:800;color:#c9a04a;letter-spacing:.12em;text-transform:uppercase;line-height:1;margin-bottom:3px}
+    .clo-teaser__prices{font-size:12px;color:#e8e0d0;letter-spacing:.02em}
+    .clo-teaser__cta{flex-shrink:0;padding:7px 14px;background:#c9a04a;color:#111;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
     </style>
     <script>
     (function(){

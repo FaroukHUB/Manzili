@@ -2072,8 +2072,8 @@ function clo_power_bundle_ui(): void {
                 <span class="clo-bndl__subtitle">Choisissez 2 ou 3 parfums et bénéficiez de remises exclusives — livrés ensemble, dans les mêmes délais.</span>
             </div>
             <div class="clo-bndl__head-badges" aria-hidden="true">
-                <span class="clo-bndl__head-badge">-10 % dès 2</span>
-                <span class="clo-bndl__head-badge clo-bndl__head-badge--gold">-15 % dès 3</span>
+                <span class="clo-bndl__head-badge">2 parfums = 13,80 €</span>
+                <span class="clo-bndl__head-badge clo-bndl__head-badge--gold">3 parfums = 17,90 €</span>
             </div>
         </div>
 
@@ -2090,7 +2090,7 @@ function clo_power_bundle_ui(): void {
                 <span class="clo-bndl__tier-box">
                     <span class="clo-bndl__tier-qty">Achetez-en 2</span>
                     <span class="clo-bndl__tier-price" data-tier="2"></span>
-                    <span class="clo-bndl__tier-save">-10 %</span>
+                    <span class="clo-bndl__tier-save">économisez 4,18 €</span>
                 </span>
             </label>
             <label class="clo-bndl__tier-lbl">
@@ -2098,7 +2098,7 @@ function clo_power_bundle_ui(): void {
                 <span class="clo-bndl__tier-box">
                     <span class="clo-bndl__tier-qty">Achetez-en 3</span>
                     <span class="clo-bndl__tier-price" data-tier="3"></span>
-                    <span class="clo-bndl__tier-save">-15 %</span>
+                    <span class="clo-bndl__tier-save">économisez 9,07 €</span>
                 </span>
             </label>
         </div>
@@ -2187,7 +2187,7 @@ function clo_power_bundle_ui(): void {
         var CUR_ID   = <?php echo (int) $current_id; ?>;
         var AJAX_URL = <?php echo wp_json_encode( $ajax_url ); ?>;
         var NONCE    = <?php echo wp_json_encode( $nonce ); ?>;
-        var DISC = [0, 0, 0.10, 0.15];
+        var BUNDLE = [0, 0, <?php echo CLO_CP_BUNDLE_2; ?>, <?php echo CLO_CP_BUNDLE_3; ?>];
 
         var wrap    = document.getElementById('cloBndlWrap');
         if (!wrap) return;
@@ -2205,24 +2205,24 @@ function clo_power_bundle_ui(): void {
 
         function updateTierPrices(){
             var ref = byId[CUR_ID] || ITEMS[0];
-            if (!ref) return;
-            var p = ref.price;
             wrap.querySelectorAll('.clo-bndl__tier-price').forEach(function(el){
                 var t = parseInt(el.getAttribute('data-tier'),10);
-                if (t===1) el.textContent = fmt(p);
-                else if (t===2) el.textContent = fmt(p*(1-DISC[2]))+' / u';
-                else el.textContent = fmt(p*(1-DISC[3]))+' / u';
+                if (t===1) el.textContent = ref ? fmt(ref.price) : '';
+                else el.textContent = fmt(BUNDLE[t]/t)+' / u';
             });
         }
 
         function updateTotal(){
-            var sum = 0, filled = 0;
-            for (var i=0;i<tier;i++){
-                var it = chosen[i] ? byId[chosen[i]] : null;
-                if (it){ sum += it.price; filled++; }
+            var filled = countChosen();
+            if (filled !== tier){ totalEl.textContent = ''; return; }
+            var total;
+            if (tier === 1){
+                var it1 = byId[chosen[0]];
+                total = it1 ? it1.price : 0;
+            } else {
+                total = BUNDLE[tier];
             }
-            sum = sum * (1 - (DISC[tier]||0));
-            totalEl.textContent = (sum > 0 && filled === tier) ? 'Total : '+fmt(sum) : '';
+            totalEl.textContent = total > 0 ? 'Total : '+fmt(total) : '';
         }
 
         function countChosen(){ var c=0; for(var i=0;i<tier;i++) if(chosen[i]) c++; return c; }
@@ -2386,6 +2386,10 @@ function clo_power_bundle_ui(): void {
 
 // ── Remise automatique bundle Collection Power dans le panier ────────────────
 
+// Prix fixes des bundles Collection Power
+define( 'CLO_CP_BUNDLE_2', 13.80 );
+define( 'CLO_CP_BUNDLE_3', 17.90 );
+
 add_action( 'woocommerce_cart_calculate_fees', 'clo_bundle_auto_discount' );
 function clo_bundle_auto_discount( WC_Cart $cart ): void {
     if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
@@ -2406,11 +2410,21 @@ function clo_bundle_auto_discount( WC_Cart $cart ): void {
     if ( $cp_qty < 2 ) {
         return;
     }
-    $rate     = ( $cp_qty >= 3 ) ? 0.15 : 0.10;
-    $label    = ( $cp_qty >= 3 )
-        ? 'Offre Collection Power — 3 parfums (−15 %)'
-        : 'Offre Collection Power — 2 parfums (−10 %)';
-    $discount = -round( $cp_total * $rate, 2 );
+    // Regroupement optimal : maximum de packs de 3, puis pack de 2
+    $sets_of_3    = intdiv( $cp_qty, 3 );
+    $remaining    = $cp_qty % 3; // 0, 1 ou 2
+    $bundle_total = $sets_of_3 * CLO_CP_BUNDLE_3;
+    if ( $remaining === 2 ) {
+        $bundle_total += CLO_CP_BUNDLE_2;
+    } elseif ( $remaining === 1 ) {
+        // 1 article hors bundle : prix unitaire moyen sans remise
+        $bundle_total += round( $cp_total / $cp_qty, 2 );
+    }
+    $discount = round( $bundle_total - $cp_total, 2 );
+    if ( $discount >= 0 ) {
+        return;
+    }
+    $label = 'Offre Collection Power (' . $cp_qty . ' parfum' . ( $cp_qty > 1 ? 's' : '' ) . ')';
     $cart->add_fee( $label, $discount, false );
 }
 

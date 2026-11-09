@@ -2000,6 +2000,24 @@ function clo_product_description_tab_callback(): void {
 }
 
 
+// ── Bundle MMBB — Collection Power 50ml ──────────────────────────────────────
+
+add_action( 'woocommerce_after_add_to_cart_form', 'clo_mmbb_bundle_power', 15 );
+function clo_mmbb_bundle_power(): void {
+    if ( ! is_product() ) {
+        return;
+    }
+    global $product;
+    if ( ! $product ) {
+        return;
+    }
+    if ( ! has_term( 'collection-power', 'product_cat', $product->get_id() ) ) {
+        return;
+    }
+    echo do_shortcode( '[mmbb_box id="4097"]' );
+}
+
+
 // ── Encadré code promo sous l'image produit ───────────────────────────────────
 
 add_action( 'woocommerce_after_add_to_cart_form', 'clo_promo_code_banner', 10 );

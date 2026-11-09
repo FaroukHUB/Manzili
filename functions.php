@@ -2000,21 +2000,226 @@ function clo_product_description_tab_callback(): void {
 }
 
 
-// ── Bundle MMBB — Collection Power 50ml ──────────────────────────────────────
+// ── Bundle Collection Power — sélecteur sur mesure ───────────────────────────
 
-add_action( 'woocommerce_after_add_to_cart_form', 'clo_mmbb_bundle_power', 15 );
-function clo_mmbb_bundle_power(): void {
-    if ( ! is_product() ) {
-        return;
+add_action( 'wp_ajax_clo_bundle_add_to_cart',        'clo_bundle_add_to_cart_handler' );
+add_action( 'wp_ajax_nopriv_clo_bundle_add_to_cart', 'clo_bundle_add_to_cart_handler' );
+function clo_bundle_add_to_cart_handler(): void {
+    check_ajax_referer( 'clo_bundle_nonce', 'nonce' );
+    $ids = isset( $_POST['ids'] ) ? array_map( 'absint', (array) $_POST['ids'] ) : [];
+    if ( count( $ids ) < 2 || count( $ids ) > 3 ) {
+        wp_send_json_error( [ 'message' => 'Sélection invalide.' ] );
     }
+    foreach ( $ids as $id ) {
+        if ( ! has_term( 'collection-power', 'product_cat', $id ) ) {
+            wp_send_json_error( [ 'message' => 'Produit non autorisé.' ] );
+        }
+        if ( ! WC()->cart->add_to_cart( $id, 1 ) ) {
+            wp_send_json_error( [ 'message' => 'Impossible d\'ajouter ce produit au panier.' ] );
+        }
+    }
+    wp_send_json_success( [ 'redirect' => wc_get_cart_url() ] );
+}
+
+add_action( 'woocommerce_after_add_to_cart_form', 'clo_power_bundle_ui', 15 );
+function clo_power_bundle_ui(): void {
+    if ( ! is_product() ) return;
     global $product;
-    if ( ! $product ) {
-        return;
-    }
-    if ( ! has_term( 'collection-power', 'product_cat', $product->get_id() ) ) {
-        return;
-    }
-    echo do_shortcode( '[mmbb_box id="4097"]' );
+    if ( ! $product || ! has_term( 'collection-power', 'product_cat', $product->get_id() ) ) return;
+
+    $products = wc_get_products( [
+        'category' => [ 'collection-power' ],
+        'status'   => 'publish',
+        'limit'    => -1,
+        'orderby'  => 'title',
+        'order'    => 'ASC',
+    ] );
+    if ( empty( $products ) ) return;
+
+    $current_id = $product->get_id();
+    $nonce      = wp_create_nonce( 'clo_bundle_nonce' );
+    $ajax_url   = admin_url( 'admin-ajax.php' );
+    ?>
+    <div class="clo-bundle" id="cloBundleWrap">
+
+        <div class="clo-bundle__header">
+            <div>
+                <span class="clo-bundle__eyebrow">Collection Power · 50 ml</span>
+                <span class="clo-bundle__title">Composez votre pack</span>
+            </div>
+            <span class="clo-bundle__badge">Jusqu'à 35&nbsp;% de remise</span>
+        </div>
+
+        <div class="clo-bundle__sizes">
+            <button type="button" class="clo-bundle__size is-active" data-size="2">
+                <strong>2</strong><span>parfums</span>
+            </button>
+            <button type="button" class="clo-bundle__size" data-size="3">
+                <strong>3</strong><span>parfums</span>
+            </button>
+        </div>
+
+        <div class="clo-bundle__scroll">
+            <div class="clo-bundle__grid">
+                <?php foreach ( $products as $p ) :
+                    $img_id    = $p->get_image_id();
+                    $img_url   = $img_id ? wp_get_attachment_image_url( $img_id, 'thumbnail' ) : wc_placeholder_img_src();
+                    $raw_name  = $p->get_name();
+                    $short     = preg_replace( '/\s*[-–]\s*(eau de parfum|collection power|50\s*ml).*/i', '', $raw_name );
+                    $price     = (float) $p->get_price();
+                    $pid       = $p->get_id();
+                    $selected  = ( $pid === $current_id );
+                ?>
+                <div class="clo-bundle__card<?php echo $selected ? ' is-selected' : ''; ?>"
+                     data-id="<?php echo esc_attr( $pid ); ?>"
+                     data-price="<?php echo esc_attr( $price ); ?>"
+                     role="checkbox" aria-checked="<?php echo $selected ? 'true' : 'false'; ?>"
+                     tabindex="0" title="<?php echo esc_attr( $raw_name ); ?>">
+                    <div class="clo-bundle__img-wrap">
+                        <img src="<?php echo esc_url( $img_url ); ?>" alt="" loading="lazy">
+                        <span class="clo-bundle__check" aria-hidden="true">✓</span>
+                    </div>
+                    <span class="clo-bundle__name"><?php echo esc_html( $short ); ?></span>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <div class="clo-bundle__footer">
+            <span class="clo-bundle__count" id="cloBundleCount">0 / 2 sélectionnés</span>
+            <span class="clo-bundle__total" id="cloBundleTotal"></span>
+            <button type="button" class="clo-bundle__cta" id="cloBundleCta" disabled>Ajouter au panier</button>
+        </div>
+        <p class="clo-bundle__err" id="cloBundleErr"></p>
+
+    </div>
+    <style>
+    .clo-bundle{margin:20px 0 0;background:#111;color:#eee;font-size:12px}
+    .clo-bundle *{box-sizing:border-box}
+    .clo-bundle__header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid #252525}
+    .clo-bundle__eyebrow{display:block;color:#c9a04a;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+    .clo-bundle__title{display:block;font-family:Georgia,serif;font-size:15px;color:#fff;font-weight:400;letter-spacing:.03em}
+    .clo-bundle__badge{flex-shrink:0;padding:4px 8px;background:#c9a04a;color:#111;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;margin-top:2px}
+    .clo-bundle__sizes{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid #252525}
+    .clo-bundle__size{display:flex;flex-direction:column;align-items:center;padding:7px 20px;border:1px solid #333;background:none;color:#888;cursor:pointer;transition:all .15s;line-height:1}
+    .clo-bundle__size strong{font-size:20px;font-weight:800;color:inherit}
+    .clo-bundle__size span{font-size:9px;letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+    .clo-bundle__size.is-active{border-color:#c9a04a;color:#c9a04a}
+    .clo-bundle__scroll{max-height:280px;overflow-y:auto;border-bottom:1px solid #252525}
+    .clo-bundle__scroll::-webkit-scrollbar{width:4px}
+    .clo-bundle__scroll::-webkit-scrollbar-track{background:#1a1a1a}
+    .clo-bundle__scroll::-webkit-scrollbar-thumb{background:#c9a04a;border-radius:2px}
+    .clo-bundle__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#252525}
+    .clo-bundle__card{background:#111;padding:10px 6px 8px;cursor:pointer;text-align:center;transition:background .12s;position:relative;outline:none}
+    .clo-bundle__card:hover{background:#191919}
+    .clo-bundle__card.is-selected{background:#17130a}
+    .clo-bundle__card:focus-visible{outline:1px solid #c9a04a;outline-offset:-1px}
+    .clo-bundle__img-wrap{position:relative;margin-bottom:6px}
+    .clo-bundle__img-wrap img{width:100%;height:72px;object-fit:contain;display:block;transition:opacity .12s}
+    .clo-bundle__card.is-selected .clo-bundle__img-wrap img{opacity:.85}
+    .clo-bundle__check{position:absolute;top:3px;right:3px;width:17px;height:17px;background:#c9a04a;color:#111;border-radius:50%;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .12s;line-height:1}
+    .clo-bundle__card.is-selected .clo-bundle__check{opacity:1}
+    .clo-bundle__name{display:block;font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#bbb;line-height:1.3}
+    .clo-bundle__footer{display:flex;align-items:center;gap:10px;padding:11px 16px;flex-wrap:wrap}
+    .clo-bundle__count{font-size:10px;color:#666;flex-shrink:0}
+    .clo-bundle__total{flex:1;font-size:14px;font-weight:800;color:#c9a04a;text-align:right}
+    .clo-bundle__cta{flex-shrink:0;padding:10px 18px;background:#c9a04a;color:#111;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;transition:background .15s}
+    .clo-bundle__cta:disabled{background:#2a2a2a;color:#555;cursor:not-allowed}
+    .clo-bundle__cta:not(:disabled):hover{background:#dfbd73}
+    .clo-bundle__err{margin:0;padding:0 16px 10px;color:#d44;font-size:10px;min-height:0}
+    @media(max-width:500px){.clo-bundle__grid{grid-template-columns:repeat(3,1fr)}}
+    </style>
+    <script>
+    (function(){
+        var wrap   = document.getElementById('cloBundleWrap');
+        if (!wrap) return;
+        var cards  = wrap.querySelectorAll('.clo-bundle__card');
+        var sizes  = wrap.querySelectorAll('.clo-bundle__size');
+        var count  = document.getElementById('cloBundleCount');
+        var total  = document.getElementById('cloBundleTotal');
+        var cta    = document.getElementById('cloBundleCta');
+        var err    = document.getElementById('cloBundleErr');
+        var max    = 2;
+
+        function getSel(){ return wrap.querySelectorAll('.clo-bundle__card.is-selected'); }
+
+        function refresh(){
+            var sel = getSel(); var n = sel.length; var t = 0;
+            sel.forEach(function(c){ t += parseFloat(c.dataset.price)||0; });
+            count.textContent = n + ' / ' + max + ' sélectionné' + (n>1?'s':'');
+            total.textContent = n ? t.toFixed(2).replace('.',',')+' €' : '';
+            cta.disabled = (n !== max);
+        }
+
+        sizes.forEach(function(btn){
+            btn.addEventListener('click', function(){
+                sizes.forEach(function(b){ b.classList.remove('is-active'); });
+                btn.classList.add('is-active');
+                max = parseInt(btn.dataset.size, 10);
+                var sel = getSel();
+                for (var i = max; i < sel.length; i++){
+                    sel[i].classList.remove('is-selected');
+                    sel[i].setAttribute('aria-checked','false');
+                }
+                refresh();
+            });
+        });
+
+        cards.forEach(function(card){
+            function toggle(){
+                if (card.classList.contains('is-selected')){
+                    card.classList.remove('is-selected');
+                    card.setAttribute('aria-checked','false');
+                } else {
+                    var sel = getSel();
+                    if (sel.length >= max){
+                        sel[0].classList.remove('is-selected');
+                        sel[0].setAttribute('aria-checked','false');
+                    }
+                    card.classList.add('is-selected');
+                    card.setAttribute('aria-checked','true');
+                }
+                refresh();
+            }
+            card.addEventListener('click', toggle);
+            card.addEventListener('keydown', function(e){
+                if (e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+            });
+        });
+
+        cta.addEventListener('click', function(){
+            var sel = getSel();
+            if (sel.length !== max) return;
+            var ids = []; sel.forEach(function(c){ ids.push(c.dataset.id); });
+            cta.disabled = true; cta.textContent = 'Ajout en cours…'; err.textContent = '';
+            var body = new URLSearchParams({
+                action: 'clo_bundle_add_to_cart',
+                nonce: <?php echo json_encode( $nonce ); ?>
+            });
+            ids.forEach(function(id){ body.append('ids[]', id); });
+            fetch(<?php echo json_encode( $ajax_url ); ?>, {
+                method:'POST',
+                headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                body: body.toString()
+            })
+            .then(function(r){ return r.json(); })
+            .then(function(d){
+                if (d.success){ window.location.href = d.data.redirect; }
+                else {
+                    err.textContent = d.data.message || 'Une erreur est survenue.';
+                    cta.disabled = false; cta.textContent = 'Ajouter au panier';
+                }
+            })
+            .catch(function(){
+                err.textContent = 'Erreur réseau, veuillez réessayer.';
+                cta.disabled = false; cta.textContent = 'Ajouter au panier';
+            });
+        });
+
+        refresh();
+    }());
+    </script>
+    <?php
 }
 
 

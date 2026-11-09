@@ -2022,7 +2022,7 @@ function clo_bundle_add_to_cart_handler(): void {
     wp_send_json_success( [ 'redirect' => wc_get_cart_url() ] );
 }
 
-add_action( 'woocommerce_after_add_to_cart_form', 'clo_power_bundle_ui', 15 );
+add_action( 'woocommerce_after_single_product_summary', 'clo_power_bundle_ui', 5 );
 function clo_power_bundle_ui(): void {
     if ( ! is_product() ) return;
     global $product;
@@ -2042,7 +2042,12 @@ function clo_power_bundle_ui(): void {
     foreach ( $all_products as $p ) {
         if ( get_post_meta( $p->get_id(), '_pack_parfums', true ) ) continue;
         $img_id  = $p->get_image_id();
-        $img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' );
+        $img_url = '';
+        if ( $img_id ) {
+            $img_url = wp_get_attachment_image_url( $img_id, 'medium' )
+                    ?: wp_get_attachment_url( $img_id );
+        }
+        if ( ! $img_url ) { $img_url = wc_placeholder_img_src(); }
         $raw     = $p->get_name();
         $short   = preg_replace( '/\s*[-–]\s*(eau de parfum|collection power|50\s*ml).*/i', '', $raw );
         $items[] = [
@@ -2061,8 +2066,15 @@ function clo_power_bundle_ui(): void {
     <div class="clo-bndl" id="cloBndlWrap">
 
         <div class="clo-bndl__head">
-            <span class="clo-bndl__eyebrow">Collection Power · 50 ml</span>
-            <span class="clo-bndl__title">Composez votre offre</span>
+            <div class="clo-bndl__head-left">
+                <span class="clo-bndl__eyebrow">Collection Power · 50 ml</span>
+                <span class="clo-bndl__title">Économisez en composant votre collection</span>
+                <span class="clo-bndl__subtitle">Choisissez 2 ou 3 parfums et bénéficiez de remises exclusives — livrés ensemble, dans les mêmes délais.</span>
+            </div>
+            <div class="clo-bndl__head-badges" aria-hidden="true">
+                <span class="clo-bndl__head-badge">-10 % dès 2</span>
+                <span class="clo-bndl__head-badge clo-bndl__head-badge--gold">-15 % dès 3</span>
+            </div>
         </div>
 
         <div class="clo-bndl__tiers">
@@ -2118,20 +2130,25 @@ function clo_power_bundle_ui(): void {
 
     </div>
     <style>
-    .clo-bndl{margin:20px 0 0;border:1px solid #e0d5c0;background:#fff;font-size:13px}
+    .clo-bndl{margin:32px 0 0;border:1px solid #e0d5c0;background:#fff;font-size:13px}
     .clo-bndl *{box-sizing:border-box}
-    .clo-bndl__head{padding:11px 14px 10px;border-bottom:1px solid #f0eae0}
-    .clo-bndl__eyebrow{display:block;color:#c9a04a;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
-    .clo-bndl__title{display:block;font-family:Georgia,serif;font-size:14px;color:#1a140d;font-weight:400;letter-spacing:.02em}
-    .clo-bndl__tiers{display:flex}
+    .clo-bndl__head{padding:20px 24px 18px;border-bottom:1px solid #f0eae0;background:#fdf9f2;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .clo-bndl__head-left{flex:1;min-width:0}
+    .clo-bndl__head-badges{display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end}
+    .clo-bndl__head-badge{padding:5px 11px;border:1px solid #d9d0c1;background:#fff;color:#666;font-size:10px;font-weight:700;letter-spacing:.06em;white-space:nowrap}
+    .clo-bndl__head-badge--gold{background:#c9a04a;border-color:#c9a04a;color:#111}
+    .clo-bndl__eyebrow{display:block;color:#c9a04a;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+    .clo-bndl__title{display:block;font-family:Georgia,serif;font-size:19px;color:#1a140d;font-weight:400;letter-spacing:.01em;margin-bottom:6px;line-height:1.3}
+    .clo-bndl__subtitle{display:block;font-size:12px;color:#7a6a4f;line-height:1.6;max-width:520px}
+    .clo-bndl__tiers{display:flex;border-bottom:1px solid #f0eae0}
     .clo-bndl__tier-radio{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
     .clo-bndl__tier-lbl{flex:1;display:block;cursor:pointer}
     .clo-bndl__tier-lbl:not(:last-child) .clo-bndl__tier-box{border-right:1px solid #f0eae0}
-    .clo-bndl__tier-box{display:flex;flex-direction:column;align-items:center;padding:10px 6px 9px;text-align:center;background:#faf8f4;border-top:2px solid transparent;transition:background .12s,border-color .12s}
+    .clo-bndl__tier-box{display:flex;flex-direction:column;align-items:center;padding:16px 10px 14px;text-align:center;background:#faf8f4;border-top:2px solid transparent;transition:background .12s,border-color .12s}
     .clo-bndl__tier-radio:checked+.clo-bndl__tier-box{background:#fff7ec;border-top-color:#c9a04a}
-    .clo-bndl__tier-qty{font-size:11px;font-weight:700;color:#222;letter-spacing:.03em}
-    .clo-bndl__tier-price{font-size:10px;color:#666;margin-top:2px;min-height:14px}
-    .clo-bndl__tier-save{font-size:9px;font-weight:800;color:#c9a04a;letter-spacing:.05em;margin-top:3px;text-transform:uppercase}
+    .clo-bndl__tier-qty{font-size:13px;font-weight:700;color:#222;letter-spacing:.02em}
+    .clo-bndl__tier-price{font-size:14px;font-weight:700;color:#1a140d;margin-top:5px;min-height:18px}
+    .clo-bndl__tier-save{font-size:10px;font-weight:800;color:#c9a04a;letter-spacing:.05em;margin-top:4px;text-transform:uppercase}
     .clo-bndl__slots{padding:10px 14px;border-top:1px solid #f0eae0;display:flex;flex-direction:column;gap:7px}
     .clo-bndl__slot{display:flex;align-items:center;gap:10px;position:relative}
     .clo-bndl__slot-num{width:20px;height:20px;border-radius:50%;background:#c9a04a;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
@@ -2282,6 +2299,15 @@ function clo_power_bundle_ui(): void {
             if (searchEl){ searchEl.value=''; renderList(slotIdx,''); searchEl.focus(); }
         }
 
+        function fillSlotDOM(slotIdx, id){
+            var it = byId[id];
+            if (!it) return;
+            var imgEl = document.getElementById('cloBndlImg'+slotIdx);
+            var nameEl = document.getElementById('cloBndlName'+slotIdx);
+            if (imgEl) imgEl.src = it.img;
+            if (nameEl) nameEl.textContent = it.name;
+        }
+
         function setTier(t){
             tier = t;
             if (t === 1){
@@ -2293,14 +2319,19 @@ function clo_power_bundle_ui(): void {
                     var sl = document.getElementById('cloBndlSlot'+i);
                     if (sl) sl.style.display = (i < t) ? 'flex' : 'none';
                 }
+                // Default empty visible slots to current product
+                for (var i=0;i<t;i++){
+                    if (!chosen[i]) chosen[i] = CUR_ID;
+                    fillSlotDOM(i, chosen[i]);
+                }
+                // Clear extra slots
                 for (var i=t;i<3;i++){
                     chosen[i] = null;
-                    var imgEl2  = document.getElementById('cloBndlImg'+i);
-                    var nameEl2 = document.getElementById('cloBndlName'+i);
-                    if (imgEl2)  imgEl2.src = '';
-                    if (nameEl2) nameEl2.textContent = 'Choisir un parfum';
+                    var imgEl3  = document.getElementById('cloBndlImg'+i);
+                    var nameEl3 = document.getElementById('cloBndlName'+i);
+                    if (imgEl3)  imgEl3.src = '';
+                    if (nameEl3) nameEl3.textContent = 'Choisir un parfum';
                 }
-                if (!chosen[0]) selectItem(0, CUR_ID);
             }
             updateTotal(); refreshCta();
         }

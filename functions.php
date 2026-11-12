@@ -124,54 +124,6 @@ function manzili_display_parfum_selector() {
     $parfums     = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
     if ( empty( $parfums ) ) return;
 
-    // Map : nom normalisé → URL miniature (une seule requête)
-    $thumb_map = [];
-    $all_pids  = get_posts( [
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'fields'         => 'ids',
-    ] );
-    foreach ( $all_pids as $pid ) {
-        $key    = strtolower( remove_accents( trim( get_the_title( $pid ) ) ) );
-        $img_id = get_post_thumbnail_id( $pid );
-        if ( $img_id ) {
-            $img_url = wp_get_attachment_image_url( $img_id, 'thumbnail' );
-            if ( $img_url ) {
-                $thumb_map[ $key ] = $img_url;
-            }
-        }
-    }
-
-    // Fonction de recherche : exact → sans parenthèse → préfixe
-    $find_thumb = function( $parfum ) use ( $thumb_map ) {
-        $needle = strtolower( remove_accents( trim( $parfum ) ) );
-
-        // 1. Correspondance exacte
-        if ( isset( $thumb_map[ $needle ] ) ) {
-            return $thumb_map[ $needle ];
-        }
-
-        // 2. Supprimer la partie "(INSPIRÉ DE …)" et réessayer
-        $base = trim( preg_replace( '/\s*\(.*$/', '', $needle ) );
-        if ( '' !== $base ) {
-            if ( isset( $thumb_map[ $base ] ) ) {
-                return $thumb_map[ $base ];
-            }
-            // 3. Titre produit commence par le nom de base suivi d'un séparateur
-            foreach ( $thumb_map as $title => $url ) {
-                if ( strpos( $title, $base ) === 0 ) {
-                    $after = substr( $title, strlen( $base ) );
-                    if ( '' === $after || preg_match( '/^[\s\-–—,.]/', $after ) ) {
-                        return $url;
-                    }
-                }
-            }
-        }
-
-        return '';
-    };
-
     $pack_qty    = (int) get_post_meta( $product->get_id(), '_pack_quantity', true );
     $is_variable = $product->is_type( 'variable' );
     $max_display = ( ! $is_variable && $pack_qty > 0 ) ? $pack_qty : '—';
@@ -189,13 +141,9 @@ function manzili_display_parfum_selector() {
 
         <div class="mzl-grid">
             <?php foreach ( $parfums as $parfum ) :
-                $uid       = 'mzl_' . sanitize_title( $parfum );
-                $thumb_url = $find_thumb( $parfum );
+                $uid = 'mzl_' . sanitize_title( $parfum );
             ?>
             <div class="mzl-item" data-parfum="<?php echo esc_attr( $parfum ); ?>">
-                <?php if ( $thumb_url ) : ?>
-                <img src="<?php echo esc_url( $thumb_url ); ?>" alt="" class="mzl-thumb" loading="lazy">
-                <?php endif; ?>
                 <div class="mzl-left">
                     <input type="checkbox"
                            class="mzl-check"
@@ -304,16 +252,6 @@ function manzili_pack_selector_assets() {
         }
         @media (max-width: 520px) {
             .mzl-grid { grid-template-columns: 1fr; }
-        }
-
-        /* ── Miniature parfum ── */
-        .mzl-thumb {
-            width: 44px;
-            height: 44px;
-            object-fit: cover;
-            border-radius: 4px;
-            flex-shrink: 0;
-            display: block;
         }
 
         /* ── Ligne parfum ── */

@@ -2444,3 +2444,120 @@ function clo_promo_code_banner(): void {
 	</script>
 	<?php
 }
+
+// ─── MEGA MENU ULTRA-MODERNE ─────────────────────────────────────────────────
+add_action( 'wp_head', 'clo_megamenu_ultramodern_css', 99 );
+function clo_megamenu_ultramodern_css(): void {
+	?>
+	<style id="clo-megamenu-css">
+	/* ── Dropdown container ─────────────────────────────────────── */
+	.nav-dropdown {
+		background: #0d0d0d !important;
+		border: 1px solid rgba(201,160,74,.18) !important;
+		border-top: 2px solid #c9a04a !important;
+		border-radius: 0 0 6px 6px !important;
+		box-shadow: 0 20px 60px rgba(0,0,0,.55), 0 2px 0 #c9a04a inset !important;
+		backdrop-filter: blur(12px) !important;
+	}
+
+	/* ── Colonne parent (titre de section) ──────────────────────── */
+	.nav-dropdown-col > a,
+	.nav-dropdown-col > .nav-label {
+		display: block;
+		font-size: 9px !important;
+		font-weight: 800 !important;
+		letter-spacing: .18em !important;
+		text-transform: uppercase !important;
+		color: #c9a04a !important;
+		padding: 18px 20px 10px !important;
+		border-bottom: 1px solid rgba(201,160,74,.15) !important;
+		pointer-events: none;
+	}
+
+	/* ── Liste de sous-catégories ───────────────────────────────── */
+	.nav-dropdown-col ul {
+		list-style: none !important;
+		margin: 0 !important;
+		padding: 8px 0 14px !important;
+	}
+
+	.nav-dropdown-col ul li {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	/* ── Chaque lien ────────────────────────────────────────────── */
+	.nav-dropdown-col ul li a {
+		display: flex !important;
+		align-items: center !important;
+		gap: 10px !important;
+		padding: 9px 20px !important;
+		font-size: 12px !important;
+		font-weight: 500 !important;
+		letter-spacing: .06em !important;
+		color: rgba(255,255,255,.75) !important;
+		text-transform: none !important;
+		text-decoration: none !important;
+		transition: color .2s, background .2s, padding-left .2s !important;
+		position: relative !important;
+	}
+
+	/* Barre gauche animée au hover */
+	.nav-dropdown-col ul li a::before {
+		content: '' !important;
+		position: absolute !important;
+		left: 0 !important;
+		top: 50% !important;
+		transform: translateY(-50%) scaleY(0) !important;
+		width: 2px !important;
+		height: 60% !important;
+		background: #c9a04a !important;
+		border-radius: 2px !important;
+		transition: transform .2s cubic-bezier(.4,0,.2,1) !important;
+	}
+
+	.nav-dropdown-col ul li a:hover {
+		color: #c9a04a !important;
+		background: rgba(201,160,74,.06) !important;
+		padding-left: 26px !important;
+	}
+
+	.nav-dropdown-col ul li a:hover::before {
+		transform: translateY(-50%) scaleY(1) !important;
+	}
+
+	/* Petit chevron discret à droite */
+	.nav-dropdown-col ul li a::after {
+		content: '›' !important;
+		margin-left: auto !important;
+		font-size: 15px !important;
+		color: rgba(201,160,74,0) !important;
+		transition: color .2s, transform .2s !important;
+	}
+
+	.nav-dropdown-col ul li a:hover::after {
+		color: rgba(201,160,74,.7) !important;
+		transform: translateX(3px) !important;
+	}
+
+	/* ── Sous-titre de collection (li.current-menu-item) ──────── */
+	.nav-dropdown-col ul li.current-menu-item > a,
+	.nav-dropdown-col ul li.current-menu-ancestor > a {
+		color: #c9a04a !important;
+	}
+
+	/* ── Séparateur entre colonnes ──────────────────────────────── */
+	.nav-dropdown .nav-dropdown-col + .nav-dropdown-col {
+		border-left: 1px solid rgba(201,160,74,.1) !important;
+	}
+
+	/* ── Responsive : stack sur mobile ─────────────────────────── */
+	@media (max-width: 768px) {
+		.nav-dropdown-col ul li a {
+			padding: 11px 16px !important;
+			font-size: 13px !important;
+		}
+	}
+	</style>
+	<?php
+}

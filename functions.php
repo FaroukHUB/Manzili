@@ -1831,8 +1831,8 @@ function clo_reassurance_badges(): void {
             <span class="clo-reassurance__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </span>
-            <span class="clo-reassurance__label">Parfums originaux</span>
-            <span class="clo-reassurance__sub">100&nbsp;% authentiques</span>
+            <span class="clo-reassurance__label">Fragrances premium</span>
+            <span class="clo-reassurance__sub">Inspirées des grandes maisons</span>
         </div>
         <div class="clo-reassurance__item">
             <span class="clo-reassurance__icon" aria-hidden="true">
